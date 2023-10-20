@@ -14,6 +14,8 @@ import com.arttttt.appholder.koinScope
 import com.arttttt.appholder.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.appholder.ui.appslist.lazylist.models.AppListItem
 import com.arttttt.appholder.ui.appslist.lazylist.models.DividerListItem
+import com.arttttt.appholder.ui.appslist.lazylist.models.ProgressListItem
+import com.arttttt.appholder.ui.base.ListItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -54,33 +56,39 @@ class AppsListComponentImpl(
         appsStore
             .states
             .map { state ->
+                val apps = state.applications?.entries?.foldIndexed(mutableListOf<ListItem>()) { index, acc, (_, app) ->
+                    acc += AppListItem(
+                        pkg = app.pkg,
+                        title = app.title,
+                    )
+
+                    if (state.selectedApps?.contains(app.pkg) == true) {
+                        val selectedActivities = state.getSelectedActivitiesForPkg(app.pkg)
+
+                        app.activities.mapTo(acc) { activity ->
+                            ActivityListItem(
+                                pkg = activity.pkg,
+                                title = activity.title,
+                                name = activity.name,
+                                isSelected = activity.name in selectedActivities,
+                                key = activity.name,
+                            )
+                        }
+                    }
+
+                    if (index < state.applications.size - 1) {
+                        acc += DividerListItem()
+                    }
+
+                    acc
+                } ?: mutableListOf()
+
+                if (apps.isEmpty() && state.isInProgress) {
+                    apps += ProgressListItem()
+                }
+
                 AppListComponent.State(
-                    apps = state.applications?.entries?.foldIndexed(mutableListOf()) { index, acc, (_, app) ->
-                        acc += AppListItem(
-                            pkg = app.pkg,
-                            title = app.title,
-                        )
-
-                        if (state.selectedApps?.contains(app.pkg) == true) {
-                            val selectedActivities = state.getSelectedActivitiesForPkg(app.pkg)
-
-                            app.activities.mapTo(acc) { activity ->
-                                ActivityListItem(
-                                    pkg = activity.pkg,
-                                    title = activity.title,
-                                    name = activity.name,
-                                    isSelected = activity.name in selectedActivities,
-                                    key = activity.name,
-                                )
-                            }
-                        }
-
-                        if (index < state.applications.size - 1) {
-                            acc += DividerListItem()
-                        }
-
-                        acc
-                    } ?: emptyList()
+                    apps = apps
                 )
             }
             .onEach { updatedState ->

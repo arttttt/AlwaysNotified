@@ -36,6 +36,7 @@ import com.arttttt.appholder.components.appslist.AppListComponent
 import com.arttttt.appholder.ui.appslist.lazylist.delegates.ActivityListDelegate
 import com.arttttt.appholder.ui.appslist.lazylist.delegates.AppListDelegate
 import com.arttttt.appholder.ui.appslist.lazylist.delegates.DividerListDelegate
+import com.arttttt.appholder.ui.appslist.lazylist.delegates.ProgressListDelegate
 import com.arttttt.appholder.ui.base.ListItem
 import com.arttttt.appholder.ui.base.dsl.rememberLazyListDelegateManager
 import com.arttttt.appholder.ui.custom.LocalCorrectHapticFeedback
@@ -151,6 +152,7 @@ private fun AppsList(
                 },
             ),
             DividerListDelegate(),
+            ProgressListDelegate(),
         ),
     )
 
