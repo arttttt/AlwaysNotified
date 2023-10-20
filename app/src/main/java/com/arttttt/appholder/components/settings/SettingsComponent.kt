@@ -1,4 +1,4 @@
-package com.arttttt.appholder.ui.settings
+package com.arttttt.appholder.components.settings
 
 import com.arttttt.appholder.arch.DecomposeComponent
 

@@ -1,4 +1,4 @@
-package com.arttttt.appholder.ui.permissions
+package com.arttttt.appholder.components.permissions
 
 import com.arkivanov.decompose.value.Value
 import com.arttttt.appholder.arch.DecomposeComponent

@@ -1,4 +1,4 @@
-package com.arttttt.appholder.ui.root
+package com.arttttt.appholder.components.root
 
 import android.os.Parcelable
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -6,15 +6,14 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arttttt.appholder.arch.DecomposeComponent
-import com.arttttt.appholder.arch.asStateFlow
 import com.arttttt.appholder.arch.context.AppComponentContext
 import com.arttttt.appholder.arch.context.childAppContext
 import com.arttttt.appholder.arch.context.customChildStack
 import com.arttttt.appholder.arch.stackComponentEvents
 import com.arttttt.appholder.koinScope
-import com.arttttt.appholder.ui.appslist.AppsListComponentImpl
-import com.arttttt.appholder.ui.permissions.PermissionsComponent
-import com.arttttt.appholder.ui.permissions.PermissionsComponentImpl
+import com.arttttt.appholder.components.appslist.AppsListComponentImpl
+import com.arttttt.appholder.components.permissions.PermissionsComponent
+import com.arttttt.appholder.components.permissions.PermissionsComponentImpl
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.launchIn

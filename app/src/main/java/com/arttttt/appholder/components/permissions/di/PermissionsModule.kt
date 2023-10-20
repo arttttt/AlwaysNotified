@@ -1,10 +1,10 @@
-package com.arttttt.appholder.ui.permissions.di
+package com.arttttt.appholder.components.permissions.di
 
 import com.arttttt.appholder.data.PermissionsRepositoryImpl
 import com.arttttt.appholder.domain.repository.PermissionsRepository
 import com.arttttt.appholder.domain.store.permissions.PermissionsStore
 import com.arttttt.appholder.domain.store.permissions.PermissionsStoreFactory
-import com.arttttt.appholder.ui.permissions.PermissionsComponent
+import com.arttttt.appholder.components.permissions.PermissionsComponent
 import org.koin.dsl.module
 
 val permissionsModule = module {

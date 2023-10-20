@@ -1,4 +1,4 @@
-package com.arttttt.appholder.ui.root
+package com.arttttt.appholder.components.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value

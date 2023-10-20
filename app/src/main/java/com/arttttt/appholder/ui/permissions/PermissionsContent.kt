@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.arttttt.appholder.components.permissions.PermissionsComponent
 import com.arttttt.appholder.ui.custom.EqualHeightColumn
 import com.arttttt.appholder.ui.permissions.content.DeniedPermissionContent
 import com.arttttt.appholder.ui.permissions.content.GrantedPermissionContent

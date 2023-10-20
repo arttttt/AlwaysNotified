@@ -10,8 +10,8 @@ import com.arttttt.appholder.arch.context.defaultAppComponentContext
 import com.arttttt.appholder.di.mainActivityModule
 import com.arttttt.appholder.ui.custom.LocalCorrectHapticFeedback
 import com.arttttt.appholder.ui.custom.provideHapticFeedback
-import com.arttttt.appholder.ui.root.RootComponent
-import com.arttttt.appholder.ui.root.RootComponentImpl
+import com.arttttt.appholder.components.root.RootComponent
+import com.arttttt.appholder.components.root.RootComponentImpl
 import com.arttttt.appholder.ui.root.RootContent
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityScope

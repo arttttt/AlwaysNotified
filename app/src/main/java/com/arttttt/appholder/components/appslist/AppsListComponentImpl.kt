@@ -1,4 +1,4 @@
-package com.arttttt.appholder.ui.appslist
+package com.arttttt.appholder.components.appslist
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update

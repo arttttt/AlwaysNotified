@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.arttttt.appholder.components.appslist.AppListComponent
 import com.arttttt.appholder.ui.appslist.lazylist.delegates.ActivityListDelegate
 import com.arttttt.appholder.ui.appslist.lazylist.delegates.AppListDelegate
 import com.arttttt.appholder.ui.appslist.lazylist.delegates.DividerListDelegate

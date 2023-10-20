@@ -1,4 +1,4 @@
-package com.arttttt.appholder.ui.permissions
+package com.arttttt.appholder.components.permissions
 
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -13,7 +13,7 @@ import com.arttttt.appholder.domain.entity.permission.Permission2
 import com.arttttt.appholder.domain.store.permissions.PermissionsStore
 import com.arttttt.appholder.koinScope
 import com.arttttt.appholder.ui.base.ListItem
-import com.arttttt.appholder.ui.permissions.di.permissionsModule
+import com.arttttt.appholder.components.permissions.di.permissionsModule
 import com.arttttt.appholder.ui.permissions.models.PermissionLazyListItem
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
