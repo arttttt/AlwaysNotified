@@ -3,6 +3,7 @@ package com.arttttt.appholder.components.root
 import android.os.Parcelable
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arttttt.appholder.arch.DecomposeComponent
@@ -10,12 +11,15 @@ import com.arttttt.appholder.arch.context.AppComponentContext
 import com.arttttt.appholder.arch.context.childAppContext
 import com.arttttt.appholder.arch.context.customChildStack
 import com.arttttt.appholder.arch.stackComponentEvents
+import com.arttttt.appholder.components.appslist.AppListComponent
 import com.arttttt.appholder.koinScope
 import com.arttttt.appholder.components.appslist.AppsListComponentImpl
 import com.arttttt.appholder.components.permissions.PermissionsComponent
 import com.arttttt.appholder.components.permissions.PermissionsComponentImpl
+import com.arttttt.appholder.components.settings.SettingsComponentImpl
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
@@ -34,6 +38,9 @@ class RootComponentImpl(
 
         @Parcelize
         data object Permissions : Config()
+
+        @Parcelize
+        data object Settings : Config()
     }
 
     private val scope = koinScope()
@@ -58,10 +65,19 @@ class RootComponentImpl(
 
     init {
         stack
-            .stackComponentEvents<PermissionsComponent.Event.AllPermissionsGranted>()
+            .stackComponentEvents<PermissionsComponent.Event>()
+            .filterIsInstance<PermissionsComponent.Event.AllPermissionsGranted>()
             .take(1)
             .onEach {
                 navigation.replaceCurrent(Config.AppsList)
+            }
+            .launchIn(coroutineScope)
+
+        stack
+            .stackComponentEvents<AppListComponent.Event>()
+            .filterIsInstance<AppListComponent.Event.OpenSettings>()
+            .onEach {
+                navigation.push(Config.Settings)
             }
             .launchIn(coroutineScope)
     }
@@ -75,6 +91,9 @@ class RootComponentImpl(
                 componentContext = context,
             )
             is Config.Permissions -> PermissionsComponentImpl(
+                componentContext = context,
+            )
+            is Config.Settings -> SettingsComponentImpl(
                 componentContext = context,
             )
         }

@@ -1,6 +1,5 @@
 package com.arttttt.appholder.ui.appslist
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -72,9 +71,7 @@ fun AppsListContent(component: AppListComponent) {
                 val context = LocalContext.current
 
                 IconButton(
-                    onClick = {
-                        Toast.makeText(context, "Under construction", Toast.LENGTH_SHORT).show()
-                    }
+                    onClick = component::openSettings,
                 ) {
                     Icon(
                         painter = rememberVectorPainter(image = Icons.Default.Settings),

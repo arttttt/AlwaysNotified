@@ -6,7 +6,9 @@ import com.arttttt.appholder.components.appslist.AppListComponent
 import com.arttttt.appholder.ui.appslist.AppsListContent
 import com.arttttt.appholder.components.permissions.PermissionsComponent
 import com.arttttt.appholder.components.root.RootComponent
+import com.arttttt.appholder.components.settings.SettingsComponent
 import com.arttttt.appholder.ui.permissions.PermissionsContent
+import com.arttttt.appholder.ui.settings.SettingsContent
 
 @Composable
 fun RootContent(component: RootComponent) {
@@ -16,6 +18,7 @@ fun RootContent(component: RootComponent) {
         when (val instance = child.instance) {
             is AppListComponent -> AppsListContent(instance)
             is PermissionsComponent -> PermissionsContent(instance)
+            is SettingsComponent -> SettingsContent(instance)
         }
     }
 }

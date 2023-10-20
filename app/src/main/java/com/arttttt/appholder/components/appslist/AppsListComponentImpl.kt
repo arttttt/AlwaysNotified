@@ -7,6 +7,8 @@ import com.arkivanov.essenty.lifecycle.doOnStop
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.appholder.AppsLauncher
 import com.arttttt.appholder.arch.context.AppComponentContext
+import com.arttttt.appholder.arch.events.EventsProducerDelegate
+import com.arttttt.appholder.arch.events.EventsProducerDelegateImpl
 import com.arttttt.appholder.domain.store.apps.AppsStore
 import com.arttttt.appholder.koinScope
 import com.arttttt.appholder.ui.appslist.lazylist.models.ActivityListItem
@@ -20,13 +22,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
 
 class AppsListComponentImpl(
     componentContext: AppComponentContext,
 ) : AppListComponent,
     AppComponentContext by componentContext,
-    KoinComponent {
+    EventsProducerDelegate<AppListComponent.Event> by EventsProducerDelegateImpl() {
 
     private val scope = koinScope()
 
@@ -111,5 +112,9 @@ class AppsListComponentImpl(
                 name = name,
             )
         )
+    }
+
+    override fun openSettings() {
+        dispatch(AppListComponent.Event.OpenSettings)
     }
 }
