@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AppHolder</string>
+    <string name="app_name_release">AppHolder</string>
+    <string name="app_name_dev">AppHolder Dev</string>
 </resources>
