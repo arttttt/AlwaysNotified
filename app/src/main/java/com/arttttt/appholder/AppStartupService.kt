@@ -29,15 +29,6 @@ class AppStartupService : Service() {
 
     private val appsLauncher by inject<AppsLauncher>()
 
-/*    private val serviceType: Int
-        get() {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
-            } else {
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE
-            }
-        }*/
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -51,14 +42,6 @@ class AppStartupService : Service() {
 
             val payload = appsLauncher.getLaunchIntent()
 
-            Log.e(
-                "TEST",
-                """
-                    server started
-                    payload = $payload
-                """.trimIndent()
-            )
-
             if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 return@launch
             }
@@ -69,12 +52,6 @@ class AppStartupService : Service() {
                     NOTIFICATION_ID,
                     createNotification(payload),
                 )
-
-            /*startForeground(
-                NOTIFICATION_ID,
-                createNotification(payload),
-                serviceType,
-            )*/
         }
     }
 
