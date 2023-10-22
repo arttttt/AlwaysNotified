@@ -37,6 +37,7 @@ android {
             )
 
             resValue("string", "app_name", "@string/app_name_release")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
