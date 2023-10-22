@@ -40,7 +40,7 @@
         <activity
             android:name=".ProtectorActivity"
             android:exported="false"
-            android:theme="@style/sasd"/>
+            android:theme="@style/Theme.AppHolder.Protector"/>
 
         <activity
             android:name=".HolderActivity"
