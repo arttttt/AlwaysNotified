@@ -10,12 +10,12 @@ import com.arttttt.appholder.arch.context.AppComponentContext
 import com.arttttt.appholder.arch.events.EventsProducerDelegate
 import com.arttttt.appholder.arch.events.EventsProducerDelegateImpl
 import com.arttttt.appholder.domain.store.apps.AppsStore
-import com.arttttt.appholder.koinScope
 import com.arttttt.appholder.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.appholder.ui.appslist.lazylist.models.AppListItem
 import com.arttttt.appholder.ui.appslist.lazylist.models.DividerListItem
 import com.arttttt.appholder.ui.appslist.lazylist.models.ProgressListItem
 import com.arttttt.appholder.ui.base.ListItem
+import com.arttttt.appholder.utils.extensions.koinScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

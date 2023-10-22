@@ -1,4 +1,4 @@
-package com.arttttt.appholder.utils
+package com.arttttt.appholder.utils.permissions.handlers
 
 import android.content.Context
 import android.os.PowerManager
@@ -9,10 +9,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.arttttt.appholder.data.model.IgnoreBatteryOptimizationsPermission
 import com.arttttt.appholder.domain.entity.permission.Permission2
-import com.arttttt.appholder.of
+import com.arttttt.appholder.utils.extensions.of
+import com.arttttt.appholder.utils.permissions.PermissionHandler
 import kotlinx.coroutines.channels.Channel
 
-class IgnoreBatteryOptimizationsPermissionHandler : PermissionHandler<IgnoreBatteryOptimizationsPermission> {
+class IgnoreBatteryOptimizationsPermissionHandler :
+    PermissionHandler<IgnoreBatteryOptimizationsPermission> {
 
     private val lifecycleObserver = object : DefaultLifecycleObserver {
         private var skipNextResume = false

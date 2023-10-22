@@ -9,7 +9,7 @@ import android.provider.Settings
 import androidx.core.content.getSystemService
 import com.arttttt.appholder.domain.entity.permission.IntentPermission
 import com.arttttt.appholder.domain.entity.permission.Permission2
-import com.arttttt.appholder.of
+import com.arttttt.appholder.utils.extensions.of
 
 @SuppressLint("BatteryLife")
 data object IgnoreBatteryOptimizationsPermission : IntentPermission {

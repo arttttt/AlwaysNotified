@@ -4,7 +4,7 @@ import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arttttt.appholder.domain.repository.PermissionsRepository
-import com.arttttt.appholder.utils.PermissionsRequester
+import com.arttttt.appholder.utils.permissions.PermissionsRequester
 
 class PermissionsStoreFactory(
     private val storeFactory: StoreFactory,

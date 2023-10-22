@@ -13,6 +13,7 @@ import com.arttttt.appholder.ui.custom.provideHapticFeedback
 import com.arttttt.appholder.components.root.RootComponent
 import com.arttttt.appholder.components.root.RootComponentImpl
 import com.arttttt.appholder.ui.root.RootContent
+import com.arttttt.appholder.utils.extensions.unsafeCastTo
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityScope
 import org.koin.core.context.loadKoinModules

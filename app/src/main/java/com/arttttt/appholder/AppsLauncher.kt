@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.appholder.domain.entity.info.ActivityInfo
 import com.arttttt.appholder.domain.entity.info.AppInfo
 import com.arttttt.appholder.domain.store.apps.AppsStore
+import com.arttttt.appholder.utils.extensions.intent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -57,7 +58,7 @@ class AppsLauncher(
     }
 
     private fun Context.getHolderIntent(payload: ArrayList<Intent>): Intent {
-        return activityIntent<HolderActivity> {
+        return intent<HolderActivity> {
             setClassName(
                 packageName,
                 HolderActivity::class.java.name

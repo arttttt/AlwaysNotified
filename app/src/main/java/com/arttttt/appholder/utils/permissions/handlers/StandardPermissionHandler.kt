@@ -1,11 +1,12 @@
-package com.arttttt.appholder.utils
+package com.arttttt.appholder.utils.permissions.handlers
 
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import com.arttttt.appholder.domain.entity.permission.Permission2
 import com.arttttt.appholder.domain.entity.permission.StandardPermission
-import com.arttttt.appholder.of
+import com.arttttt.appholder.utils.extensions.of
+import com.arttttt.appholder.utils.permissions.PermissionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 

@@ -3,8 +3,8 @@ package com.arttttt.appholder.domain.store.permissions
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.appholder.domain.entity.permission.Permission2
 import com.arttttt.appholder.domain.repository.PermissionsRepository
-import com.arttttt.appholder.exceptCancellationException
-import com.arttttt.appholder.utils.PermissionsRequester
+import com.arttttt.appholder.utils.extensions.exceptCancellationException
+import com.arttttt.appholder.utils.permissions.PermissionsRequester
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 

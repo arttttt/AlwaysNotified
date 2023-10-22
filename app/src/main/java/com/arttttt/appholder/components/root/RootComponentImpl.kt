@@ -12,11 +12,11 @@ import com.arttttt.appholder.arch.context.childAppContext
 import com.arttttt.appholder.arch.context.customChildStack
 import com.arttttt.appholder.arch.stackComponentEvents
 import com.arttttt.appholder.components.appslist.AppListComponent
-import com.arttttt.appholder.koinScope
 import com.arttttt.appholder.components.appslist.AppsListComponentImpl
 import com.arttttt.appholder.components.permissions.PermissionsComponent
 import com.arttttt.appholder.components.permissions.PermissionsComponentImpl
 import com.arttttt.appholder.components.settings.SettingsComponentImpl
+import com.arttttt.appholder.utils.extensions.koinScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.filterIsInstance

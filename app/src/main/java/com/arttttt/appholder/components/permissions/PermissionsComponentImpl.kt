@@ -8,13 +8,13 @@ import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.appholder.arch.context.AppComponentContext
 import com.arttttt.appholder.arch.events.EventsProducerDelegate
 import com.arttttt.appholder.arch.events.EventsProducerDelegateImpl
-import com.arttttt.appholder.asValue
 import com.arttttt.appholder.domain.entity.permission.Permission2
 import com.arttttt.appholder.domain.store.permissions.PermissionsStore
-import com.arttttt.appholder.koinScope
 import com.arttttt.appholder.ui.base.ListItem
 import com.arttttt.appholder.components.permissions.di.permissionsModule
 import com.arttttt.appholder.ui.permissions.models.PermissionLazyListItem
+import com.arttttt.appholder.utils.extensions.asValue
+import com.arttttt.appholder.utils.extensions.koinScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren

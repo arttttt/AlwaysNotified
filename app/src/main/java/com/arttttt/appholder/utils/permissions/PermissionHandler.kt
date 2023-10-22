@@ -1,4 +1,4 @@
-package com.arttttt.appholder.utils
+package com.arttttt.appholder.utils.permissions
 
 import androidx.activity.ComponentActivity
 import com.arttttt.appholder.domain.entity.permission.Permission2

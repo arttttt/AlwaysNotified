@@ -3,15 +3,16 @@ package com.arttttt.appholder.di
 import com.arttttt.appholder.MainActivity
 import com.arttttt.appholder.data.model.IgnoreBatteryOptimizationsPermission
 import com.arttttt.appholder.domain.entity.permission.StandardPermission
-import com.arttttt.appholder.utils.IgnoreBatteryOptimizationsPermissionHandler
-import com.arttttt.appholder.utils.PermissionsRequester
-import com.arttttt.appholder.utils.StandardPermissionHandler
+import com.arttttt.appholder.utils.permissions.PermissionsRequester
+import com.arttttt.appholder.utils.permissions.handlers.IgnoreBatteryOptimizationsPermissionHandler
+import com.arttttt.appholder.utils.permissions.PermissionsRequesterImpl
+import com.arttttt.appholder.utils.permissions.handlers.StandardPermissionHandler
 import org.koin.dsl.module
 
 val mainActivityModule = module {
     scope<MainActivity> {
-        scoped {
-            PermissionsRequester(
+        scoped<PermissionsRequester> {
+            PermissionsRequesterImpl(
                 activity = get(),
                 handlers = mapOf(
                     StandardPermission::class to StandardPermissionHandler(),
