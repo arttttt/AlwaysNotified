@@ -109,6 +109,4 @@ dependencies {
     implementation(libs.mviKotlin.rx)
 
     implementation(libs.flowext)
-
-    implementation(kotlin("reflect"))
 }
