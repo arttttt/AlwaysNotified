@@ -60,18 +60,22 @@ class AppsListComponentImpl(
                     acc += AppListItem(
                         pkg = app.pkg,
                         title = app.title,
+                        clipTop = index == 0,
+                        clipBottom = index == state.applications.entries.size - 1 && state.selectedApps?.contains(app.pkg) == false
                     )
 
                     if (state.selectedApps?.contains(app.pkg) == true) {
                         val selectedActivities = state.getSelectedActivitiesForPkg(app.pkg)
 
-                        app.activities.mapTo(acc) { activity ->
+                        app.activities.mapIndexedTo(acc) { activityIndex, activity ->
                             ActivityListItem(
                                 pkg = activity.pkg,
                                 title = activity.title,
                                 name = activity.name,
                                 isSelected = activity.name in selectedActivities,
                                 key = activity.name,
+                                clipTop = false,
+                                clipBottom = index == state.applications.entries.size - 1 && activityIndex == app.activities.size - 1
                             )
                         }
                     }

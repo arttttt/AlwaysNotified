@@ -1,18 +1,22 @@
 package com.arttttt.appholder.ui.appslist.lazylist.delegates
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arttttt.appholder.ui.appslist.lazylist.models.ActivityListItem
+import com.arttttt.appholder.ui.appslist.lazylist.models.fromClippableItem
 import com.arttttt.appholder.ui.base.dsl.lazyListDelegate
+import com.arttttt.appholder.ui.theme.AppTheme
 
 fun ActivityListDelegate(
     onClick: (String, String) -> Unit,
@@ -22,6 +26,8 @@ fun ActivityListDelegate(
             Row(
                 modifier = Modifier
                     .fillParentMaxWidth()
+                    .fromClippableItem(item)
+                    .background(AppTheme.colors.tertiary)
                     .clickable {
                         onClick.invoke(item.pkg, item.name)
                     }
@@ -41,6 +47,7 @@ fun ActivityListDelegate(
 
                 Switch(
                     checked = item.isSelected,
+                    colors = AppTheme.widgets.switchColors,
                     onCheckedChange = {
                         onClick.invoke(item.pkg, item.name)
                     },

@@ -22,12 +22,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 private fun GrantedPermissionContentPreview() {
     GrantedPermissionContent(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            ),
+        modifier = Modifier.fillMaxWidth(),
         title = "Test permission",
     )
 }
@@ -38,7 +33,10 @@ fun GrantedPermissionContent(
     title: String
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.padding(
+            horizontal = 16.dp,
+            vertical = 8.dp
+        ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(

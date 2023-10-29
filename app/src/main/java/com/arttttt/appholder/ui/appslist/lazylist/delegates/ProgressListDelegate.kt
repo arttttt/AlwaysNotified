@@ -6,6 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arttttt.appholder.ui.appslist.lazylist.models.ProgressListItem
 import com.arttttt.appholder.ui.base.dsl.lazyListDelegate
+import com.arttttt.appholder.ui.theme.AppTheme
 
 fun ProgressListDelegate() = lazyListDelegate<ProgressListItem> { scope, holder, modifier ->
     with(scope) {
@@ -14,7 +15,9 @@ fun ProgressListDelegate() = lazyListDelegate<ProgressListItem> { scope, holder,
                modifier = Modifier.fillParentMaxSize(),
                contentAlignment = Alignment.Center,
            ) {
-               CircularProgressIndicator()
+               CircularProgressIndicator(
+                   color = AppTheme.colors.secondary
+               )
            }
         }
     }

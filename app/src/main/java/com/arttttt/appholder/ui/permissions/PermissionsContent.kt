@@ -1,5 +1,6 @@
 package com.arttttt.appholder.ui.permissions
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,13 +13,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.arttttt.appholder.components.permissions.PermissionsComponent
+import com.arttttt.appholder.ui.common.Divider
 import com.arttttt.appholder.ui.custom.EqualHeightColumn
 import com.arttttt.appholder.ui.permissions.content.DeniedPermissionContent
 import com.arttttt.appholder.ui.permissions.content.GrantedPermissionContent
 import com.arttttt.appholder.ui.permissions.models.PermissionLazyListItem
+import com.arttttt.appholder.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,28 +31,61 @@ fun PermissionsContent(component: PermissionsComponent) {
     val state by component.state.subscribeAsState()
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.colors.primary)
     ) {
         TopAppBar(
+            modifier = Modifier.clip(
+                AppTheme.shapes.roundedCorners.medium(
+                    topStart = 0.dp,
+                    topEnd = 0.dp,
+                )
+            ),
+            colors = AppTheme.widgets.topAppBarColors,
             title = { 
                 Text(text = "Permissions")
             }
         )
 
+        val shapes = AppTheme.shapes
+        val topCorners = remember {
+            shapes.roundedCorners.medium(
+                bottomStart = 0.dp,
+                bottomEnd = 0.dp,
+            )
+        }
+
+        val bottomCorners = remember {
+            shapes.roundedCorners.medium(
+                topStart = 0.dp,
+                topEnd = 0.dp,
+            )
+        }
+
+        val permissionModifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.tertiary)
+
         EqualHeightColumn(
-            modifier = Modifier.fillMaxSize(),
-            spacing = 8.dp,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            spacing = 0.dp,
         ) {
-            state.items.forEach { item ->
+            state.items.forEachIndexed { index, item ->
                 when (item) {
                     is PermissionLazyListItem.Granted -> {
                         key(item.key) {
                             GrantedPermissionContent(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        horizontal = 16.dp,
-                                    ),
+                                    .clip(
+                                        index = index,
+                                        itemsCount = state.items.size,
+                                        topCorners = topCorners,
+                                        bottomCorners = bottomCorners,
+                                    )
+                                    .then(permissionModifier),
                                 title = item.title,
                             )
                         }
@@ -56,10 +94,13 @@ fun PermissionsContent(component: PermissionsComponent) {
                         key(item.key) {
                             DeniedPermissionContent(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        horizontal = 16.dp,
-                                    ),
+                                    .clip(
+                                        index = index,
+                                        itemsCount = state.items.size,
+                                        topCorners = topCorners,
+                                        bottomCorners = bottomCorners,
+                                    )
+                                    .then(permissionModifier),
                                 title = item.title,
                                 onClick = remember {
                                     {
@@ -70,7 +111,28 @@ fun PermissionsContent(component: PermissionsComponent) {
                         }
                     }
                 }
+
+                if (index != state.items.size - 1) {
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .ignoreEqualHeight()
+                    )
+                }
             }
         }
+    }
+}
+
+private fun Modifier.clip(
+    index: Int,
+    itemsCount: Int,
+    topCorners: Shape,
+    bottomCorners: Shape,
+): Modifier {
+    return when (index) {
+        0 -> this.clip(topCorners)
+        itemsCount - 1 -> this.clip(bottomCorners)
+        else -> this
     }
 }

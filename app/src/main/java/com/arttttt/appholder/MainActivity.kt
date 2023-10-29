@@ -3,16 +3,17 @@ package com.arttttt.appholder
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.defaultComponentContext
 import com.arttttt.appholder.arch.context.defaultAppComponentContext
+import com.arttttt.appholder.components.root.RootComponent
+import com.arttttt.appholder.components.root.RootComponentImpl
 import com.arttttt.appholder.di.mainActivityModule
 import com.arttttt.appholder.ui.custom.LocalCorrectHapticFeedback
 import com.arttttt.appholder.ui.custom.provideHapticFeedback
-import com.arttttt.appholder.components.root.RootComponent
-import com.arttttt.appholder.components.root.RootComponentImpl
 import com.arttttt.appholder.ui.root.RootContent
+import com.arttttt.appholder.ui.theme.AppTheme
 import com.arttttt.appholder.utils.extensions.unsafeCastTo
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityScope
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         loadKoinModules(mainActivityModule)
         scope.registerCallback(
@@ -52,7 +54,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
         setContent {
             CompositionLocalProvider(LocalCorrectHapticFeedback provides provideHapticFeedback()) {
-                MaterialTheme {
+                AppTheme {
                     RootContent(
                         component = rootComponent,
                     )

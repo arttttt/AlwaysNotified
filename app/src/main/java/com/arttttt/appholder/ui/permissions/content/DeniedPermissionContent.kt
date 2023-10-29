@@ -4,19 +4,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.arttttt.appholder.ui.theme.AppTheme
 
 @Preview(
     showBackground = true,
@@ -24,12 +19,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 private fun DeniedPermissionContentPreview() {
     DeniedPermissionContent(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            ),
+        modifier = Modifier.fillMaxWidth(),
         title = "Test permission",
         onClick = {},
     )
@@ -42,7 +32,10 @@ fun DeniedPermissionContent(
     onClick: () -> Unit,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.padding(
+            horizontal = 16.dp,
+            vertical = 8.dp
+        ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -52,6 +45,7 @@ fun DeniedPermissionContent(
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
+            colors = AppTheme.widgets.buttonColors,
             onClick = {
                 onClick.invoke()
             }

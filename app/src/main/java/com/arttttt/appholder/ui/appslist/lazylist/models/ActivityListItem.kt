@@ -7,5 +7,7 @@ data class ActivityListItem(
     val title: String,
     val name: String,
     val isSelected: Boolean,
+    override val clipTop: Boolean,
+    override val clipBottom: Boolean,
     override val key: Any
-) : ListItem
+) : ListItem, ClippableItem

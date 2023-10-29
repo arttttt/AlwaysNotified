@@ -8,16 +8,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arttttt.appholder.ui.appslist.lazylist.models.DividerListItem
 import com.arttttt.appholder.ui.base.dsl.lazyListDelegate
+import com.arttttt.appholder.ui.common.Divider
+import com.arttttt.appholder.ui.theme.AppTheme
 
 fun DividerListDelegate() = lazyListDelegate<DividerListItem> { scope, holder, modifier ->
     with(scope) {
-        with(holder) {
-            Spacer(
-                modifier = Modifier
-                    .fillParentMaxWidth()
-                    .height(1.dp)
-                    .background(Color.Black)
-            )
-        }
+        Divider(
+            modifier = Modifier.fillParentMaxWidth()
+        )
     }
 }
