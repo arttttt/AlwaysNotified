@@ -13,12 +13,14 @@ interface HapticFeedback {
 }
 
 @Composable
-fun provideHapticFeedback(): HapticFeedback {
+fun rememberHapticFeedback(): HapticFeedback {
     val view = LocalView.current
 
-    return object : HapticFeedback {
-        override fun performHapticFeedback(hapticFeedbackConstant: Int) {
-            view.performHapticFeedback(hapticFeedbackConstant)
+    return remember(view) {
+        object : HapticFeedback {
+            override fun performHapticFeedback(hapticFeedbackConstant: Int) {
+                view.performHapticFeedback(hapticFeedbackConstant)
+            }
         }
     }
 }

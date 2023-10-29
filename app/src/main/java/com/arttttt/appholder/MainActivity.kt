@@ -11,7 +11,7 @@ import com.arttttt.appholder.components.root.RootComponent
 import com.arttttt.appholder.components.root.RootComponentImpl
 import com.arttttt.appholder.di.mainActivityModule
 import com.arttttt.appholder.ui.custom.LocalCorrectHapticFeedback
-import com.arttttt.appholder.ui.custom.provideHapticFeedback
+import com.arttttt.appholder.ui.custom.rememberHapticFeedback
 import com.arttttt.appholder.ui.root.RootContent
 import com.arttttt.appholder.ui.theme.AppTheme
 import com.arttttt.appholder.utils.extensions.unsafeCastTo
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         )
 
         setContent {
-            CompositionLocalProvider(LocalCorrectHapticFeedback provides provideHapticFeedback()) {
+            CompositionLocalProvider(LocalCorrectHapticFeedback provides rememberHapticFeedback()) {
                 AppTheme {
                     RootContent(
                         component = rootComponent,
