@@ -24,8 +24,9 @@ class LazyListDelegatesManager(
         return getDelegateOrThrow(item).getContentType(item)
     }
 
+    context(LazyItemScope)
     @Composable
-    fun Content(context: LazyItemScope, item: ListItem, modifier: Modifier) {
+    fun Content(item: ListItem, modifier: Modifier) {
         val delegate = remember(item) {
             getDelegateOrThrow(item)
         }
@@ -35,7 +36,6 @@ class LazyListDelegatesManager(
         }
 
         holder.Content(
-            context = context,
             modifier = modifier,
         )
     }

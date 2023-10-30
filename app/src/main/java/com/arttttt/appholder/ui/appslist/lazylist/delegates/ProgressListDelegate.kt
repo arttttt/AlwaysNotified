@@ -8,17 +8,13 @@ import com.arttttt.appholder.ui.appslist.lazylist.models.ProgressListItem
 import com.arttttt.appholder.ui.base.dsl.lazyListDelegate
 import com.arttttt.appholder.ui.theme.AppTheme
 
-fun ProgressListDelegate() = lazyListDelegate<ProgressListItem> { scope, holder, modifier ->
-    with(scope) {
-        with(holder) {
-           Box(
-               modifier = Modifier.fillParentMaxSize(),
-               contentAlignment = Alignment.Center,
-           ) {
-               CircularProgressIndicator(
-                   color = AppTheme.colors.secondary
-               )
-           }
-        }
+fun ProgressListDelegate() = lazyListDelegate<ProgressListItem> {
+    Box(
+        modifier = Modifier.fillParentMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator(
+            color = AppTheme.colors.secondary
+        )
     }
 }

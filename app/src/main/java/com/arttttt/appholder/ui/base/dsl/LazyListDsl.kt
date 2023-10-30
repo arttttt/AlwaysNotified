@@ -13,7 +13,7 @@ import kotlinx.collections.immutable.ImmutableList
 inline fun <reified T : ListItem> lazyListDelegate(
     noinline key: (item: T) -> Any = { item -> item.key },
     noinline contentType: ((item: T) -> Any) = { it::class },
-    noinline content: @Composable (LazyItemScope, LazyListViewHolder<T>, Modifier) -> Unit,
+    noinline content: @Composable context(LazyItemScope, LazyListViewHolder<T>) (Modifier) -> Unit,
 ) = object : LazyListDelegate<T>() {
 
     override fun getContentType(item: T): Any {
@@ -30,12 +30,14 @@ inline fun <reified T : ListItem> lazyListDelegate(
 
     override fun createViewHolder(item: T): LazyListViewHolder<T> {
         return object : LazyListViewHolder<T>() {
+
+            context(LazyItemScope)
             @Composable
-            override fun Content(context: LazyItemScope, modifier: Modifier) {
-                content.invoke(context, this, modifier)
+            override fun Content(modifier: Modifier) {
+                content(this@LazyItemScope, this, modifier)
             }
         }.apply {
-            _item = item
+            setItem(item)
         }
     }
 }

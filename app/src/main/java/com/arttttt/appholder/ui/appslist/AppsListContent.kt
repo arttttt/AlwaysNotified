@@ -184,7 +184,6 @@ private fun AppsList(
             contentType = lazyListDelegateManager::getContentType
         ) { item ->
             lazyListDelegateManager.Content(
-                context = this,
                 item = item,
                 modifier = Modifier,
             )

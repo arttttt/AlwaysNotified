@@ -9,8 +9,7 @@ abstract class LazyListViewHolder<T : ListItem> {
 
     private object Uninitialized
 
-    @PublishedApi
-    internal var _item: Any = Uninitialized
+    private var _item: Any = Uninitialized
 
     open val contentType: Any
         get() {
@@ -30,6 +29,11 @@ abstract class LazyListViewHolder<T : ListItem> {
             _item as T
         }
 
+    context(LazyItemScope)
     @Composable
-    abstract fun Content(context: LazyItemScope, modifier: Modifier)
+    abstract fun Content(modifier: Modifier)
+
+    fun setItem(item: T) {
+        _item = item
+    }
 }

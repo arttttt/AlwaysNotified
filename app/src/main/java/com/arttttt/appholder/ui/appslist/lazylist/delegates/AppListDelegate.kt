@@ -14,25 +14,21 @@ import com.arttttt.appholder.ui.theme.AppTheme
 
 fun AppListDelegate(
     onClick: (String) -> Unit
-) = lazyListDelegate<AppListItem> { scope, holder, modifier ->
+) = lazyListDelegate<AppListItem> {
 
-    with(scope) {
-        with(holder) {
-            Text(
-                modifier = Modifier
-                    .fillParentMaxWidth()
-                    .fromClippableItem(item)
-                    .background(AppTheme.colors.tertiary)
-                    .clickable {
-                        onClick.invoke(item.pkg)
-                    }
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp,
-                    ),
-                text = item.title,
-                fontSize = 18.sp,
-            )
-        }
-    }
+    Text(
+        modifier = Modifier
+            .fillParentMaxWidth()
+            .fromClippableItem(item)
+            .background(AppTheme.colors.tertiary)
+            .clickable {
+                onClick.invoke(item.pkg)
+            }
+            .padding(
+                horizontal = 16.dp,
+                vertical = 8.dp,
+            ),
+        text = item.title,
+        fontSize = 18.sp,
+    )
 }
