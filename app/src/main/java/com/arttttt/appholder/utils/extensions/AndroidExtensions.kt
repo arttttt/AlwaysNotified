@@ -1,10 +1,11 @@
 package com.arttttt.appholder.utils.extensions
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Parcelable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.core.content.IntentCompat
 import java.io.Serializable
 
@@ -27,5 +28,12 @@ inline fun <reified T : Serializable?> Intent.getSerializable(name: String): T {
         getSerializableExtra(name, T::class.java) as T
     } else {
         getSerializableExtra(name) as T
+    }
+}
+
+@Composable
+fun <T> rememberLambda(block: () -> T): () -> T {
+    return remember {
+        block
     }
 }

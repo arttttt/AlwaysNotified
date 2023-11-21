@@ -1,4 +1,4 @@
-package com.arttttt.appholder.arch
+package com.arttttt.appholder.arch.shared
 
 import com.arkivanov.decompose.value.Value
 import kotlinx.coroutines.DelicateCoroutinesApi

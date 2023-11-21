@@ -2,9 +2,9 @@ package com.arttttt.appholder.utils.extensions
 
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.arttttt.appholder.arch.DecomposeComponent
-import com.arttttt.appholder.arch.FlowValue
-import com.arttttt.appholder.arch.context.AppComponentContext
+import com.arttttt.appholder.arch.shared.DecomposeComponent
+import com.arttttt.appholder.arch.shared.FlowValue
+import com.arttttt.appholder.arch.shared.context.AppComponentContext
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.core.component.getScopeId
 import org.koin.core.module.Module

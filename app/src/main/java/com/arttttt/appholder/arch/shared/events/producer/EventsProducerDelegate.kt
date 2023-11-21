@@ -1,4 +1,4 @@
-package com.arttttt.appholder.arch.events
+package com.arttttt.appholder.arch.shared.events.producer
 
 interface EventsProducerDelegate<Event : Any> : EventsProducer<Event> {
 

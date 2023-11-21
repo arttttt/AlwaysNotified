@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -106,7 +107,12 @@ dependencies {
     implementation(libs.mviKotlin.logging)
     implementation(libs.mviKotlin.timetravel)
     implementation(libs.mviKotlin.coroutines)
-    implementation(libs.mviKotlin.rx)
 
     implementation(libs.flowext)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+    implementation("com.google.accompanist:accompanist-drawablepainter:0.32.0")
 }

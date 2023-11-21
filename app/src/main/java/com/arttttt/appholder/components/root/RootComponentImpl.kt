@@ -6,11 +6,11 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
-import com.arttttt.appholder.arch.DecomposeComponent
-import com.arttttt.appholder.arch.context.AppComponentContext
-import com.arttttt.appholder.arch.context.childAppContext
-import com.arttttt.appholder.arch.context.customChildStack
-import com.arttttt.appholder.arch.stackComponentEvents
+import com.arttttt.appholder.arch.shared.DecomposeComponent
+import com.arttttt.appholder.arch.shared.context.AppComponentContext
+import com.arttttt.appholder.arch.shared.context.childAppContext
+import com.arttttt.appholder.arch.shared.context.customChildStack
+import com.arttttt.appholder.arch.shared.stackComponentEvents
 import com.arttttt.appholder.components.appslist.AppListComponent
 import com.arttttt.appholder.components.appslist.AppsListComponentImpl
 import com.arttttt.appholder.components.permissions.PermissionsComponent
@@ -44,8 +44,6 @@ class RootComponentImpl(
     }
 
     private val scope = koinScope()
-
-    private val coroutineScope = MainScope() + SupervisorJob()
 
     private val navigation = StackNavigation<Config>()
 
@@ -89,6 +87,7 @@ class RootComponentImpl(
         return when (config) {
             is Config.AppsList -> AppsListComponentImpl(
                 componentContext = context,
+                resourcesProvider = scope.get(),
             )
             is Config.Permissions -> PermissionsComponentImpl(
                 componentContext = context,

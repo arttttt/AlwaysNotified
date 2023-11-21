@@ -34,6 +34,8 @@ abstract class LazyListViewHolder<T : ListItem> {
     abstract fun Content(modifier: Modifier)
 
     fun setItem(item: T) {
+        if (item == _item) return
+
         _item = item
     }
 }

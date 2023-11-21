@@ -22,6 +22,11 @@ object AppTheme {
         @Composable
         @ReadOnlyComposable
         get() = ShapesHolder
+
+    val typography: Typography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTypography.current
 }
 
 @Composable
@@ -31,7 +36,6 @@ fun AppTheme(
   MaterialTheme(
     content = {
         CompositionLocalProvider(
-            LocalAppColors provides AppTheme.colors,
             LocalContentColor provides AppTheme.colors.textAndIcons,
         ) {
             content.invoke()

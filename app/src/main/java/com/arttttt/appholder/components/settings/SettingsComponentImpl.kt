@@ -1,6 +1,6 @@
 package com.arttttt.appholder.components.settings
 
-import com.arttttt.appholder.arch.context.AppComponentContext
+import com.arttttt.appholder.arch.shared.context.AppComponentContext
 
 /**
  * todo: implement business logic and UI

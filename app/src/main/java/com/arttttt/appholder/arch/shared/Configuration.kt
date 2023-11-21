@@ -1,4 +1,4 @@
-package com.arttttt.appholder.arch
+package com.arttttt.appholder.arch.shared
 
 import android.os.Parcelable
 

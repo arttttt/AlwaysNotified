@@ -15,7 +15,6 @@ class PermissionsStoreExecutor(
 
     override fun executeAction(
         action: PermissionsStore.Action,
-        getState: () -> PermissionsStore.State,
     ) {
         when (action) {
             is PermissionsStore.Action.GetRequestedPermissions -> getAndCheckPermissions()
@@ -24,23 +23,20 @@ class PermissionsStoreExecutor(
 
     override fun executeIntent(
         intent: PermissionsStore.Intent,
-        getState: () -> PermissionsStore.State,
     ) {
         when (intent) {
-            is PermissionsStore.Intent.RequestPermission -> requestPermission(getState, intent.permission)
+            is PermissionsStore.Intent.RequestPermission -> requestPermission(intent.permission)
             is PermissionsStore.Intent.CheckPermissions -> getAndCheckPermissions()
         }
     }
 
     private fun requestPermission(
-        getState: () -> PermissionsStore.State,
         permission: KClass<out Permission2>,
     ) {
         scope.launch {
             kotlin
                 .runCatching {
-                    val permission = getState
-                        .invoke()
+                    val permission = state()
                         .permissions
                         .getValue(Permission2.Status.Denied)
                         .getValue(permission)
@@ -52,7 +48,7 @@ class PermissionsStoreExecutor(
                 .onSuccess {
                     getAndCheckPermissions()
 
-                    val permissions = getState.invoke().permissions.get(Permission2.Status.Denied)
+                    val permissions = state().permissions.get(Permission2.Status.Denied)
                     if (permissions.isNullOrEmpty()) {
                         publish(PermissionsStore.Label.AllPermissionsGranted)
                     }

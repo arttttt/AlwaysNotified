@@ -27,13 +27,15 @@ class LazyListDelegatesManager(
     context(LazyItemScope)
     @Composable
     fun Content(item: ListItem, modifier: Modifier) {
-        val delegate = remember(item) {
+        val delegate = remember(item.key) {
             getDelegateOrThrow(item)
         }
 
-        val holder = remember(delegate) {
-            delegate.createViewHolder(item)
+        val holder = remember(item.key) {
+            delegate.createViewHolder()
         }
+
+        holder.setItem(item)
 
         holder.Content(
             modifier = modifier,

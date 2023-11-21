@@ -9,5 +9,5 @@ abstract class LazyListDelegate<T : ListItem> {
 
     abstract fun isForItem(item: ListItem): Boolean
 
-    abstract fun createViewHolder(item: T): LazyListViewHolder<T>
+    abstract fun createViewHolder(): LazyListViewHolder<T>
 }

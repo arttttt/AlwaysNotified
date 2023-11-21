@@ -3,10 +3,14 @@ package com.arttttt.appholder
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.defaultComponentContext
-import com.arttttt.appholder.arch.context.defaultAppComponentContext
+import com.arttttt.appholder.arch.shared.context.defaultAppComponentContext
 import com.arttttt.appholder.components.root.RootComponent
 import com.arttttt.appholder.components.root.RootComponentImpl
 import com.arttttt.appholder.di.mainActivityModule
@@ -30,6 +34,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
     override val scope by activityScope()
 
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,7 +58,19 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         )
 
         setContent {
-            CompositionLocalProvider(LocalCorrectHapticFeedback provides rememberHapticFeedback()) {
+            val colors = AppTheme.colors
+
+            LaunchedEffect(Unit) {
+                window.statusBarColor = colors.secondary.toArgb()
+                WindowCompat
+                    .getInsetsController(window, window.decorView)
+                    .isAppearanceLightStatusBars = false
+            }
+
+            CompositionLocalProvider(
+                LocalCorrectHapticFeedback provides rememberHapticFeedback(),
+                LocalOverscrollConfiguration provides null
+            ) {
                 AppTheme {
                     RootContent(
                         component = rootComponent,

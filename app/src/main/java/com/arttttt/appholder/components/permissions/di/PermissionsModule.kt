@@ -1,6 +1,6 @@
 package com.arttttt.appholder.components.permissions.di
 
-import com.arttttt.appholder.data.PermissionsRepositoryImpl
+import com.arttttt.appholder.data.repository.PermissionsRepositoryImpl
 import com.arttttt.appholder.domain.repository.PermissionsRepository
 import com.arttttt.appholder.domain.store.permissions.PermissionsStore
 import com.arttttt.appholder.domain.store.permissions.PermissionsStoreFactory

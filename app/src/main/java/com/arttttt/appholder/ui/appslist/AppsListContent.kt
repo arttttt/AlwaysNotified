@@ -1,37 +1,41 @@
 package com.arttttt.appholder.ui.appslist
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
@@ -44,106 +48,110 @@ import com.arttttt.appholder.ui.base.ListItem
 import com.arttttt.appholder.ui.base.dsl.rememberLazyListDelegateManager
 import com.arttttt.appholder.ui.custom.LocalCorrectHapticFeedback
 import com.arttttt.appholder.ui.theme.AppTheme
+import com.arttttt.appholder.ui.topbar.TopBarContent
 import kotlinx.collections.immutable.persistentListOf
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * todo: reorganize layout
+ */
+
 @Composable
 fun AppsListContent(component: AppListComponent) {
-    val state by component.state.subscribeAsState()
+    val state by component.uiState.subscribeAsState()
 
-    val density = LocalDensity.current
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.colors.primary)
+            .navigationBarsPadding()
+    ) {
 
-    var listPadding by remember {
-        mutableStateOf(PaddingValues(0.dp))
+        TopBarContent(component.topBarComponent)
+
+        AppsListContainer(
+            apps = state.apps,
+            isStartButtonVisible = state.isStartButtonVisible,
+            isUpdateProfileButtonVisible = state.isSaveProfileButtonVisible,
+            onAppClicked = component::onAppClicked,
+            onActivityClicked = component::activityClicked,
+            onStartAppsClicked = component::startApps,
+            onUpdateProfileClicked = component::updateProfile,
+        )
     }
+}
 
+@Composable
+private fun AppsListContainer(
+    apps: List<ListItem>,
+    isUpdateProfileButtonVisible: Boolean,
+    isStartButtonVisible: Boolean,
+    onAppClicked: (String) -> Unit,
+    onActivityClicked: (String, String) -> Unit,
+    onStartAppsClicked: () -> Unit,
+    onUpdateProfileClicked: () -> Unit,
+) {
     var parentCoordinates: LayoutCoordinates? by remember {
         mutableStateOf(null)
     }
 
-    Column(
+    val currentIsUpdateProfileButtonVisible by rememberUpdatedState(isUpdateProfileButtonVisible)
+    val currentIsStartButtonVisible by rememberUpdatedState(isStartButtonVisible)
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .onGloballyPositioned { coordinates ->
                 parentCoordinates = coordinates
             }
-            .background(AppTheme.colors.primary)
-            .navigationBarsPadding()
     ) {
-        TopAppBar(
-            modifier = Modifier.clip(
-                AppTheme.shapes.roundedCorners.medium(
-                    topStart = 0.dp,
-                    topEnd = 0.dp,
-                )
-            ),
-            colors = AppTheme.widgets.topAppBarColors,
-            title = {
-                Text(text = "Apps list")
-            },
-            actions = {
-                IconButton(
-                    onClick = component::openSettings,
-                ) {
-                    Icon(
-                        painter = rememberVectorPainter(image = Icons.Default.Settings),
-                        contentDescription = null,
-                    )
+        val transitionState = remember {
+            MutableTransitionState(isStartButtonVisible || isUpdateProfileButtonVisible)
+        }
+
+        val nestedScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPreScroll(
+                    available: Offset,
+                    source: NestedScrollSource,
+                ): Offset {
+                    if ((currentIsUpdateProfileButtonVisible || currentIsStartButtonVisible) && available.y != 0f) {
+                        transitionState.targetState = available.y > 0
+                    }
+
+                    return Offset.Zero
                 }
             }
+        }
+
+        AppsList(
+            modifier = Modifier
+                .nestedScroll(nestedScrollConnection)
+                .matchParentSize()
+                .padding(
+                    horizontal = 16.dp
+                ),
+            apps = apps,
+            onAppClicked = onAppClicked,
+            activityClicked = onActivityClicked,
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .onGloballyPositioned { coordinates ->
-                    parentCoordinates = coordinates
-                }
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.BottomStart),
+            enter = slideInVertically { it } + fadeIn(),
+            exit = slideOutVertically { it } + fadeOut(),
+            visibleState = transitionState,
         ) {
-            AppsList(
-                modifier = Modifier
-                    .matchParentSize()
-                    .padding(
-                        horizontal = 16.dp
-                    ),
-                contentPadding = listPadding,
-                apps = state.apps,
-                onAppClicked = component::onAppClicked,
-                activityClicked = component::activityClicked,
+            ActionsRow(
+                modifier = Modifier,
+                isSaveProfileButtonVisible = isUpdateProfileButtonVisible,
+                isStartAppsButtonVisible = isStartButtonVisible,
+                onStartAppsClicked = onStartAppsClicked,
+                onUpdateProfileClicked = onUpdateProfileClicked,
             )
+        }
 
-            ExtendedFloatingActionButton(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .onGloballyPositioned { coordinates ->
-                        parentCoordinates ?: return@onGloballyPositioned
-                        if (listPadding.calculateBottomPadding() > 0.dp) return@onGloballyPositioned
-
-                        listPadding = PaddingValues(
-                            top = 16.dp,
-                            bottom = with(density) {
-                                (parentCoordinates!!.size.height - coordinates.boundsInParent().top)
-                                    .coerceAtLeast(0f)
-                                    .toDp() + 8.dp
-                            }
-                        )
-                    }
-                    .align(Alignment.BottomEnd),
-                onClick = component::startApps,
-                containerColor = AppTheme.colors.secondary,
-                contentColor = AppTheme.colors.textAndIcons,
-                text = {
-                    Text(
-                        text = "Start apps",
-                    )
-                },
-                icon = {
-                    Icon(
-                        painter = rememberVectorPainter(Icons.Default.PlayArrow),
-                        contentDescription = null,
-                    )
-                }
-            )
+        LaunchedEffect(isStartButtonVisible, isUpdateProfileButtonVisible) {
+            transitionState.targetState = isStartButtonVisible || isUpdateProfileButtonVisible
         }
     }
 }
@@ -151,7 +159,6 @@ fun AppsListContent(component: AppListComponent) {
 @Composable
 private fun AppsList(
     modifier: Modifier,
-    contentPadding: PaddingValues,
     apps: List<ListItem>,
     onAppClicked: (String) -> Unit,
     activityClicked: (String, String) -> Unit,
@@ -176,7 +183,9 @@ private fun AppsList(
 
     LazyColumn(
         modifier = modifier,
-        contentPadding = contentPadding,
+        contentPadding = remember {
+            PaddingValues(vertical = 8.dp)
+        }
     ) {
         items(
             items = apps,
@@ -187,6 +196,52 @@ private fun AppsList(
                 item = item,
                 modifier = Modifier,
             )
+        }
+    }
+}
+
+@Composable
+private fun ActionsRow(
+    modifier: Modifier,
+    isSaveProfileButtonVisible: Boolean,
+    isStartAppsButtonVisible: Boolean,
+    onStartAppsClicked: () -> Unit,
+    onUpdateProfileClicked: () -> Unit,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(
+                AppTheme.shapes.roundedCorners.medium(
+                    bottomStart = 0.dp,
+                    bottomEnd = 0.dp,
+                )
+            )
+            .background(AppTheme.colors.secondary)
+            .padding(
+                horizontal = 16.dp,
+                vertical = 16.dp,
+            ),
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+    ) {
+        if (isSaveProfileButtonVisible) {
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = onUpdateProfileClicked,
+                colors = AppTheme.widgets.buttonColors,
+            ) {
+                Text(text = "update profile")
+            }
+        }
+
+        if (isStartAppsButtonVisible) {
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = onStartAppsClicked,
+                colors = AppTheme.widgets.buttonColors,
+            ) {
+                Text(text = "start apps")
+            }
         }
     }
 }

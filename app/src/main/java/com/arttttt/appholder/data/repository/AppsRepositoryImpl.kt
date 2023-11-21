@@ -1,42 +1,20 @@
-package com.arttttt.appholder.data
+package com.arttttt.appholder.data.repository
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import androidx.datastore.core.DataStore
-import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import com.arttttt.appholder.data.database.dao.ProfilesDao
 import com.arttttt.appholder.domain.entity.info.ActivityInfo
 import com.arttttt.appholder.domain.entity.info.AppInfo
+import com.arttttt.appholder.domain.entity.profiles.Profile
+import com.arttttt.appholder.domain.entity.profiles.SelectedActivity
 import com.arttttt.appholder.domain.repository.AppsRepository
-import kotlinx.coroutines.flow.first
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class AppsRepositoryImpl(
     private val context: Context,
+    private val profilesDao: ProfilesDao,
 ) : AppsRepository {
-
-    companion object {
-
-        private const val STARTUP_PREFERENCES = "startup_preferences"
-
-        private val selectedAppsKey = stringPreferencesKey("selected_apps")
-    }
-
-    private val Context.dataStore by preferencesDataStore(
-        name = STARTUP_PREFERENCES,
-        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-        produceMigrations = { listOf() },
-    )
-
-    private val dataStore: DataStore<Preferences>
-        get() = context.dataStore
 
     override suspend fun getInstalledApplications(): List<AppInfo> {
         val pm = context.packageManager
@@ -78,24 +56,17 @@ class AppsRepositoryImpl(
             }
     }
 
-    override suspend fun saveSelectedActivities(activities: List<ActivityInfo>) {
-        dataStore.edit { preferences ->
-            preferences[selectedAppsKey] = activities
-                .groupBy(
-                    keySelector = ActivityInfo::pkg::get,
-                    valueTransform = ActivityInfo::name::get,
+    override suspend fun getAppsForProfile(profile: Profile): List<SelectedActivity> {
+        return profilesDao
+            .getSelectedActivitiesForUuid(
+                uuid = profile.uuid
+            )
+            .map { activity ->
+                SelectedActivity(
+                    pkg = activity.pkg,
+                    activity = activity.activity,
                 )
-                .let(Json::encodeToString)
-        }
-    }
-
-    override suspend fun getSelectedApplications(): Map<String, Set<String>> {
-        return dataStore
-            .data
-            .first()
-            .get(selectedAppsKey)
-            ?.let(Json::decodeFromString)
-            ?: emptyMap()
+            }
     }
 
     private val PackageInfo.isSystemPackage: Boolean

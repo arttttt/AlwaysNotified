@@ -2,6 +2,7 @@ package com.arttttt.appholder.domain.store.apps
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arttttt.appholder.domain.entity.info.AppInfo
+import com.arttttt.appholder.domain.entity.profiles.Profile
 
 interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> {
 
@@ -9,11 +10,11 @@ interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> 
         val isInProgress: Boolean,
         val applications: Map<String, AppInfo>?,
         val selectedApps: Set<String>?,
-        val selectedActivities: Map<String, Set<String>>?,
+        val selectedActivities: Map<String, String>?,
     ) {
 
-        fun getSelectedActivitiesForPkg(pkg: String): Set<String> {
-            return selectedActivities?.get(pkg) ?: emptySet()
+        fun getSelectedActivityForPkg(pkg: String): String? {
+            return selectedActivities?.get(pkg)
         }
     }
 
@@ -33,8 +34,11 @@ interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> 
             val name: String,
         ) : Intent()
 
-        data object PrepareAppsForLaunch : Intent()
         data object SaveApps : Intent()
+
+        data class SelectAppsForProfile(
+            val profile: Profile
+        ) : Intent()
     }
 
     sealed class Message {
@@ -48,12 +52,15 @@ interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> 
         ) : Message()
 
         data class SelectedActivitiesChanged(
-            val selectedActivities: Map<String, Set<String>>,
+            val selectedActivities: Map<String, String>,
         ) : Message()
 
         data object ProgressStarted : Message()
         data object ProgressFinished : Message()
     }
 
-    sealed class Label
+    sealed class Label {
+
+        data object ActivitiesChanged : Label()
+    }
 }

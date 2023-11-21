@@ -2,13 +2,16 @@ package com.arttttt.appholder.components.appslist
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnStop
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.appholder.AppsLauncher
-import com.arttttt.appholder.arch.context.AppComponentContext
-import com.arttttt.appholder.arch.events.EventsProducerDelegate
-import com.arttttt.appholder.arch.events.EventsProducerDelegateImpl
+import com.arttttt.appholder.arch.shared.context.AppComponentContext
+import com.arttttt.appholder.arch.shared.context.childAppContext
+import com.arttttt.appholder.arch.shared.events.producer.EventsProducerDelegate
+import com.arttttt.appholder.arch.shared.events.producer.EventsProducerDelegateImpl
+import com.arttttt.appholder.components.topbar.TopBarComponent
+import com.arttttt.appholder.components.topbar.TopBarComponentImpl
 import com.arttttt.appholder.domain.store.apps.AppsStore
 import com.arttttt.appholder.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.appholder.ui.appslist.lazylist.models.AppListItem
@@ -16,10 +19,11 @@ import com.arttttt.appholder.ui.appslist.lazylist.models.DividerListItem
 import com.arttttt.appholder.ui.appslist.lazylist.models.ProgressListItem
 import com.arttttt.appholder.ui.base.ListItem
 import com.arttttt.appholder.utils.extensions.koinScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
+import com.arttttt.appholder.utils.resources.ResourcesProvider
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -27,6 +31,7 @@ import kotlinx.coroutines.launch
 
 class AppsListComponentImpl(
     componentContext: AppComponentContext,
+    resourcesProvider: ResourcesProvider,
 ) : AppListComponent,
     AppComponentContext by componentContext,
     EventsProducerDelegate<AppListComponent.Event> by EventsProducerDelegateImpl() {
@@ -36,70 +41,96 @@ class AppsListComponentImpl(
     private val appsStore: AppsStore by scope.inject()
     private val appsLauncher: AppsLauncher by scope.inject()
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
-    override val state = MutableValue(
-        initialValue = AppListComponent.State(
+    override val uiState = MutableValue(
+        initialValue = AppListComponent.UiState(
             apps = emptyList(),
+            isStartButtonVisible = false,
+            isSaveProfileButtonVisible = false,
+        )
+    )
+
+    override val topBarComponent: TopBarComponent = TopBarComponentImpl(
+        componentContext = childAppContext(
+            key = "topbar",
         )
     )
 
     init {
-        lifecycle.doOnDestroy {
-            coroutineScope.coroutineContext.cancelChildren()
-        }
-
         lifecycle.doOnStop {
             appsStore.accept(AppsStore.Intent.SaveApps)
         }
 
-        appsStore
-            .states
-            .map { state ->
-                val apps = state.applications?.entries?.foldIndexed(mutableListOf<ListItem>()) { index, acc, (_, app) ->
+        combine(
+            appsStore.states,
+            topBarComponent.states,
+            ::Pair,
+        )
+            .map { (appsStoreState, topBarState) ->
+                val apps = appsStoreState.applications?.entries?.foldIndexed(mutableListOf<ListItem>()) { index, acc, (_, app) ->
                     acc += AppListItem(
                         pkg = app.pkg,
                         title = app.title,
                         clipTop = index == 0,
-                        clipBottom = index == state.applications.entries.size - 1 && state.selectedApps?.contains(app.pkg) == false
+                        clipBottom = index == appsStoreState.applications.entries.size - 1 && (appsStoreState.selectedApps == null || !appsStoreState.selectedApps.contains(app.pkg)),
+                        icon = resourcesProvider.getDrawable(app.pkg),
                     )
 
-                    if (state.selectedApps?.contains(app.pkg) == true) {
-                        val selectedActivities = state.getSelectedActivitiesForPkg(app.pkg)
+                    if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
+                        val selectedActivity = appsStoreState.getSelectedActivityForPkg(app.pkg)
 
                         app.activities.mapIndexedTo(acc) { activityIndex, activity ->
                             ActivityListItem(
                                 pkg = activity.pkg,
                                 title = activity.title,
                                 name = activity.name,
-                                isSelected = activity.name in selectedActivities,
-                                key = activity.name,
+                                isSelected = activity.name.contentEquals(selectedActivity, true),
+                                key = "${activity.pkg}_${activity.name}",
                                 clipTop = false,
-                                clipBottom = index == state.applications.entries.size - 1 && activityIndex == app.activities.size - 1
+                                clipBottom = index == appsStoreState.applications.entries.size - 1 && activityIndex == app.activities.size - 1
                             )
                         }
                     }
 
-                    if (index < state.applications.size - 1) {
+                    if (index < appsStoreState.applications.size - 1) {
                         acc += DividerListItem()
                     }
 
                     acc
                 } ?: mutableListOf()
 
-                if (apps.isEmpty() && state.isInProgress) {
+                if (apps.isEmpty() && appsStoreState.isInProgress) {
                     apps += ProgressListItem()
                 }
 
-                AppListComponent.State(
-                    apps = apps
+                AppListComponent.UiState(
+                    apps = apps,
+                    isStartButtonVisible = appsStoreState.selectedActivities?.isNotEmpty() ?: false,
+                    isSaveProfileButtonVisible = topBarState.isProfileDirty,
                 )
             }
             .onEach { updatedState ->
-                state.update {
+                uiState.update {
                     updatedState
                 }
             }
+            .launchIn(coroutineScope)
+
+        topBarComponent
+            .states
+            .map { state -> state.currentProfile }
+            .filterNotNull()
+            .distinctUntilChanged()
+            .map(AppsStore.Intent::SelectAppsForProfile)
+            .onEach(appsStore::accept)
+            .launchIn(coroutineScope)
+
+        appsStore
+            .labels
+            .filterIsInstance<AppsStore.Label.ActivitiesChanged>()
+            .map {
+                TopBarComponent.Events.Input.MarkProfileAsDirty
+            }
+            .onEach(topBarComponent::consume)
             .launchIn(coroutineScope)
     }
 
@@ -128,5 +159,9 @@ class AppsListComponentImpl(
 
     override fun openSettings() {
         dispatch(AppListComponent.Event.OpenSettings)
+    }
+
+    override fun updateProfile() {
+        topBarComponent.consume(TopBarComponent.Events.Input.UpdateCurrentProfile)
     }
 }

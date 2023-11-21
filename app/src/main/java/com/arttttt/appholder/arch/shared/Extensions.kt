@@ -1,8 +1,8 @@
-package com.arttttt.appholder.arch
+package com.arttttt.appholder.arch.shared
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import com.arttttt.appholder.arch.events.EventsProducer
+import com.arttttt.appholder.arch.shared.events.producer.EventsProducer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow

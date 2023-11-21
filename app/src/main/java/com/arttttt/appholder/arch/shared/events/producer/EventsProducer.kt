@@ -1,4 +1,4 @@
-package com.arttttt.appholder.arch.events
+package com.arttttt.appholder.arch.shared.events.producer
 
 import kotlinx.coroutines.flow.Flow
 

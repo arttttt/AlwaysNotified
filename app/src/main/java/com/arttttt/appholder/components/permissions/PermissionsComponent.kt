@@ -1,9 +1,9 @@
 package com.arttttt.appholder.components.permissions
 
 import com.arkivanov.decompose.value.Value
-import com.arttttt.appholder.arch.DecomposeComponent
-import com.arttttt.appholder.arch.context.AppComponentContext
-import com.arttttt.appholder.arch.events.EventsProducer
+import com.arttttt.appholder.arch.shared.DecomposeComponent
+import com.arttttt.appholder.arch.shared.context.AppComponentContext
+import com.arttttt.appholder.arch.shared.events.producer.EventsProducer
 import com.arttttt.appholder.domain.entity.permission.Permission2
 import com.arttttt.appholder.ui.base.ListItem
 import kotlin.reflect.KClass

@@ -1,4 +1,4 @@
-package com.arttttt.appholder.data
+package com.arttttt.appholder.data.repository
 
 import android.content.Context
 import com.arttttt.appholder.data.model.IgnoreBatteryOptimizationsPermission

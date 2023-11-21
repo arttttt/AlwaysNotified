@@ -1,6 +1,8 @@
 package com.arttttt.appholder.domain.store.apps
 
+import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.arttttt.appholder.domain.entity.profiles.Profile
 import com.arttttt.appholder.domain.repository.AppsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -10,55 +12,47 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-fun appsStoreExecutor(
+class AppsStoreExecutor(
     dispatcher: CoroutineDispatcher,
-    appsRepository: AppsRepository,
-) = coroutineExecutorFactory<AppsStore.Intent, AppsStore.Action, AppsStore.State, AppsStore.Message, AppsStore.Label>(
+    private val appsRepository: AppsRepository,
+) : CoroutineExecutor<AppsStore.Intent, AppsStore.Action, AppsStore.State, AppsStore.Message, AppsStore.Label>(
     mainContext = dispatcher
 ) {
 
-    onAction<AppsStore.Action.GetInstalledApplications> {
-        launch {
+    override fun executeAction(action: AppsStore.Action) {
+        when (action) {
+            is AppsStore.Action.GetInstalledApplications -> getInstalledApplications()
+        }
+    }
+
+    override fun executeIntent(intent: AppsStore.Intent) {
+        when (intent) {
+            is AppsStore.Intent.SelectApp -> selectApp(intent.pkg)
+            is AppsStore.Intent.SelectActivity -> selectActivity(intent.pkg, intent.name)
+            is AppsStore.Intent.SaveApps -> saveApps()
+            is AppsStore.Intent.SelectAppsForProfile -> selectAppsForProfile(intent.profile)
+        }
+    }
+
+    private fun getInstalledApplications() {
+        scope.launch {
             dispatch(AppsStore.Message.ProgressStarted)
-
-            val applicationsDeferred = async(Dispatchers.IO) {
-                appsRepository
-                    .getInstalledApplications()
-                    .map { info ->
-                        info.copy(
-                            activities = info.activities.sortedBy { activityInfo ->
-                                activityInfo.title
-                            }
-                        )
-                    }
-                    .sortedBy { info -> info.title }
-                    .associateBy { info -> info.pkg }
-            }
-
-            val savedSelectedApplicationsDeferred = async(Dispatchers.IO) {
-                appsRepository.getSelectedApplications()
-            }
-
-            joinAll(
-                applicationsDeferred,
-                savedSelectedApplicationsDeferred,
-            )
-
-            dispatch(
-                AppsStore.Message.SelectedAppsChanged(
-                    selectedApps = savedSelectedApplicationsDeferred.getCompleted().keys,
-                )
-            )
-
-            dispatch(
-                AppsStore.Message.SelectedActivitiesChanged(
-                    selectedActivities = savedSelectedApplicationsDeferred.getCompleted(),
-                )
-            )
 
             dispatch(
                 AppsStore.Message.ApplicationsLoaded(
-                    applications = applicationsDeferred.getCompleted(),
+                    applications = withContext(Dispatchers.IO) {
+                        appsRepository
+                            .getInstalledApplications()
+                            .map { info ->
+                                info.copy(
+                                    activities = info.activities.sortedBy { activityInfo ->
+                                        activityInfo.title
+                                    }
+                                )
+                            }
+                            .sortedBy { info -> info.title }
+                            .associateBy { info -> info.pkg }
+                    },
                 )
             )
 
@@ -66,68 +60,68 @@ fun appsStoreExecutor(
         }
     }
 
-    onIntent<AppsStore.Intent.SelectApp> { intent ->
-        launch {
+    private fun selectApp(
+        pkg: String,
+    ) {
+        scope.launch {
             withContext(Dispatchers.IO) {
-                state
+                val selectedApps = state()
                     .selectedApps
                     ?.toMutableSet()
-                    ?.also { apps ->
-                        if (apps.contains(intent.pkg)) {
-                            apps.remove(intent.pkg)
-                        } else {
-                            apps.add(intent.pkg)
-                        }
-                    }
-                    ?.toSet()
-                    ?: emptySet()
+                    ?: mutableSetOf()
+
+                if (!selectedApps.remove(pkg)) {
+                    selectedApps.add(pkg)
+                }
+
+                selectedApps.toSet()
             }
                 .let(AppsStore.Message::SelectedAppsChanged)
                 .let(::dispatch)
         }
     }
 
-    onIntent<AppsStore.Intent.SelectActivity> { intent ->
-        launch {
+    private fun selectActivity(
+        pkg: String,
+        name: String,
+    ) {
+        scope.launch {
             withContext(Dispatchers.IO) {
-                state
+                state()
                     .selectedActivities
                     .let { activities ->
                         val mutableActivities = activities?.toMutableMap() ?: mutableMapOf()
 
-                        val app = activities
-                            ?.getOrElse(intent.pkg) { emptySet() }
-                            ?.toMutableSet()
-                            ?: mutableSetOf()
+                        val app = activities?.get(pkg)
 
-                        if (app.contains(intent.name)) {
-                            app.remove(intent.name)
+                        if (app?.contentEquals(name, true) == true) {
+                            mutableActivities.remove(pkg)
                         } else {
-                            app.add(intent.name)
+                            mutableActivities[pkg] = name
                         }
-
-                        mutableActivities[intent.pkg] = app
 
                         mutableActivities.toMap()
                     }
             }
                 .let(AppsStore.Message::SelectedActivitiesChanged)
                 .let(::dispatch)
+
+            publish(AppsStore.Label.ActivitiesChanged)
         }
     }
 
-    onIntent<AppsStore.Intent.SaveApps> {
-        launch(NonCancellable) {
+    private fun saveApps() {
+        scope.launch(NonCancellable) {
             withContext(Dispatchers.IO) {
-                val selectedActivities = state
+                val selectedActivities = state()
                     .applications
                     ?.values
                     ?.mapNotNull { appInfo ->
                         appInfo
-                            .takeIf { state.selectedApps?.contains(appInfo.pkg) == true }
+                            .takeIf { state().selectedApps?.contains(appInfo.pkg) == true }
                             ?.activities
                             ?.filter { activityInfo ->
-                                state
+                                state()
                                     .selectedActivities
                                     ?.get(appInfo.pkg)
                                     ?.contains(activityInfo.name)
@@ -137,10 +131,28 @@ fun appsStoreExecutor(
                     ?.flatten()
                     ?: emptyList()
 
-                appsRepository.saveSelectedActivities(
+                /*appsRepository.saveSelectedActivities(
                     activities = selectedActivities
-                )
+                )*/
             }
+        }
+    }
+
+    private fun selectAppsForProfile(profile: Profile) {
+        scope.launch {
+            val selectedActivities = appsRepository.getAppsForProfile(
+                profile = profile,
+            )
+
+            selectedActivities
+                .associateBy { activity ->
+                    activity.pkg
+                }
+                .mapValues { (_, value) ->
+                    value.activity
+                }
+                .let(AppsStore.Message::SelectedActivitiesChanged)
+                .let(::dispatch)
         }
     }
 }

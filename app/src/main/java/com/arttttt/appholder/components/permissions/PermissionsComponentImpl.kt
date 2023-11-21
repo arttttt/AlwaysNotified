@@ -5,9 +5,9 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
-import com.arttttt.appholder.arch.context.AppComponentContext
-import com.arttttt.appholder.arch.events.EventsProducerDelegate
-import com.arttttt.appholder.arch.events.EventsProducerDelegateImpl
+import com.arttttt.appholder.arch.shared.context.AppComponentContext
+import com.arttttt.appholder.arch.shared.events.producer.EventsProducerDelegate
+import com.arttttt.appholder.arch.shared.events.producer.EventsProducerDelegateImpl
 import com.arttttt.appholder.domain.entity.permission.Permission2
 import com.arttttt.appholder.domain.store.permissions.PermissionsStore
 import com.arttttt.appholder.ui.base.ListItem
@@ -15,8 +15,6 @@ import com.arttttt.appholder.components.permissions.di.permissionsModule
 import com.arttttt.appholder.ui.permissions.models.PermissionLazyListItem
 import com.arttttt.appholder.utils.extensions.asValue
 import com.arttttt.appholder.utils.extensions.koinScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
@@ -25,7 +23,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.plus
 import kotlinx.coroutines.runBlocking
 import kotlin.reflect.KClass
 
@@ -41,8 +38,6 @@ class PermissionsComponentImpl(
     )
 
     private val permissionsStore = scope.get<PermissionsStore>()
-
-    private val coroutineScope = MainScope() + SupervisorJob()
 
     override val state = permissionsStore
         .stateFlow

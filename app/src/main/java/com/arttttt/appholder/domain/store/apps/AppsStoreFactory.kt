@@ -22,14 +22,16 @@ class AppsStoreFactory(
                     selectedActivities = null,
                     isInProgress = false
                 ),
-                bootstrapper = appsStoreBootstrapper(
+                bootstrapper = AppsStoreBootstrapper(
                     dispatcher = dispatcher,
                 ),
-                executorFactory = appsStoreExecutor(
-                    dispatcher = dispatcher,
-                    appsRepository = appsRepository,
-                ),
-                reducer = appsStoreReducer(),
+                executorFactory = {
+                    AppsStoreExecutor(
+                        dispatcher = dispatcher,
+                        appsRepository = appsRepository,
+                    )
+                },
+                reducer = AppsStoreReducer,
             ) {}
     }
 }

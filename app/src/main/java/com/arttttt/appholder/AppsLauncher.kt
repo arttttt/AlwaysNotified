@@ -75,7 +75,7 @@ class AppsLauncher(
 
     private suspend fun getActivitiesPayload(
         applications: List<AppInfo>,
-        selectedActivities: Map<String, Set<String>>,
+        selectedActivities: Map<String, String>,
         isAppSelected: (String) -> Boolean,
     ): ArrayList<Intent> {
         return withContext(Dispatchers.IO) {
@@ -89,7 +89,7 @@ class AppsLauncher(
                                 activityInfo.takeIf {
                                     selectedActivities
                                         .get(appInfo.pkg)
-                                        ?.contains(activityInfo.name)
+                                        ?.contentEquals(activityInfo.name, true)
                                         ?: false
                                 }
                             }

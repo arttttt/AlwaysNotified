@@ -17,6 +17,7 @@ object ShapesHolder : Shapes {
 
 sealed class ShapesImpl {
 
+    private val tiny = 4.dp
     private val small = 8.dp
     private val medium = 16.dp
     private val huge = 24.dp
@@ -27,6 +28,15 @@ sealed class ShapesImpl {
         bottomEnd: Dp,
         bottomStart: Dp,
     ): Shape
+
+    fun tiny(
+        topStart: Dp = tiny,
+        topEnd: Dp = tiny,
+        bottomEnd: Dp = tiny,
+        bottomStart: Dp = tiny,
+    ): Shape{
+        return createShape(topStart, topEnd, bottomEnd, bottomStart)
+    }
 
     fun small(
         topStart: Dp = small,
