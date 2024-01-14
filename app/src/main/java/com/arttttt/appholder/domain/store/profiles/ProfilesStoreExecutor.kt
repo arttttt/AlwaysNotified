@@ -1,5 +1,6 @@
 package com.arttttt.appholder.domain.store.profiles
 
+import android.graphics.Color
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.appholder.domain.entity.profiles.Profile
 import com.arttttt.appholder.domain.entity.profiles.SelectedActivity
@@ -8,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
+import kotlin.random.Random
 
 class ProfilesStoreExecutor(
     private val selectedAppsProvider: () -> List<SelectedActivity>,
@@ -91,9 +93,28 @@ class ProfilesStoreExecutor(
 
     private fun loadProfiles() {
         scope.launch {
+            val profiles = withContext(Dispatchers.IO) {
+                profilesRepository
+                    .getProfiles()
+                    .takeIf { it.isNotEmpty() }
+                    ?: let {
+                        val profile = createDefaultProfile()
+                        profilesRepository.saveProfile(
+                            profile = profile,
+                            selectedActivities = emptyList(),
+                        )
+                        listOf(profile)
+                    }
+            }
+
             dispatch(
                 ProfilesStore.Message.ProfilesUpdated(
-                    profiles = profilesRepository.getProfiles()
+                    profiles = profiles,
+                )
+            )
+            dispatch(
+                ProfilesStore.Message.ProfileSelected(
+                    profile = profiles.first(),
                 )
             )
         }
@@ -113,5 +134,20 @@ class ProfilesStoreExecutor(
                 .let(ProfilesStore.Message::ProfilesUpdated)
                 .let(::dispatch)
         }
+    }
+
+    /**
+     * todo: find a proper place for that
+     */
+    private fun createDefaultProfile(): Profile {
+        return Profile(
+            uuid = UUID.randomUUID().toString(),
+            title = "Default",
+            color = Color.argb(255,
+                Random.nextInt(256),
+                Random.nextInt(256),
+                Random.nextInt(256),
+            )
+        )
     }
 }
