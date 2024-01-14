@@ -33,7 +33,7 @@ class AppsLauncher(
         val payload = getActivitiesPayload(
             applications = appsStore.state.applications?.values?.toList() ?: emptyList(),
             selectedActivities = appsStore.state.selectedActivities ?: emptyMap(),
-            isAppSelected = { pkg -> appsStore.state.selectedApps?.contains(pkg) == true },
+            isAppSelected = { pkg -> appsStore.state.selectedActivities?.contains(pkg) == true },
         )
 
         if (payload.isEmpty()) return
@@ -49,7 +49,7 @@ class AppsLauncher(
         val payload = getActivitiesPayload(
             applications = appsStore.state.applications?.values?.toList() ?: emptyList(),
             selectedActivities = appsStore.state.selectedActivities ?: emptyMap(),
-            isAppSelected = { pkg -> appsStore.state.selectedApps?.contains(pkg) == true },
+            isAppSelected = { pkg -> appsStore.state.selectedActivities?.contains(pkg) == true },
         )
 
         if (payload.isEmpty()) return null
