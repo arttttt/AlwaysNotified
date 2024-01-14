@@ -3,7 +3,6 @@ package com.arttttt.appholder
 import android.app.Application
 import com.arkivanov.mvikotlin.core.utils.isAssertOnMainThreadEnabled
 import com.arttttt.appholder.di.commonModule
-import org.koin.android.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

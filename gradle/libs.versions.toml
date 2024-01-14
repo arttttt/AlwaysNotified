@@ -1,21 +1,20 @@
 [versions]
-agp = "8.2.0"
+agp = "8.2.1"
 datastorePreferences = "1.0.0"
-flowext = "0.7.2"
-kotlin = "1.9.10"
+flowext = "0.7.4"
+kotlin = "1.9.22"
 core-ktx = "1.12.0"
 kotlinxCoroutines = "1.7.3"
-kotlinxSerializationJson = "1.6.0"
-lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.8.1"
+kotlinxSerializationJson = "1.6.2"
+lifecycle-runtime-ktx = "2.7.0"
+activity-compose = "1.8.2"
 compose-bom = "2023.10.01"
-compose-compiler = "1.5.3"
-koin-core = "3.4.2"
-koin-annotations = "1.2.2"
-ksp = "1.9.10-1.0.13"
+compose-compiler = "1.5.8"
+koin-core = "3.5.3"
+ksp = "1.9.22-1.0.16"
 decompose = "2.0.1"
 essenty = "1.3.0"
-immutableCollections = "0.3.5"
+immutableCollections = "0.3.6"
 mviKotlin = "4.0.0-alpha01"
 room = "2.6.1"
 
@@ -37,8 +36,6 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin-core" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-core" }
-koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-annotations" }
-koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-annotations" }
 decompose = { group ="com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
 decompose-jetpackCompose = { group ="com.arkivanov.decompose", name = "extensions-compose-jetpack", version.ref = "decompose" }
 essenty-lifecycle = { group = "com.arkivanov.essenty", name = "lifecycle", version.ref = "essenty" }
