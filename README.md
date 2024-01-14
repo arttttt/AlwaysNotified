@@ -13,9 +13,9 @@ This app allows you to bypass the 5 auto launch apps limit on ColorOS phones
 
 # TODO
 
+* ~~Profiles~~ (v1 implemented)
 * Settings
 * Search
-* Profiles
 * Icon and themes
 * Instruction
 * Selected apps indication
