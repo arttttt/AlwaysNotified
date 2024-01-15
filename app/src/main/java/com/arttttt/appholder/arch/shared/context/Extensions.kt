@@ -3,6 +3,9 @@ package com.arttttt.appholder.arch.shared.context
 import android.util.Log
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigationSource
+import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigationSource
 import com.arkivanov.decompose.router.stack.childStack
@@ -48,8 +51,6 @@ fun AppComponentContext.childAppContext(
     )
 
     context.lifecycle.doOnDestroy {
-        Log.e("TEST", "coroutine scope cleared")
-
         coroutineScope.coroutineContext.cancelChildren()
     }
 
@@ -88,4 +89,34 @@ inline fun <reified C : Any, T : Any> AppComponentContext.customChildStack(
                 },
             )
         },
+    )
+
+inline fun <reified C : Any, T : Any> AppComponentContext.customChildSlot(
+    parentScopeID: ScopeID?,
+    serializer: KSerializer<C>?,
+    source: SlotNavigationSource<C>,
+    noinline initialConfiguration: () -> C? = { null },
+    key: String = "DefaultChildSlot",
+    handleBackButton: Boolean,
+    noinline childFactory: (configuration: C, AppComponentContext) -> T
+): Value<ChildSlot<C, T>> =
+    childSlot(
+        source = source,
+        serializer = serializer,
+        handleBackButton = handleBackButton,
+        initialConfiguration = initialConfiguration,
+        key = key,
+        childFactory = { config, context ->
+            childFactory.invoke(
+                config,
+                if (context is AppComponentContext) {
+                    context
+                } else {
+                    defaultAppComponentContext(
+                        context = context,
+                        parentScopeID = parentScopeID,
+                    )
+                },
+            )
+        }
     )

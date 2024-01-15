@@ -1,4 +1,4 @@
-package com.arttttt.appholder.ui.profiles
+package com.arttttt.appholder.ui.addprofile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,31 +27,67 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.arkivanov.essenty.backhandler.BackHandler
+import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.statekeeper.StateKeeper
+import com.arttttt.appholder.arch.shared.dialog.DismissEvent
+import com.arttttt.appholder.components.addprofile.AddProfileComponent
 import com.arttttt.appholder.ui.theme.AppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import org.koin.core.scope.ScopeID
 import kotlin.math.abs
 
 @Preview
 @Composable
-private fun AddProfileDialogPreview() {
+private fun AddProfileContentPreview() {
     AppTheme {
-        AddProfileDialog(
-            onDismiss = {},
-            onPositiveClicked = { _, _ -> }
+        AddProfileContent(
+            component = object : AddProfileComponent {
+                override val stateKeeper: StateKeeper
+                    get() = TODO("Not yet implemented")
+                override val instanceKeeper: InstanceKeeper
+                    get() = TODO("Not yet implemented")
+                override val backHandler: BackHandler
+                    get() = TODO("Not yet implemented")
+                override val lifecycle: Lifecycle
+                    get() = TODO("Not yet implemented")
+                override val parentScopeID: ScopeID?
+                    get() = TODO("Not yet implemented")
+                override val coroutineScope: CoroutineScope
+                    get() = TODO("Not yet implemented")
+
+                override fun onDismiss(event: DismissEvent) {
+                    TODO("Not yet implemented")
+                }
+
+                override val dismissEvents: Flow<DismissEvent>
+                    get() = TODO("Not yet implemented")
+
+                override fun createProfileClicked(title: String, color: Int) {
+                    TODO("Not yet implemented")
+                }
+            }
         )
     }
 }
 
+/**
+ * TODO: move out logic from the UI
+ */
 @Composable
-fun AddProfileDialog(
-    onDismiss: () -> Unit,
-    onPositiveClicked: (String, Int) -> Unit
+fun AddProfileContent(
+    component: AddProfileComponent,
 ) {
     var title by remember {
         mutableStateOf("")
     }
 
     Dialog(
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+            component.onDismiss(DismissEvent)
+        },
     ) {
         Column(
             modifier = Modifier
@@ -112,7 +148,10 @@ fun AddProfileDialog(
                 TextButton(
                     shape = AppTheme.shapes.roundedCorners.tiny(),
                     onClick = {
-                        onPositiveClicked.invoke(title, title.toComposeColor().toArgb())
+                        component.createProfileClicked(
+                            title = title,
+                            color = title.toComposeColor().toArgb(),
+                        )
                     },
                 ) {
                     Text(
@@ -123,7 +162,9 @@ fun AddProfileDialog(
 
                 TextButton(
                     shape = AppTheme.shapes.roundedCorners.tiny(),
-                    onClick = onDismiss,
+                    onClick = {
+                        component.onDismiss(DismissEvent)
+                    },
                 ) {
                     Text(
                         text = "Cancel",

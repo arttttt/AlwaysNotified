@@ -20,6 +20,8 @@ import com.arttttt.appholder.ui.appslist.lazylist.models.ProgressListItem
 import com.arttttt.appholder.ui.base.ListItem
 import com.arttttt.appholder.utils.extensions.koinScope
 import com.arttttt.appholder.utils.resources.ResourcesProvider
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
@@ -43,7 +45,7 @@ class AppsListComponentImpl(
 
     override val uiState = MutableValue(
         initialValue = AppListComponent.UiState(
-            apps = emptyList(),
+            apps = persistentListOf(),
             isStartButtonVisible = false,
             isSaveProfileButtonVisible = false,
         )
@@ -103,7 +105,7 @@ class AppsListComponentImpl(
                 }
 
                 AppListComponent.UiState(
-                    apps = apps,
+                    apps = apps.toPersistentList(),
                     isStartButtonVisible = appsStoreState.selectedActivities?.isNotEmpty() ?: false,
                     isSaveProfileButtonVisible = topBarState.isProfileDirty,
                 )

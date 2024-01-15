@@ -54,5 +54,8 @@ interface ProfilesStore : Store<ProfilesStore.Intent, ProfilesStore.State, Profi
         data object CurrentProfileBecameClear : Message()
     }
 
-    sealed class Label
+    sealed class Label {
+
+        data object CantRemoveProfile : Label()
+    }
 }

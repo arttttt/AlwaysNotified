@@ -1,7 +1,10 @@
 package com.arttttt.appholder.arch.shared
 
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import com.arttttt.appholder.arch.shared.dialog.DismissEvent
+import com.arttttt.appholder.arch.shared.dialog.DismissEventProducer
 import com.arttttt.appholder.arch.shared.events.producer.EventsProducer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -38,4 +41,20 @@ fun <E : Any> Value<ChildStack<*, *>>.stackComponentEvents(): Flow<E> {
         .map { stack -> stack.active.instance }
         .filterIsInstance<EventsProducer<E>>()
         .flatMapLatest { component -> component.events }
+}
+
+fun <E : Any> Value<ChildSlot<*, *>>.slotComponentEvents(): Flow<E> {
+    return this
+        .asStateFlow()
+        .map { stack -> stack.child?.instance }
+        .filterIsInstance<EventsProducer<E>>()
+        .flatMapLatest { component -> component.events }
+}
+
+fun Value<ChildSlot<*, *>>.slotDismissEvents(): Flow<DismissEvent> {
+    return this
+        .asStateFlow()
+        .map { slot -> slot.child?.instance }
+        .filterIsInstance<DismissEventProducer>()
+        .flatMapLatest { producer -> producer.dismissEvents }
 }

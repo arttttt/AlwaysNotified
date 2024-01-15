@@ -49,6 +49,7 @@ import com.arttttt.appholder.ui.base.dsl.rememberLazyListDelegateManager
 import com.arttttt.appholder.ui.custom.LocalCorrectHapticFeedback
 import com.arttttt.appholder.ui.theme.AppTheme
 import com.arttttt.appholder.ui.topbar.TopBarContent
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 /**
@@ -82,7 +83,7 @@ fun AppsListContent(component: AppListComponent) {
 
 @Composable
 private fun AppsListContainer(
-    apps: List<ListItem>,
+    apps: ImmutableList<ListItem>,
     isUpdateProfileButtonVisible: Boolean,
     isStartButtonVisible: Boolean,
     onAppClicked: (String) -> Unit,
@@ -159,7 +160,7 @@ private fun AppsListContainer(
 @Composable
 private fun AppsList(
     modifier: Modifier,
-    apps: List<ListItem>,
+    apps: ImmutableList<ListItem>,
     onAppClicked: (String) -> Unit,
     activityClicked: (String, String) -> Unit,
 ) {

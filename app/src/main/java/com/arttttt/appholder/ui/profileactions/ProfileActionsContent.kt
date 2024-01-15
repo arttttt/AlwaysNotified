@@ -1,4 +1,4 @@
-package com.arttttt.appholder.ui.profiles
+package com.arttttt.appholder.ui.profileactions
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -9,28 +9,27 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arttttt.appholder.arch.shared.dialog.DismissEvent
+import com.arttttt.appholder.components.profileactions.ProfileActionsComponent
 import com.arttttt.appholder.ui.common.TextButtonWithIcon
 import com.arttttt.appholder.ui.theme.AppTheme
-import kotlinx.collections.immutable.ImmutableSet
-
-data class ProfileAction(
-    val title: String,
-    val icon: ImageVector,
-    val onClick: () -> Unit,
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileActionsBottomSheet(
-    onDismiss: () -> Unit,
-    actions: ImmutableSet<ProfileAction>,
+fun ProfileActionsContent(
+    component: ProfileActionsComponent
 ) {
+    val state by component.uiState.subscribeAsState()
+
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+            component.onDismiss(DismissEvent)
+        },
         windowInsets = remember { WindowInsets(0, 0, 0 , 0) },
         containerColor = AppTheme.colors.secondary,
         shape = AppTheme.shapes.roundedCorners.medium(
@@ -43,9 +42,11 @@ fun ProfileActionsBottomSheet(
                 .fillMaxWidth()
                 .navigationBarsPadding()
         ) {
-            actions.forEach { action ->
+            state.items.forEach { action ->
                 TextButtonWithIcon(
-                    onClick = action.onClick,
+                    onClick = {
+                        component.profileActionClicked(action)
+                    },
                     text = {
                         Text(text = action.title)
                     },

@@ -1,5 +1,6 @@
 package com.arttttt.appholder.components.profiles
 
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
 import com.arttttt.appholder.arch.shared.DecomposeComponent
 import com.arttttt.appholder.arch.shared.context.AppComponentContext
@@ -38,7 +39,9 @@ interface ProfilesComponent : DecomposeComponent,
 
     val states: StateFlow<State>
 
-    fun addProfile(title: String, color: Int)
-    fun removeProfile(id: String)
+    val dialog: Value<ChildSlot<*, DecomposeComponent>>
+
     fun profileClicked(id: String)
+    fun profileActionsLongPressed(id: String)
+    fun addProfileClicked()
 }

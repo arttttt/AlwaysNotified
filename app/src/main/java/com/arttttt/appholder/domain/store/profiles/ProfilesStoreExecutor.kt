@@ -5,6 +5,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.appholder.domain.entity.profiles.Profile
 import com.arttttt.appholder.domain.entity.profiles.SelectedActivity
 import com.arttttt.appholder.domain.repository.ProfilesRepository
+import com.arttttt.appholder.utils.extensions.createDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -98,7 +99,7 @@ class ProfilesStoreExecutor(
                     .getProfiles()
                     .takeIf { it.isNotEmpty() }
                     ?: let {
-                        val profile = createDefaultProfile()
+                        val profile = Profile.createDefault()
                         profilesRepository.saveProfile(
                             profile = profile,
                             selectedActivities = emptyList(),
@@ -121,33 +122,28 @@ class ProfilesStoreExecutor(
     }
 
     private fun removeProfile(id: String) {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                profilesRepository.removeProfileByUUID(id)
+        if (state().profiles.size == 1) {
+            publish(ProfilesStore.Label.CantRemoveProfile)
+        } else {
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    profilesRepository.removeProfileByUUID(id)
+                }
+
+                state()
+                    .profiles
+                    .toMutableList()
+                    .filter { profile -> profile.uuid != id }
+                    .toList()
+                    .let(ProfilesStore.Message::ProfilesUpdated)
+                    .let(::dispatch)
+
+                state()
+                    .profiles
+                    .first()
+                    .let(ProfilesStore.Message::ProfileSelected)
+                    .let(::dispatch)
             }
-
-            state()
-                .profiles
-                .toMutableList()
-                .filter { profile -> profile.uuid != id }
-                .toList()
-                .let(ProfilesStore.Message::ProfilesUpdated)
-                .let(::dispatch)
         }
-    }
-
-    /**
-     * todo: find a proper place for that
-     */
-    private fun createDefaultProfile(): Profile {
-        return Profile(
-            uuid = UUID.randomUUID().toString(),
-            title = "Default",
-            color = Color.argb(255,
-                Random.nextInt(256),
-                Random.nextInt(256),
-                Random.nextInt(256),
-            )
-        )
     }
 }

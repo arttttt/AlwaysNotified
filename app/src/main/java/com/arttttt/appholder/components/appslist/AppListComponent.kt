@@ -5,11 +5,12 @@ import com.arttttt.appholder.arch.shared.DecomposeComponent
 import com.arttttt.appholder.arch.shared.events.producer.EventsProducer
 import com.arttttt.appholder.components.topbar.TopBarComponent
 import com.arttttt.appholder.ui.base.ListItem
+import kotlinx.collections.immutable.ImmutableList
 
 interface AppListComponent : DecomposeComponent, EventsProducer<AppListComponent.Event> {
 
     data class UiState(
-        val apps: List<ListItem>,
+        val apps: ImmutableList<ListItem>,
         val isStartButtonVisible: Boolean,
         val isSaveProfileButtonVisible: Boolean,
     )
