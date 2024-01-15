@@ -9,11 +9,11 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.arkivanov.essenty.parcelable.Parcelable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
+import kotlinx.serialization.KSerializer
 import org.koin.core.scope.ScopeID
 
 fun defaultAppComponentContext(
@@ -60,21 +60,20 @@ fun AppComponentContext.childAppContext(
     )
 }
 
-inline fun <reified C : Parcelable, T : Any> AppComponentContext.customChildStack(
+inline fun <reified C : Any, T : Any> AppComponentContext.customChildStack(
     parentScopeID: ScopeID?,
+    serializer: KSerializer<C>,
     source: StackNavigationSource<C>,
     initialConfiguration: C,
     key: String = "DefaultChildStack",
-    persistent: Boolean = true,
     handleBackButton: Boolean = false,
     noinline childFactory: (configuration: C, AppComponentContext) -> T
 ): Value<ChildStack<C, T>> =
     childStack(
         source = source,
+        serializer = serializer,
         initialStack = { listOf(initialConfiguration) },
-        configurationClass = C::class,
         key = key,
-        persistent = persistent,
         handleBackButton = handleBackButton,
         childFactory = { config, context ->
             childFactory.invoke(

@@ -17,29 +17,27 @@ import com.arttttt.appholder.components.permissions.PermissionsComponent
 import com.arttttt.appholder.components.permissions.PermissionsComponentImpl
 import com.arttttt.appholder.components.settings.SettingsComponentImpl
 import com.arttttt.appholder.utils.extensions.koinScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.plus
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 class RootComponentImpl(
     componentContext: AppComponentContext,
 ) : RootComponent,
     AppComponentContext by componentContext {
 
-    private sealed class Config : Parcelable {
+    @Serializable
+    private sealed class Config {
 
-        @Parcelize
+        @Serializable
         data object AppsList : Config()
 
-        @Parcelize
+        @Serializable
         data object Permissions : Config()
 
-        @Parcelize
+        @Serializable
         data object Settings : Config()
     }
 
@@ -55,6 +53,7 @@ class RootComponentImpl(
 
     override val stack: Value<ChildStack<*, DecomposeComponent>> = customChildStack(
         parentScopeID = scope.id,
+        serializer = Config.serializer(),
         source = navigation,
         initialConfiguration = initialConfiguration(),
         handleBackButton = true,

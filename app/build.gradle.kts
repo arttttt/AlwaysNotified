@@ -2,7 +2,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
 }
@@ -87,10 +86,9 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(libs.decompose)
-    implementation(libs.decompose.jetpackCompose)
+    implementation(libs.decompose.compose)
     implementation(libs.essenty.lifecycle)
     implementation(libs.essenty.backHandler)
-    implementation(libs.essenty.parcelable)
     implementation(libs.essenty.instanceKeeper)
     implementation(libs.essenty.stateKeeper)
 

@@ -20,12 +20,12 @@ private class ValueStateFlow<out T : Any>(
     override suspend fun collect(collector: FlowCollector<T>): Nothing {
         val flow = MutableStateFlow(v.value)
         val observer: (T) -> Unit = { flow.value = it }
-        v.subscribe(observer)
+        val cancellation = v.subscribe(observer)
 
         try {
             flow.collect(collector)
         } finally {
-            v.unsubscribe(observer)
+            cancellation.cancel()
         }
     }
 }

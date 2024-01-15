@@ -1,5 +1,6 @@
 package com.arttttt.appholder.arch.shared
 
+import com.arkivanov.decompose.Cancellation
 import com.arkivanov.decompose.value.Value
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -18,40 +19,32 @@ class FlowValue<T : Any>(
     //TODO: replace with KMP analogue
     private val lock = ReentrantLock()
 
-    private val observers = mutableSetOf<(T) -> Unit>()
+    private val observers = mutableMapOf<(T) -> Unit, Cancellation>()
 
     override val value: T
         get() = flow.value
 
-    override fun subscribe(observer: (T) -> Unit) {
-        try {
+    override fun subscribe(observer: (T) -> Unit): Cancellation {
+        return try {
             lock.lock()
 
-            if (observer in observers) return
+            if (observer in observers) return observers[observer]!!
 
-            observers += observer
+            val cancellation = Cancellation {
+                observers.remove(observer)
+
+                if (observers.isEmpty() && job != null) {
+                    unsubscribe()
+                }
+            }
+
+            observers += observer to cancellation
 
             if (observers.size == 1 && job == null) {
                 subscribe()
             }
-        } finally {
-            if (lock.isHeldByCurrentThread) {
-                lock.unlock()
-            }
-        }
-    }
 
-    override fun unsubscribe(observer: (T) -> Unit) {
-        try {
-            lock.lock()
-
-            if (observer !in observers) return
-
-            observers -= observer
-
-            if (observers.isEmpty() && job != null) {
-                unsubscribe()
-            }
+            cancellation
         } finally {
             if (lock.isHeldByCurrentThread) {
                 lock.unlock()
@@ -66,7 +59,7 @@ class FlowValue<T : Any>(
                 try {
                     lock.lock()
 
-                    observers.forEach { observer ->
+                    observers.forEach { (observer, _) ->
                         observer.invoke(value)
                     }
                 } finally {

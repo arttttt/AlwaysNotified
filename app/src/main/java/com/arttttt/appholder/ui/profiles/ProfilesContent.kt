@@ -27,7 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
-import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arttttt.appholder.components.profiles.ProfilesComponent
 import com.arttttt.appholder.ui.base.dsl.items
 import com.arttttt.appholder.ui.base.dsl.rememberLazyListDelegateManager

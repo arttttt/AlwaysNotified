@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arttttt.appholder.components.permissions.PermissionsComponent
 import com.arttttt.appholder.ui.common.Divider
 import com.arttttt.appholder.ui.custom.EqualHeightColumn
