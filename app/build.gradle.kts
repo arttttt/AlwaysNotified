@@ -112,5 +112,5 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    implementation("com.google.accompanist:accompanist-drawablepainter:0.32.0")
+    implementation(libs.accompanist.drawablepainter)
 }
