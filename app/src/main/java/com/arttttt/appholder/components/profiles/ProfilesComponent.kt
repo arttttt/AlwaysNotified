@@ -8,6 +8,7 @@ import com.arttttt.appholder.arch.shared.events.consumer.EventsConsumer
 import com.arttttt.appholder.arch.shared.events.producer.EventsProducer
 import com.arttttt.appholder.domain.entity.profiles.Profile
 import com.arttttt.appholder.ui.base.ListItem
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface ProfilesComponent : DecomposeComponent,
@@ -24,6 +25,13 @@ interface ProfilesComponent : DecomposeComponent,
         val items: List<ListItem>,
     )
 
+    sealed class Command {
+
+        data class ShowMessage(
+            val message: String
+        ) : Command()
+    }
+
     sealed class Events {
 
         sealed class Output : Events()
@@ -38,6 +46,8 @@ interface ProfilesComponent : DecomposeComponent,
     val uiState: Value<UiState>
 
     val states: StateFlow<State>
+
+    val commands: Flow<Command>
 
     val dialog: Value<ChildSlot<*, DecomposeComponent>>
 

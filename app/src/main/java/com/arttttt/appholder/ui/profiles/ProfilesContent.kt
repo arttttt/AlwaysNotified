@@ -1,5 +1,6 @@
 package com.arttttt.appholder.ui.profiles
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,10 +15,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -34,6 +37,8 @@ import com.arttttt.appholder.ui.profiles.lazylist.delegates.ProfileListDelegate
 import com.arttttt.appholder.ui.removeprofile.RemoveProfileContent
 import com.arttttt.appholder.ui.theme.AppTheme
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun ProfilesContent(component: ProfilesComponent) {
@@ -87,6 +92,20 @@ fun ProfilesContent(component: ProfilesComponent) {
                 component = dialogComponent,
             )
         }
+    }
+
+    val context = LocalContext.current
+    LaunchedEffect(component) {
+        component
+            .commands
+            .onEach { command ->
+                when (command) {
+                    is ProfilesComponent.Command.ShowMessage -> {
+                        Toast.makeText(context, command.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            .launchIn(this)
     }
 }
 

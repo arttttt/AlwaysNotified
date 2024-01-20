@@ -27,6 +27,7 @@ import com.arttttt.appholder.domain.store.profiles.ProfilesStore
 import com.arttttt.appholder.ui.profiles.lazylist.models.ProfileListItem
 import com.arttttt.appholder.utils.extensions.asValue
 import com.arttttt.appholder.utils.extensions.koinScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -87,6 +88,8 @@ class ProfilesComponentImpl(
             )
         }
 
+    override val commands: MutableSharedFlow<ProfilesComponent.Command> = MutableSharedFlow()
+
     private val dialogNavigation = SlotNavigation<DialogConfig>()
 
     override val dialog: Value<ChildSlot<*, DecomposeComponent>> =
@@ -136,6 +139,15 @@ class ProfilesComponentImpl(
                      */
                     dialogNavigation.dismiss()
                 }
+            }
+            .launchIn(coroutineScope)
+
+        dialog
+            .slotComponentEvents<EventsProducer<ProfileActionsComponent.Event>>()
+            .filterIsInstance<ProfileActionsComponent.Event.RenameProfile>()
+            .onEach {
+                commands.emit(ProfilesComponent.Command.ShowMessage("Not implemented yet"))
+                dialogNavigation.dismiss()
             }
             .launchIn(coroutineScope)
 
