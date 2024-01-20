@@ -70,10 +70,7 @@ android {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose) {
-        exclude(group = "androidx.emoji2", module = "emoji2")
-        exclude(group = "androidx.emoji2", module = "emoji2-views-helper")
-    }
+    implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
