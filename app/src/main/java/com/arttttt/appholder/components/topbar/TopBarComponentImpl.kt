@@ -12,6 +12,8 @@ import com.arttttt.appholder.components.profiles.ProfilesComponent
 import com.arttttt.appholder.components.topbar.actions.ExpandableTopBarAction
 import com.arttttt.appholder.components.topbar.actions.TopBarAction
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -57,6 +59,8 @@ class TopBarComponentImpl(
         )
     )
 
+    override val commands = MutableSharedFlow<TopBarComponent.Command>(extraBufferCapacity = 1)
+
     init {
         lifecycle.doOnDestroy { coroutineScope.coroutineContext.cancelChildren() }
     }
@@ -71,7 +75,9 @@ class TopBarComponentImpl(
     override fun actionClicked(action: TopBarAction) {
         when {
             action is ExpandableTopBarAction -> toggleExpand(action)
-            action is TopBarAction.Settings -> { /** TODO */ }
+            action is TopBarAction.Settings -> {
+                commands.tryEmit(TopBarComponent.Command.ShowMessage("Not implemented yet"))
+            }
             else -> { /** TODO */ }
         }
     }

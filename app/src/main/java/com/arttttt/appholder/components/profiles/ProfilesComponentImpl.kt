@@ -133,10 +133,7 @@ class ProfilesComponentImpl(
                 if (profilesStore.state.profiles.size > 1) {
                     dialogNavigation.activate(DialogConfig.RemoveProfile(event.uuid))
                 } else {
-                    /**
-                     * TODO: inform user that profile can't be removed
-                     * just close the dialog for now
-                     */
+                    commands.emit(ProfilesComponent.Command.ShowMessage("Can't remove the last profile"))
                     dialogNavigation.dismiss()
                 }
             }

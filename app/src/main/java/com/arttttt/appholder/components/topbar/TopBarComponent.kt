@@ -7,6 +7,7 @@ import com.arttttt.appholder.arch.shared.events.producer.EventsProducer
 import com.arttttt.appholder.components.topbar.actions.ExpandableTopBarAction
 import com.arttttt.appholder.components.topbar.actions.TopBarAction
 import com.arttttt.appholder.domain.entity.profiles.Profile
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface TopBarComponent : DecomposeComponent,
@@ -34,9 +35,16 @@ interface TopBarComponent : DecomposeComponent,
         }
     }
 
+    sealed class Command {
+
+        data class ShowMessage(val message: String) : Command()
+    }
+
     val states: StateFlow<State>
 
     val uiState: Value<UiState>
+
+    val commands: Flow<Command>
 
     fun actionClicked(action: TopBarAction)
 }
