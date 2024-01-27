@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.arttttt.appholder"
+    namespace = "com.arttttt.alwaysnotified"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.arttttt.appholder"
+        applicationId = "com.arttttt.alwaysnotified"
         minSdk = 33
         targetSdk = 34
         versionCode = 2

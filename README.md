@@ -1,4 +1,4 @@
-# AppHolder
+# Always Notified
 
 This app allows you to bypass the 5 auto launch apps limit on ColorOS phones
 

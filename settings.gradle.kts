@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AppHolder"
+rootProject.name = "Always Notified"
 include(":app")

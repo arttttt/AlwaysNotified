@@ -14,19 +14,16 @@
 
     <application
         android:name=".App"
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppHolder">
+        android:theme="@style/Theme.AlwaysNotified">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppHolder"
+            android:theme="@style/Theme.AlwaysNotified"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
@@ -41,12 +38,12 @@
         <activity
             android:name=".ProtectorActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppHolder.Protector"/>
+            android:theme="@style/Theme.AlwaysNotified.Protector"/>
 
         <activity
             android:name=".HolderActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppHolder" />
+            android:theme="@style/Theme.AlwaysNotified" />
 
         <receiver
             android:name=".BootReceiver"
