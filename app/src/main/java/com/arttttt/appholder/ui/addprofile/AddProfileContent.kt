@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -65,7 +66,7 @@ private fun AddProfileContentPreview() {
                 override val dismissEvents: Flow<DismissEvent>
                     get() = TODO("Not yet implemented")
 
-                override fun createProfileClicked(title: String, color: Int) {
+                override fun createProfileClicked(title: String, color: Int, addSelectedApps: Boolean) {
                     TODO("Not yet implemented")
                 }
             }
@@ -82,6 +83,10 @@ fun AddProfileContent(
 ) {
     var title by remember {
         mutableStateOf("")
+    }
+
+    var addSelectedApps by remember {
+        mutableStateOf(false)
     }
 
     Dialog(
@@ -139,39 +144,85 @@ fun AddProfileContent(
                 )
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
+
+            SwitchWithTextRow(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Add selected apps",
+                checked = addSelectedApps,
+                onCheckedChange = { isChecked -> addSelectedApps = isChecked }
+            )
+
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                TextButton(
-                    shape = AppTheme.shapes.roundedCorners.tiny(),
-                    onClick = {
-                        component.createProfileClicked(
-                            title = title,
-                            color = title.toComposeColor().toArgb(),
-                        )
-                    },
-                ) {
-                    Text(
-                        text = "Add",
-                        color = AppTheme.colors.textAndIcons,
+            DialogButtonsRow(
+                onPositiveClicked = {
+                    component.createProfileClicked(
+                        title = title,
+                        color = title.toComposeColor().toArgb(),
+                        addSelectedApps = addSelectedApps,
                     )
-                }
+                },
+                onNegativeClicked = {
+                    component.onDismiss(DismissEvent)
+                },
+            )
+        }
+    }
+}
 
-                TextButton(
-                    shape = AppTheme.shapes.roundedCorners.tiny(),
-                    onClick = {
-                        component.onDismiss(DismissEvent)
-                    },
-                ) {
-                    Text(
-                        text = "Cancel",
-                        color = AppTheme.colors.textAndIcons,
-                    )
-                }
-            }
+@Composable
+private fun SwitchWithTextRow(
+    modifier: Modifier,
+    text: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ){
+        Text(text = text)
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            colors = AppTheme.widgets.switchColors,
+        )
+    }
+}
+
+@Composable
+private fun DialogButtonsRow(
+    positiveButtonText: String = "Add",
+    negativeButtonText: String = "Cancel",
+    onPositiveClicked: () -> Unit,
+    onNegativeClicked: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+    ) {
+        TextButton(
+            shape = AppTheme.shapes.roundedCorners.tiny(),
+            onClick = onPositiveClicked,
+        ) {
+            Text(
+                text = positiveButtonText,
+                color = AppTheme.colors.textAndIcons,
+            )
+        }
+
+        TextButton(
+            shape = AppTheme.shapes.roundedCorners.tiny(),
+            onClick = onNegativeClicked,
+        ) {
+            Text(
+                text = negativeButtonText,
+                color = AppTheme.colors.textAndIcons,
+            )
         }
     }
 }

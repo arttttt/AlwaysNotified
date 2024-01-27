@@ -1,6 +1,5 @@
 package com.arttttt.appholder.domain.store.profiles
 
-import android.graphics.Color
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.appholder.domain.entity.profiles.Profile
 import com.arttttt.appholder.domain.entity.profiles.SelectedActivity
@@ -10,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
-import kotlin.random.Random
 
 class ProfilesStoreExecutor(
     private val selectedAppsProvider: () -> List<SelectedActivity>,
@@ -25,7 +23,7 @@ class ProfilesStoreExecutor(
 
     override fun executeIntent(intent: ProfilesStore.Intent) {
         when (intent) {
-            is ProfilesStore.Intent.CreateProfile -> createProfile(intent.title, intent.color)
+            is ProfilesStore.Intent.CreateProfile -> createProfile(intent.title, intent.color, intent.addSelectedApps)
             is ProfilesStore.Intent.RemoveProfile -> removeProfile(intent.id)
             is ProfilesStore.Intent.SelectProfile -> selectProfile(intent.id)
             is ProfilesStore.Intent.UpdateCurrentProfile -> updateCurrentProfile()
@@ -65,6 +63,7 @@ class ProfilesStoreExecutor(
     private fun createProfile(
         title: String,
         color: Int,
+        addSeletedApps: Boolean,
     ) {
         scope.launch {
             val profile = Profile(
@@ -76,7 +75,11 @@ class ProfilesStoreExecutor(
             withContext(Dispatchers.IO) {
                 profilesRepository.saveProfile(
                     profile = profile,
-                    selectedActivities = selectedAppsProvider.invoke(),
+                    selectedActivities = if (addSeletedApps) {
+                        selectedAppsProvider.invoke()
+                    } else {
+                        emptyList()
+                    },
                 )
             }
 

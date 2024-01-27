@@ -168,6 +168,7 @@ class ProfilesComponentImpl(
                     ProfilesStore.Intent.CreateProfile(
                         title = event.title,
                         color = event.color,
+                        addSelectedApps = event.addSelectedApps,
                     )
                 )
             }
