@@ -1,5 +1,6 @@
 package com.arttttt.alwaysnotified
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -39,6 +40,13 @@ class HolderActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setTaskDescription(
+            ActivityManager.TaskDescription
+                .Builder()
+                .setLabel(getString(R.string.do_not_close))
+                .build()
+        )
 
         val appsToStart = intent
             .getSerializable<ArrayList<Intent>?>(APPS_TO_START)

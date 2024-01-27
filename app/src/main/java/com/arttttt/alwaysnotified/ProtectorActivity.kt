@@ -1,5 +1,6 @@
 package com.arttttt.alwaysnotified
 
+import android.app.ActivityManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +20,13 @@ class ProtectorActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setTaskDescription(
+            ActivityManager.TaskDescription
+                .Builder()
+                .setLabel(getString(R.string.do_not_close))
+                .build()
+        )
 
         setContent {
             Box(

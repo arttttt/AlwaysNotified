@@ -43,6 +43,7 @@
         <activity
             android:name=".HolderActivity"
             android:exported="false"
+            android:relinquishTaskIdentity="true"
             android:theme="@style/Theme.AlwaysNotified" />
 
         <receiver

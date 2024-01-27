@@ -3,4 +3,6 @@
     <string name="app_name_release">Always Notified</string>
     <string name="app_name_dev">Always Notified Dev</string>
 
+    <string name="do_not_close">Don\'t close</string>
+
 </resources>
