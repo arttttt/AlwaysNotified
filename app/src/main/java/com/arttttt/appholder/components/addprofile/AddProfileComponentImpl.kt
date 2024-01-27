@@ -17,8 +17,12 @@ class AddProfileComponentImpl(
     DismissEventConsumer by dismissEventDelegate,
     DismissEventProducer by dismissEventDelegate {
 
-    override fun createProfileClicked(title: String, color: Int) {
-        dispatch(AddProfileComponent.Event.CreateProfile(title, color))
+    override fun createProfileClicked(
+        title: String,
+        color: Int,
+        addSelectedApps: Boolean,
+    ) {
+        dispatch(AddProfileComponent.Event.CreateProfile(title, color, addSelectedApps))
         onDismiss(DismissEvent)
     }
 }

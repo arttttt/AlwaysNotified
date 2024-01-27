@@ -20,6 +20,7 @@ interface ProfilesStore : Store<ProfilesStore.Intent, ProfilesStore.State, Profi
         data class CreateProfile(
             val title: String,
             val color: Int,
+            val addSelectedApps: Boolean,
         ) : Intent()
 
         data class RemoveProfile(

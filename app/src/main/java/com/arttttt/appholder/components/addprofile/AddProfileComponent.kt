@@ -15,8 +15,13 @@ interface AddProfileComponent : DecomposeComponent,
         data class CreateProfile(
             val title: String,
             val color: Int,
+            val addSelectedApps: Boolean,
         ) : Event()
     }
 
-    fun createProfileClicked(title: String, color: Int)
+    fun createProfileClicked(
+        title: String,
+        color: Int,
+        addSelectedApps: Boolean,
+    )
 }
