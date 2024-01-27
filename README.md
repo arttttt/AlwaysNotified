@@ -1,5 +1,7 @@
 # Always Notified
 
+![App Icon](https://github.com/arttttt/AlwaysNotified/blob/master/resources/always_notified_icon.png)
+
 This app allows you to bypass the 5 auto launch apps limit on ColorOS phones
 
 # Core libraries used
