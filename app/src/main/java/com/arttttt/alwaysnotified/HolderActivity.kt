@@ -6,11 +6,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.os.postDelayed
 import com.arttttt.alwaysnotified.utils.extensions.getSerializable
 import com.arttttt.alwaysnotified.utils.extensions.intent
+import timber.log.Timber
 import java.io.Serializable
 import java.util.LinkedList
 
@@ -30,6 +32,7 @@ class HolderActivity : ComponentActivity() {
     companion object {
 
         const val APPS_TO_START = "payload"
+        const val TARGET_TITLE = "title"
     }
 
     private val handler by lazy {
@@ -59,28 +62,58 @@ class HolderActivity : ComponentActivity() {
         } else {
             val appToStart = appsToStart.poll()!!
 
-            startPayloadLauncher.launch(appToStart)
+            val isErrorOccurred = kotlin
+                .runCatching {
+                    startPayloadLauncher.launch(appToStart)
 
-            startActivity(
-                intent<ProtectorActivity>()
+                    startActivity(
+                        intent<ProtectorActivity>()
+                    )
+
+                    false
+                }
+                .onFailure { e ->
+                    Toast.makeText(
+                        applicationContext,
+                        getString(
+                            R.string.can_not_launch_activity,
+                            appToStart.getStringExtra(TARGET_TITLE),
+                        ),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+
+                    Timber.e(e)
+                }
+                .getOrDefault(true)
+
+            startNextActivity(
+                isErrorOccurred = isErrorOccurred,
+                appsToStart = appsToStart,
             )
-
-            startNextActivity(appsToStart)
         }
     }
 
     private fun startNextActivity(
+        isErrorOccurred: Boolean,
         appsToStart: LinkedList<Intent>,
     ) {
         handler.postDelayed(3000) {
-            startActivity(
-                intent<HolderActivity> {
-                    putExtra(
-                        APPS_TO_START,
-                        appsToStart as Serializable,
-                    )
-                }
-            )
+            if (isErrorOccurred) {
+                finish()
+            }
+
+            if (appsToStart.isEmpty()) {
+                moveTaskToBack(true)
+            } else {
+                startActivity(
+                    intent<HolderActivity> {
+                        putExtra(
+                            APPS_TO_START,
+                            appsToStart as Serializable,
+                        )
+                    }
+                )
+            }
         }
     }
 }

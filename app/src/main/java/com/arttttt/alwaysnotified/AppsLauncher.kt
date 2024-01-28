@@ -103,10 +103,12 @@ class AppsLauncher(
                     Intent().apply {
                         component = ComponentName(
                             activityInfo.pkg,
-                            activityInfo.name
+                            activityInfo.name,
                         )
 
                         flags = 0
+
+                        putExtra(HolderActivity.TARGET_TITLE, activityInfo.name.substringAfterLast("."))
                     }
                 }
             )

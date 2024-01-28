@@ -5,4 +5,6 @@
 
     <string name="do_not_close">Don\'t close</string>
 
+    <string name="can_not_launch_activity">Can\'t launch activity %s</string>
+
 </resources>
