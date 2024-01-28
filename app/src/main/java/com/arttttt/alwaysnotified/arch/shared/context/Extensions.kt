@@ -40,7 +40,7 @@ fun defaultAppComponentContext(
 
 fun AppComponentContext.childAppContext(
     key: String,
-    lifecycle: Lifecycle? = this.lifecycle,
+    lifecycle: Lifecycle? = null,
     parentScopeID: ScopeID? = this.parentScopeID,
 ): AppComponentContext {
     val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
