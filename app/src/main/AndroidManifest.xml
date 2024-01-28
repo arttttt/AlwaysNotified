@@ -38,12 +38,14 @@
         <activity
             android:name=".ProtectorActivity"
             android:exported="false"
+            android:taskAffinity=":holder"
             android:theme="@style/Theme.AlwaysNotified.Protector"/>
 
         <activity
             android:name=".HolderActivity"
             android:exported="false"
             android:relinquishTaskIdentity="true"
+            android:taskAffinity=":holder"
             android:theme="@style/Theme.AlwaysNotified" />
 
         <receiver
