@@ -1,6 +1,7 @@
 package com.arttttt.alwaysnotified
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -78,5 +79,11 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Log.e("TEST", "main destroyed")
     }
 }
