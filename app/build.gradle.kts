@@ -1,9 +1,10 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -14,8 +15,8 @@ android {
         applicationId = "com.arttttt.alwaysnotified"
         minSdk = 33
         targetSdk = 34
-        versionCode = 3
-        versionName = "0.0.2"
+        versionCode = 4
+        versionName = "0.0.4"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -55,6 +56,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -111,4 +113,10 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(libs.accompanist.drawablepainter)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+
+    implementation(libs.timber)
 }
