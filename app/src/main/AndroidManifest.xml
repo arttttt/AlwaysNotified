@@ -48,6 +48,7 @@
 
         <receiver
             android:name=".BootReceiver"
+            android:enabled="false"
             android:exported="true">
 
             <intent-filter>
