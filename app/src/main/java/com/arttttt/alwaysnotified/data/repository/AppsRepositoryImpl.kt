@@ -50,7 +50,8 @@ class AppsRepositoryImpl(
                                 } else {
                                     null
                                 }
-                            },
+                            }
+                            .toSet(),
                     )
                 }
             }
