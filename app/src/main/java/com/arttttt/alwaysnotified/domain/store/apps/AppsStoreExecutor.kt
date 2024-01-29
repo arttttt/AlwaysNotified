@@ -1,6 +1,7 @@
 package com.arttttt.alwaysnotified.domain.store.apps
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
 import com.arttttt.alwaysnotified.domain.entity.profiles.Profile
 import com.arttttt.alwaysnotified.domain.repository.AppsRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -42,9 +43,10 @@ class AppsStoreExecutor(
                             .getInstalledApplications()
                             .map { info ->
                                 info.copy(
-                                    activities = info.activities.sortedBy { activityInfo ->
-                                        activityInfo.title
-                                    }
+                                    activities = info
+                                        .activities
+                                        .sortedBy(ActivityInfo::title)
+                                        .toSet()
                                 )
                             }
                             .sortedBy { info -> info.title }
