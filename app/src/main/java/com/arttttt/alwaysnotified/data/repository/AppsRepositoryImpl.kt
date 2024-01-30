@@ -40,16 +40,13 @@ class AppsRepositoryImpl(
                         pkg = info.packageName,
                         isExpanded = false,
                         activities = activities
-                            .mapNotNull { activityInfo ->
-                                if (activityInfo.exported) {
-                                    ActivityInfo(
-                                        title = activityInfo.name.substringAfterLast('.'),
-                                        name = activityInfo.name,
-                                        pkg = info.packageName,
-                                    )
-                                } else {
-                                    null
-                                }
+                            .filter { activityInfo -> activityInfo.exported && activityInfo.enabled }
+                            .map { activityInfo ->
+                                ActivityInfo(
+                                    title = activityInfo.name.substringAfterLast('.'),
+                                    name = activityInfo.name,
+                                    pkg = info.packageName,
+                                )
                             }
                             .toSet(),
                     )
