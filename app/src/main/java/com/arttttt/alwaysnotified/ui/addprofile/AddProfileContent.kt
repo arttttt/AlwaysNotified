@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -32,6 +33,7 @@ import com.arkivanov.essenty.backhandler.BackHandler
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.statekeeper.StateKeeper
+import com.arttttt.alwaysnotified.R
 import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEvent
 import com.arttttt.alwaysnotified.components.addprofile.AddProfileComponent
 import com.arttttt.alwaysnotified.ui.theme.AppTheme
@@ -105,7 +107,7 @@ fun AddProfileContent(
                     bottom = 8.dp,
                 ),
         ) {
-            Text(text = "Add profile")
+            Text(text = stringResource(R.string.add_profile))
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -129,7 +131,7 @@ fun AddProfileContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Color"
+                    text = stringResource(R.string.color)
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))
@@ -148,7 +150,7 @@ fun AddProfileContent(
 
             SwitchWithTextRow(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Add selected apps",
+                text = stringResource(R.string.add_selected_apps),
                 checked = addSelectedApps,
                 onCheckedChange = { isChecked -> addSelectedApps = isChecked }
             )
@@ -156,6 +158,8 @@ fun AddProfileContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             DialogButtonsRow(
+                positiveButtonText = stringResource(R.string.add),
+                negativeButtonText = stringResource(R.string.cancel),
                 onPositiveClicked = {
                     component.createProfileClicked(
                         title = title,
@@ -196,8 +200,8 @@ private fun SwitchWithTextRow(
 
 @Composable
 private fun DialogButtonsRow(
-    positiveButtonText: String = "Add",
-    negativeButtonText: String = "Cancel",
+    positiveButtonText: String,
+    negativeButtonText: String,
     onPositiveClicked: () -> Unit,
     onNegativeClicked: () -> Unit,
 ) {
