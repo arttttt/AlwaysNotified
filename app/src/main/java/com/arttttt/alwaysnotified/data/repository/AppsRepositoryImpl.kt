@@ -23,16 +23,22 @@ class AppsRepositoryImpl(
             .getInstalledPackages(PackageManager.PackageInfoFlags.of(0))
             .mapNotNull { info ->
                 val title = pm.getApplicationLabel(info.applicationInfo)
-                val activities = pm
-                    .getPackageInfo(
-                        info.packageName,
-                        PackageManager.PackageInfoFlags.of(
-                            PackageManager.GET_ACTIVITIES.toLong(),
-                        )
-                    )
-                    .activities
+                val activities = kotlin
+                    .runCatching {
+                        pm
+                            .getPackageInfo(
+                                info.packageName,
+                                PackageManager.PackageInfoFlags.of(
+                                    PackageManager.GET_ACTIVITIES.toLong(),
+                                )
+                            )
+                            .activities
+                    }
+                    .getOrNull()
+                    ?.takeIf { activities -> activities.isNotEmpty() }
+                    ?: return@mapNotNull null
 
-                if (title.isEmpty() || info.isSystemPackage || !info.applicationInfo.enabled || activities.isNullOrEmpty() || info.packageName == context.packageName) {
+                if (title.isEmpty() || info.isSystemPackage || !info.applicationInfo.enabled || info.packageName == context.packageName) {
                     null
                 } else {
                     AppInfo(
