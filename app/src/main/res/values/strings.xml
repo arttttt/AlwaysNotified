@@ -13,4 +13,7 @@
     <string name="cancel">Cancel</string>
     <string name="add_profile">Add profile</string>
 
+    <string name="update_profile">update profile</string>
+    <string name="start_apps">start apps</string>
+
 </resources>

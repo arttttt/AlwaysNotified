@@ -36,9 +36,11 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arttttt.alwaysnotified.R
 import com.arttttt.alwaysnotified.components.appslist.AppListComponent
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.ActivityListDelegate
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.AppListDelegate
@@ -231,7 +233,7 @@ private fun ActionsRow(
                 onClick = onUpdateProfileClicked,
                 colors = AppTheme.widgets.buttonColors,
             ) {
-                Text(text = "update profile")
+                Text(text = stringResource(R.string.update_profile))
             }
         }
 
@@ -241,7 +243,7 @@ private fun ActionsRow(
                 onClick = onStartAppsClicked,
                 colors = AppTheme.widgets.buttonColors,
             ) {
-                Text(text = "start apps")
+                Text(text = stringResource(R.string.start_apps))
             }
         }
     }
