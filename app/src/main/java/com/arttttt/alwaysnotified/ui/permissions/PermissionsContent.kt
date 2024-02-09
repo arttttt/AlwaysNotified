@@ -15,8 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arttttt.alwaysnotified.R
 import com.arttttt.alwaysnotified.components.permissions.PermissionsComponent
 import com.arttttt.alwaysnotified.ui.common.Divider
 import com.arttttt.alwaysnotified.ui.custom.EqualHeightColumn
@@ -44,7 +46,7 @@ fun PermissionsContent(component: PermissionsComponent) {
             ),
             colors = AppTheme.widgets.topAppBarColors,
             title = { 
-                Text(text = "Permissions")
+                Text(text = stringResource(R.string.permissions))
             }
         )
 

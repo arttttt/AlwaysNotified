@@ -16,4 +16,6 @@
     <string name="update_profile">update profile</string>
     <string name="start_apps">start apps</string>
 
+    <string name="permissions">Permissions</string>
+
 </resources>
