@@ -18,4 +18,8 @@
 
     <string name="permissions">Permissions</string>
 
+    <string name="profile_exists_error">profile already exists</string>
+    <string name="profile_empty_title_error">title can not be empty</string>
+    <string name="can_not_save_profile">Can\'t save profile</string>
+
 </resources>

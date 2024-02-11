@@ -31,6 +31,9 @@ abstract class ProfilesDao {
     @Query("delete from profiles_table where uuid = :uuid")
     abstract fun removeProfileByUUID(uuid: String)
 
+    @Query("SELECT COUNT(*) > 0 FROM profiles_table WHERE title = :title")
+    abstract fun doesProfileExist(title: String): Boolean
+
     @Transaction
     open fun insertProfile(profileWithActivities: ProfileWithActivities) {
         runBlocking {
