@@ -76,6 +76,10 @@ class AppStartupService : Service() {
     }
 
     private fun createNotificationChannel() {
+        val notificationManager = NotificationManagerCompat.from(applicationContext)
+
+        if (notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID) != null) return
+
         val channel = NotificationChannelCompat
             .Builder(
                 NOTIFICATION_CHANNEL_ID,
@@ -84,8 +88,6 @@ class AppStartupService : Service() {
             .setName(NOTIFICATION_CHANNEL_NAME)
             .build()
 
-        NotificationManagerCompat
-            .from(applicationContext)
-            .createNotificationChannel(channel)
+        notificationManager.createNotificationChannel(channel)
     }
 }
