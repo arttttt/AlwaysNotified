@@ -1,6 +1,7 @@
 package com.arttttt.alwaysnotified.data.repository
 
 import android.content.Context
+import com.arttttt.alwaysnotified.data.model.PostNotificationsPermission
 import com.arttttt.alwaysnotified.domain.entity.permission.Permission2
 import com.arttttt.alwaysnotified.domain.repository.PermissionsRepository
 
@@ -9,7 +10,7 @@ class PermissionsRepositoryImpl(
 ) : PermissionsRepository {
 
     private val permissions: List<Permission2> = listOf(
-        //PostNotificationsPermission,
+        PostNotificationsPermission,
         //QueryAllPackagesPermission,
         //IgnoreBatteryOptimizationsPermission,
     )
