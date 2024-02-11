@@ -51,4 +51,8 @@ class ProfilesRepositoryImpl(
     override suspend fun removeProfileByUUID(uuid: String) {
         profilesDao.removeProfileByUUID(uuid)
     }
+
+    override suspend fun doesProfileExist(title: String): Boolean {
+        return profilesDao.doesProfileExist(title)
+    }
 }

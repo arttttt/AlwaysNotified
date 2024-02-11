@@ -1,5 +1,6 @@
 package com.arttttt.alwaysnotified.ui.addprofile
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
@@ -18,6 +22,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -25,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,6 +78,10 @@ private fun AddProfileContentPreview() {
                 override fun createProfileClicked(title: String, color: Int, addSelectedApps: Boolean) {
                     TODO("Not yet implemented")
                 }
+
+                override suspend fun canCreateProfile(title: String): Boolean {
+                    TODO("Not yet implemented")
+                }
             }
         )
     }
@@ -90,6 +101,12 @@ fun AddProfileContent(
     var addSelectedApps by remember {
         mutableStateOf(false)
     }
+
+    val isInError by produceState(initialValue = false, title) {
+        value = !component.canCreateProfile(title)
+    }
+
+    val context = LocalContext.current
 
     Dialog(
         onDismissRequest = {
@@ -112,6 +129,7 @@ fun AddProfileContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
+                isError = isInError,
                 modifier = Modifier.fillMaxWidth(),
                 value = title,
                 onValueChange = { title = it },
@@ -121,7 +139,24 @@ fun AddProfileContent(
                     focusedTextColor = AppTheme.colors.textAndIcons,
                     unfocusedBorderColor = AppTheme.colors.textAndIcons,
                     unfocusedTextColor = AppTheme.colors.textAndIcons,
+                    errorTextColor = AppTheme.colors.textAndIcons,
+                    errorCursorColor = AppTheme.colors.textAndIcons,
                 ),
+                supportingText = {
+                    if (isInError) {
+                        Text(
+                            text = stringResource(R.string.profile_exists_error)
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isInError) {
+                        Icon(
+                            painter = rememberVectorPainter(image = Icons.Default.Info),
+                            contentDescription = null,
+                        )
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -161,11 +196,19 @@ fun AddProfileContent(
                 positiveButtonText = stringResource(R.string.add),
                 negativeButtonText = stringResource(R.string.cancel),
                 onPositiveClicked = {
-                    component.createProfileClicked(
-                        title = title,
-                        color = title.toComposeColor().toArgb(),
-                        addSelectedApps = addSelectedApps,
-                    )
+                    if (isInError) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.can_not_save_profile),
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    } else {
+                        component.createProfileClicked(
+                            title = title,
+                            color = title.toComposeColor().toArgb(),
+                            addSelectedApps = addSelectedApps,
+                        )
+                    }
                 },
                 onNegativeClicked = {
                     component.onDismiss(DismissEvent)

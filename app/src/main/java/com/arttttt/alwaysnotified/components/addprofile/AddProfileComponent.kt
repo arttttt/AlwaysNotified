@@ -24,4 +24,6 @@ interface AddProfileComponent : DecomposeComponent,
         color: Int,
         addSelectedApps: Boolean,
     )
+
+    suspend fun canCreateProfile(title: String): Boolean
 }
