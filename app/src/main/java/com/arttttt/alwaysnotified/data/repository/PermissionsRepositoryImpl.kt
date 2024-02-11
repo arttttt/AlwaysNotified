@@ -11,10 +11,10 @@ class PermissionsRepositoryImpl(
     private val context: Context
 ) : PermissionsRepository {
 
-    private val permissions = listOf(
-        PostNotificationsPermission,
-        QueryAllPackagesPermission,
-        IgnoreBatteryOptimizationsPermission,
+    private val permissions: List<Permission2> = listOf(
+        //PostNotificationsPermission,
+        //QueryAllPackagesPermission,
+        //IgnoreBatteryOptimizationsPermission,
     )
 
     override fun getRequiredPermissions(): List<Permission2> {
