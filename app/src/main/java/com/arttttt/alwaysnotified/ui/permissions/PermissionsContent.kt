@@ -132,9 +132,10 @@ private fun Modifier.clip(
     topCorners: Shape,
     bottomCorners: Shape,
 ): Modifier {
-    return when (index) {
-        0 -> this.clip(topCorners)
-        itemsCount - 1 -> this.clip(bottomCorners)
+    return when {
+        index == 0 && itemsCount == 1 -> this.clip(topCorners).clip(bottomCorners)
+        index == 0 -> this.clip(topCorners)
+        index == itemsCount - 1 -> this.clip(bottomCorners)
         else -> this
     }
 }

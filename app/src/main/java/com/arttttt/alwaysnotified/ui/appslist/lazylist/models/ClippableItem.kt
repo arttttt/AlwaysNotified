@@ -11,21 +11,27 @@ interface ClippableItem {
 }
 
 fun Modifier.fromClippableItem(item: ClippableItem): Modifier {
-    return if (item.clipTop) {
-        clip(
+    return when {
+        item.clipTop && item.clipBottom -> clip(
+            RoundedCornerShape(
+                topStart = 8.dp,
+                topEnd = 8.dp,
+                bottomStart = 8.dp,
+                bottomEnd = 8.dp,
+            )
+        )
+        item.clipTop -> clip(
             RoundedCornerShape(
                 topStart = 8.dp,
                 topEnd = 8.dp,
             )
         )
-    } else if (item.clipBottom) {
-        clip(
+        item.clipBottom -> clip(
             RoundedCornerShape(
                 bottomStart = 8.dp,
                 bottomEnd = 8.dp,
             )
         )
-    } else {
-        this
+        else -> this
     }
 }
