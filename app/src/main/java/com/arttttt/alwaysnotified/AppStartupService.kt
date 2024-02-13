@@ -6,17 +6,73 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
+import android.os.Message
+import android.os.Messenger
+import android.os.RemoteException
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 class AppStartupService : Service() {
+
+    enum class IncomeMessages {
+        REGISTER_CLIENT,
+        UNREGISTER_CLIENT,
+        STOP_SERVICE;
+    }
+
+    sealed class InnerIncomeMessages {
+        abstract val code: Int
+
+        data class RegisterClient(
+            val messenger: Messenger,
+        ) : InnerIncomeMessages() {
+            override val code: Int = 0
+        }
+
+        data object UnregisterClient : InnerIncomeMessages() {
+            override val code: Int = 1
+        }
+
+        data object StopService : InnerIncomeMessages() {
+            override val code: Int = 2
+        }
+    }
+
+    enum class OutcomeMessages {
+        LAUNCH_NEXT,
+        STOP_CHAIN;
+    }
+
+    private class ServiceHandler(
+        looper: Looper,
+        private val onMessageReceived: (InnerIncomeMessages) -> Unit,
+    ) : Handler(looper) {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                IncomeMessages.REGISTER_CLIENT.ordinal -> {
+                    onMessageReceived.invoke(
+                        InnerIncomeMessages.RegisterClient(msg.replyTo)
+                    )
+                }
+                IncomeMessages.UNREGISTER_CLIENT.ordinal -> {
+                    onMessageReceived.invoke(
+                        InnerIncomeMessages.UnregisterClient,
+                    )
+                }
+                IncomeMessages.STOP_SERVICE.ordinal -> {
+                    onMessageReceived.invoke(
+                        InnerIncomeMessages.StopService,
+                    )
+                }
+                else -> super.handleMessage(msg)
+            }
+        }
+    }
 
     companion object {
 
@@ -24,51 +80,91 @@ class AppStartupService : Service() {
         private const val NOTIFICATION_CHANNEL_NAME = "Holder service notifications"
 
         private const val NOTIFICATION_ID = 1
+
+        private const val LAUNCH_NEXT_ACTION = "launch_next_action"
+        private const val STOP_CHAIN_ACTION = "stop_chain_action"
     }
 
-    private val appsLauncher by inject<AppsLauncher>()
+    private var clientMessenger: Messenger? = null
+
+    private val messenger by lazy {
+        Messenger(
+            ServiceHandler(
+                looper = Looper.myLooper()!!,
+                onMessageReceived = ::handleInnerMessage,
+            )
+        )
+    }
 
     override fun onBind(intent: Intent?): IBinder? {
-        return null
+        return messenger.binder
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate() {
         super.onCreate()
 
-        GlobalScope.launch {
+        if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            stopSelf()
+        } else {
             createNotificationChannel()
-
-            val payload = appsLauncher.getLaunchIntent()
-
-            if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                return@launch
-            }
 
             NotificationManagerCompat
                 .from(applicationContext)
                 .notify(
                     NOTIFICATION_ID,
-                    createNotification(payload),
+                    createNotification(),
                 )
         }
     }
 
-    private fun createNotification(payload: Intent?): Notification {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        handleAction(intent?.action)
+
+        return START_STICKY
+    }
+
+    private fun handleAction(action: String?) {
+        when (action) {
+            LAUNCH_NEXT_ACTION -> trySendMessageToClient(OutcomeMessages.LAUNCH_NEXT)
+            STOP_CHAIN_ACTION -> trySendMessageToClient(OutcomeMessages.STOP_CHAIN)
+        }
+    }
+
+    private fun handleInnerMessage(message: InnerIncomeMessages) {
+        when (message) {
+            is InnerIncomeMessages.RegisterClient -> clientMessenger = message.messenger
+            is InnerIncomeMessages.UnregisterClient -> clientMessenger = null
+            is InnerIncomeMessages.StopService -> {
+                stopSelf()
+            }
+        }
+    }
+
+    private fun createNotification(): Notification {
         return NotificationCompat
             .Builder(this, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setContentTitle("Always notified")
-            .setContentText("Tap the notification to launch the selected apps")
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    applicationContext,
-                    0,
-                    payload,
-                    PendingIntent.FLAG_IMMUTABLE,
-                )
+            .addAction(
+                NotificationCompat.Action
+                    .Builder(
+                        null,
+                        "Launch next",
+                        getServiceIntent(LAUNCH_NEXT_ACTION),
+                    )
+                    .build()
+            )
+            .addAction(
+                NotificationCompat.Action
+                    .Builder(
+                        null,
+                        "Stop chain",
+                        getServiceIntent(STOP_CHAIN_ACTION),
+                    )
+                    .build()
             )
             .setOngoing(true)
             .setAutoCancel(true)
@@ -89,5 +185,34 @@ class AppStartupService : Service() {
             .build()
 
         notificationManager.createNotificationChannel(channel)
+    }
+
+    private fun getServiceIntent(action: String): PendingIntent {
+        val intent = Intent(
+            applicationContext,
+            AppStartupService::class.java,
+        )
+
+        intent.action = action
+
+        return PendingIntent.getService(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE,
+        )
+    }
+
+    private fun trySendMessageToClient(message: OutcomeMessages) {
+        try {
+            clientMessenger?.send(
+                Message.obtain(
+                    null,
+                    message.ordinal,
+                )
+            )
+        } catch (_: RemoteException) {
+            stopSelf()
+        }
     }
 }
