@@ -135,7 +135,7 @@ class AppStartupService : Service() {
             is InnerIncomeMessages.RegisterClient -> clientMessenger = message.messenger
             is InnerIncomeMessages.UnregisterClient -> clientMessenger = null
             is InnerIncomeMessages.StopService -> {
-                stopSelf()
+                stopService()
             }
         }
     }
@@ -212,7 +212,12 @@ class AppStartupService : Service() {
                 )
             )
         } catch (_: RemoteException) {
-            stopSelf()
+            stopService()
         }
+    }
+
+    private fun stopService() {
+        stopSelf()
+        NotificationManagerCompat.from(applicationContext).cancel(NOTIFICATION_ID)
     }
 }
