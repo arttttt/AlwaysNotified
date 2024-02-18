@@ -34,4 +34,5 @@ data class ActivityDbModel(
     val pkg: String,
     val activity: String,
     @ColumnInfo("profile_uuid") val profileUuid: String?,
+    @ColumnInfo("manual_mode") val manualMode: Boolean,
 )

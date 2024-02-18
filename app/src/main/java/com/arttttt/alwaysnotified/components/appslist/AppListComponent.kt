@@ -25,11 +25,13 @@ interface AppListComponent : DecomposeComponent, EventsProducer<AppListComponent
 
     fun onAppClicked(pkg: String)
 
-    fun activityClicked(pkg: String, name: String)
+    fun onActivityClicked(pkg: String, name: String)
 
     fun startApps()
 
     fun openSettings()
 
     fun updateProfile()
+
+    fun onManualModeChanged(pkg: String)
 }

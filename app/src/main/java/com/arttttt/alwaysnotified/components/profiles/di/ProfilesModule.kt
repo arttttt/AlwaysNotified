@@ -15,12 +15,8 @@ val profilesModule = module {
                     get<AppsStore>()
                         .state
                         .selectedActivities
-                        ?.map { (pkg, activity) ->
-                            SelectedActivity(
-                                pkg = pkg,
-                                activity = activity,
-                            )
-                        }
+                        ?.values
+                        ?.toList()
                         ?: emptyList()
                 },
                 profilesRepository = get(),

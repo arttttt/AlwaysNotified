@@ -2,7 +2,6 @@ package com.arttttt.alwaysnotified.components.appslist
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import com.arkivanov.essenty.lifecycle.doOnStop
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.AppsLauncher
@@ -58,10 +57,6 @@ class AppsListComponentImpl(
     )
 
     init {
-        lifecycle.doOnStop {
-            appsStore.accept(AppsStore.Intent.SaveApps)
-        }
-
         combine(
             appsStore.states,
             topBarComponent.states,
@@ -73,6 +68,8 @@ class AppsListComponentImpl(
                         pkg = app.pkg,
                         title = app.title,
                         clipTop = index == 0,
+                        manualMode = appsStoreState.selectedActivities?.get(app.pkg)?.manualMode == true,
+                        isManualModeAvailable = appsStoreState.selectedActivities?.get(app.pkg) != null,
                         clipBottom = index == appsStoreState.applications.entries.size - 1 && (appsStoreState.selectedApps == null || !appsStoreState.selectedApps.contains(app.pkg)),
                         icon = resourcesProvider.getDrawable(app.pkg),
                     )
@@ -85,7 +82,7 @@ class AppsListComponentImpl(
                                 pkg = activity.pkg,
                                 title = activity.title,
                                 name = activity.name,
-                                isSelected = activity.name.contentEquals(selectedActivity, true),
+                                isSelected = activity.name.contentEquals(selectedActivity?.name, true),
                                 key = "${activity.pkg}_${activity.name}",
                                 clipTop = false,
                                 clipBottom = index == appsStoreState.applications.entries.size - 1 && activityIndex == app.activities.size - 1
@@ -150,7 +147,7 @@ class AppsListComponentImpl(
         )
     }
 
-    override fun activityClicked(pkg: String, name: String) {
+    override fun onActivityClicked(pkg: String, name: String) {
         appsStore.accept(
             AppsStore.Intent.SelectActivity(
                 pkg = pkg,
@@ -165,5 +162,13 @@ class AppsListComponentImpl(
 
     override fun updateProfile() {
         topBarComponent.consume(TopBarComponent.Events.Input.UpdateCurrentProfile)
+    }
+
+    override fun onManualModeChanged(pkg: String) {
+        appsStore.accept(
+            AppsStore.Intent.ChangeManualMode(
+                pkg = pkg,
+            )
+        )
     }
 }

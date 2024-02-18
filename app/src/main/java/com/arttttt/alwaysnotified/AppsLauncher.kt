@@ -6,6 +6,7 @@ import android.content.Intent
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
+import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
 import com.arttttt.alwaysnotified.utils.extensions.intent
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +38,13 @@ class AppsLauncher(
         )
 
         if (payload.isEmpty()) return
+
+        context.startForegroundService(
+            Intent(
+                context,
+                AppStartupService::class.java,
+            )
+        )
 
         context.startActivity(
             context.getHolderIntent(payload)
@@ -73,9 +81,10 @@ class AppsLauncher(
         }
     }
 
+    @Suppress("ReplaceGetOrSet")
     private suspend fun getActivitiesPayload(
         applications: List<AppInfo>,
-        selectedActivities: Map<String, String>,
+        selectedActivities: Map<String, SelectedActivity>,
         isAppSelected: (String) -> Boolean,
     ): ArrayList<Intent> {
         return withContext(Dispatchers.IO) {
@@ -89,6 +98,7 @@ class AppsLauncher(
                                 activityInfo.takeIf {
                                     selectedActivities
                                         .get(appInfo.pkg)
+                                        ?.name
                                         ?.contentEquals(activityInfo.name, true)
                                         ?: false
                                 }
@@ -109,6 +119,7 @@ class AppsLauncher(
                         flags = 0
 
                         putExtra(HolderActivity.TARGET_TITLE, activityInfo.name.substringAfterLast("."))
+                        putExtra(HolderActivity.MANUAL_MODE, selectedActivities[activityInfo.pkg]?.manualMode)
                     }
                 }
             )
