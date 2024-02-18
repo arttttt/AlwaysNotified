@@ -21,6 +21,7 @@ import timber.log.Timber
 import java.io.Serializable
 import java.lang.Exception
 import java.util.LinkedList
+import kotlin.system.exitProcess
 
 class HolderActivity : ComponentActivity() {
 
@@ -40,6 +41,8 @@ class HolderActivity : ComponentActivity() {
         const val APPS_TO_START = "payload"
         const val TARGET_TITLE = "title"
         const val MANUAL_MODE = "manual_mode"
+
+        private const val FINISH_CHAIN = "finish_chain"
     }
 
     private val handler by lazy {
@@ -80,31 +83,36 @@ class HolderActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bindService(
-            Intent(
-                applicationContext,
-                AppStartupService::class.java,
-            ),
-            serviceConnection,
-            Context.BIND_AUTO_CREATE
-        )
+        when {
+            intent.getBooleanExtra(FINISH_CHAIN, false) -> finishAndRemoveTask()
+            else -> {
+                bindService(
+                    Intent(
+                        applicationContext,
+                        AppStartupService::class.java,
+                    ),
+                    serviceConnection,
+                    Context.BIND_AUTO_CREATE
+                )
 
-        setTaskDescription(
-            ActivityManager.TaskDescription
-                .Builder()
-                .setLabel(getString(R.string.do_not_close))
-                .build()
-        )
+                setTaskDescription(
+                    ActivityManager.TaskDescription
+                        .Builder()
+                        .setLabel(getString(R.string.do_not_close))
+                        .build()
+                )
 
-        launchApp(
-            manualMode = intent.getBooleanExtra(MANUAL_MODE, false)
-        )
+                launchApp()
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        unbindService(serviceConnection)
+        runCatching {
+            unbindService(serviceConnection)
+        }
     }
 
     private fun handleMessage(message: AppsServiceIpcMessenger.IpcMessage) {
@@ -119,20 +127,26 @@ class HolderActivity : ComponentActivity() {
                 )
             }
             is AppsServiceIpcMessenger.IpcMessage.StopChain -> {
-                finishAndRemoveTask()
+                startActivity(
+                    intent<HolderActivity> {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+                        putExtra(FINISH_CHAIN, true)
+                    }
+                )
             }
             else -> {}
         }
     }
 
-    private fun launchApp(
-        manualMode: Boolean,
-    ) {
+    private fun launchApp() {
         if (appsToStart.isEmpty()) {
             moveTaskToBack(true)
             finish()
         } else {
             val appToStart = appsToStart.poll()!!
+
+            val manualMode = appToStart.getBooleanExtra(MANUAL_MODE, false)
 
             val isErrorOccurred = kotlin
                 .runCatching {

@@ -92,15 +92,6 @@ class AppStartupService : Service() {
                     )
                     .build()
             )
-            .addAction(
-                NotificationCompat.Action
-                    .Builder(
-                        null,
-                        "Stop chain",
-                        getServiceIntent(STOP_CHAIN_ACTION),
-                    )
-                    .build()
-            )
             .setOngoing(true)
             .setAutoCancel(true)
             .build()

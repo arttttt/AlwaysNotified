@@ -68,7 +68,8 @@ class AppsRepositoryImpl(
             .map { activity ->
                 SelectedActivity(
                     pkg = activity.pkg,
-                    activity = activity.activity,
+                    name = activity.activity,
+                    manualMode = activity.manualMode,
                 )
             }
     }

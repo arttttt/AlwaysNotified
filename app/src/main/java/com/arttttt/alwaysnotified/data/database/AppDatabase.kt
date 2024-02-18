@@ -5,11 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.arttttt.alwaysnotified.data.database.dao.ProfilesDao
+import com.arttttt.alwaysnotified.data.database.migrations.Migration_1_2
 import com.arttttt.alwaysnotified.data.database.model.ActivityDbModel
 import com.arttttt.alwaysnotified.data.database.model.ProfileDbModel
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [
         ActivityDbModel::class,
         ProfileDbModel::class,
@@ -28,6 +29,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context = context,
                     klass = AppDatabase::class.java,
                     name = DB_NAME
+                )
+                .addMigrations(
+                    Migration_1_2,
                 )
                 .fallbackToDestructiveMigration()
                 .fallbackToDestructiveMigrationOnDowngrade()

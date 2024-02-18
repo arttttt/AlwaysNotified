@@ -76,9 +76,10 @@ fun AppsListContent(component: AppListComponent) {
             isStartButtonVisible = state.isStartButtonVisible,
             isUpdateProfileButtonVisible = state.isSaveProfileButtonVisible,
             onAppClicked = component::onAppClicked,
-            onActivityClicked = component::activityClicked,
+            onActivityClicked = component::onActivityClicked,
             onStartAppsClicked = component::startApps,
             onUpdateProfileClicked = component::updateProfile,
+            onManualModeChanged = component::onManualModeChanged,
         )
     }
 }
@@ -92,6 +93,7 @@ private fun AppsListContainer(
     onActivityClicked: (String, String) -> Unit,
     onStartAppsClicked: () -> Unit,
     onUpdateProfileClicked: () -> Unit,
+    onManualModeChanged: (String) -> Unit,
 ) {
     var parentCoordinates: LayoutCoordinates? by remember {
         mutableStateOf(null)
@@ -135,7 +137,8 @@ private fun AppsListContainer(
                 ),
             apps = apps,
             onAppClicked = onAppClicked,
-            activityClicked = onActivityClicked,
+            onActivityClicked = onActivityClicked,
+            onManualModeChanged = onManualModeChanged,
         )
 
         AnimatedVisibility(
@@ -164,19 +167,21 @@ private fun AppsList(
     modifier: Modifier,
     apps: ImmutableList<ListItem>,
     onAppClicked: (String) -> Unit,
-    activityClicked: (String, String) -> Unit,
+    onActivityClicked: (String, String) -> Unit,
+    onManualModeChanged: (String) -> Unit
 ) {
     val hapticFeedback = LocalCorrectHapticFeedback.current
 
     val lazyListDelegateManager = rememberLazyListDelegateManager(
         delegates = persistentListOf(
             AppListDelegate(
-                onClick = onAppClicked
+                onClick = onAppClicked,
+                onManualModeChanged = onManualModeChanged,
             ),
             ActivityListDelegate(
                 onClick = { pkg, name ->
                     hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
-                    activityClicked.invoke(pkg, name)
+                    onActivityClicked.invoke(pkg, name)
                 },
             ),
             DividerListDelegate(),

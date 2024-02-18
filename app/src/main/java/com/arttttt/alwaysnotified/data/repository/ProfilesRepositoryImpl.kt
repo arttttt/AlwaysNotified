@@ -40,8 +40,9 @@ class ProfilesRepositoryImpl(
                     ActivityDbModel(
                         uuid = UUID.randomUUID().toString(),
                         pkg = activity.pkg,
-                        activity = activity.activity,
+                        activity = activity.name,
                         profileUuid = profile.uuid,
+                        manualMode = activity.manualMode,
                     )
                 }
             )

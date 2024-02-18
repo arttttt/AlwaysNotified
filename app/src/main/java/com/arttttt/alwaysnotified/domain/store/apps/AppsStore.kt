@@ -3,6 +3,7 @@ package com.arttttt.alwaysnotified.domain.store.apps
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
 import com.arttttt.alwaysnotified.domain.entity.profiles.Profile
+import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
 
 interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> {
 
@@ -10,10 +11,10 @@ interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> 
         val isInProgress: Boolean,
         val applications: Map<String, AppInfo>?,
         val selectedApps: Set<String>?,
-        val selectedActivities: Map<String, String>?,
+        val selectedActivities: Map<String, SelectedActivity>?,
     ) {
 
-        fun getSelectedActivityForPkg(pkg: String): String? {
+        fun getSelectedActivityForPkg(pkg: String): SelectedActivity? {
             return selectedActivities?.get(pkg)
         }
     }
@@ -34,10 +35,12 @@ interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> 
             val name: String,
         ) : Intent()
 
-        data object SaveApps : Intent()
-
         data class SelectAppsForProfile(
             val profile: Profile
+        ) : Intent()
+
+        data class ChangeManualMode(
+            val pkg: String,
         ) : Intent()
     }
 
@@ -52,7 +55,7 @@ interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> 
         ) : Message()
 
         data class SelectedActivitiesChanged(
-            val selectedActivities: Map<String, String>,
+            val selectedActivities: Map<String, SelectedActivity>,
         ) : Message()
 
         data object ProgressStarted : Message()

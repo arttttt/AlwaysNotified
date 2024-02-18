@@ -3,10 +3,10 @@ package com.arttttt.alwaysnotified.domain.store.apps
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
 import com.arttttt.alwaysnotified.domain.entity.profiles.Profile
+import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
 import com.arttttt.alwaysnotified.domain.repository.AppsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -27,8 +27,8 @@ class AppsStoreExecutor(
         when (intent) {
             is AppsStore.Intent.SelectApp -> selectApp(intent.pkg)
             is AppsStore.Intent.SelectActivity -> selectActivity(intent.pkg, intent.name)
-            is AppsStore.Intent.SaveApps -> saveApps()
             is AppsStore.Intent.SelectAppsForProfile -> selectAppsForProfile(intent.profile)
+            is AppsStore.Intent.ChangeManualMode -> changeManualMode(intent.pkg)
         }
     }
 
@@ -93,10 +93,14 @@ class AppsStoreExecutor(
 
                         val app = activities?.get(pkg)
 
-                        if (app?.contentEquals(name, true) == true) {
+                        if (app?.name?.contentEquals(name, true) == true) {
                             mutableActivities.remove(pkg)
                         } else {
-                            mutableActivities[pkg] = name
+                            mutableActivities[pkg] = SelectedActivity(
+                                pkg = pkg,
+                                name = name,
+                                manualMode = false,
+                            )
                         }
 
                         mutableActivities.toMap()
@@ -106,34 +110,6 @@ class AppsStoreExecutor(
                 .let(::dispatch)
 
             publish(AppsStore.Label.ActivitiesChanged)
-        }
-    }
-
-    private fun saveApps() {
-        scope.launch(NonCancellable) {
-            withContext(Dispatchers.IO) {
-                val selectedActivities = state()
-                    .applications
-                    ?.values
-                    ?.mapNotNull { appInfo ->
-                        appInfo
-                            .takeIf { state().selectedApps?.contains(appInfo.pkg) == true }
-                            ?.activities
-                            ?.filter { activityInfo ->
-                                state()
-                                    .selectedActivities
-                                    ?.get(appInfo.pkg)
-                                    ?.contains(activityInfo.name)
-                                    ?:false
-                            }
-                    }
-                    ?.flatten()
-                    ?: emptyList()
-
-                /*appsRepository.saveSelectedActivities(
-                    activities = selectedActivities
-                )*/
-            }
         }
     }
 
@@ -147,11 +123,42 @@ class AppsStoreExecutor(
                 .associateBy { activity ->
                     activity.pkg
                 }
-                .mapValues { (_, value) ->
-                    value.activity
+                .mapValues { (pkg, value) ->
+                    SelectedActivity(
+                        pkg = pkg,
+                        name = value.name,
+                        manualMode = value.manualMode,
+                    )
                 }
                 .let(AppsStore.Message::SelectedActivitiesChanged)
                 .let(::dispatch)
+        }
+    }
+
+    private fun changeManualMode(pkg: String) {
+        val selectedActivities = state().selectedActivities ?: return
+        val selectedActivity = selectedActivities[pkg] ?: return
+
+        scope.launch {
+            dispatch(
+                AppsStore.Message.SelectedActivitiesChanged(
+                    selectedActivities = withContext(Dispatchers.IO) {
+                        selectedActivities
+                            .toMutableMap()
+                            .apply {
+                                put(
+                                    pkg,
+                                    selectedActivity.copy(
+                                        manualMode = !selectedActivity.manualMode,
+                                    )
+                                )
+                            }
+                            .toMap()
+                    }
+                )
+            )
+
+            publish(AppsStore.Label.ActivitiesChanged)
         }
     }
 }
