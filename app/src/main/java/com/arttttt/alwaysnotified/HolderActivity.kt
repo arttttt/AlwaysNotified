@@ -9,16 +9,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.os.Message
 import android.os.Messenger
-import android.os.RemoteException
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContract
 import com.arttttt.alwaysnotified.utils.extensions.getSerializable
 import com.arttttt.alwaysnotified.utils.extensions.intent
+import com.arttttt.alwaysnotified.utils.ipc.AppsServiceIpcMessenger
 import timber.log.Timber
 import java.io.Serializable
+import java.lang.Exception
 import java.util.LinkedList
 
 class HolderActivity : ComponentActivity() {
@@ -34,19 +34,6 @@ class HolderActivity : ComponentActivity() {
         }
     }
 
-    private class MessagesHandler(
-        looper: Looper,
-        private val onMessageReceived: (AppStartupService.OutcomeMessages) -> Unit,
-    ) : Handler(looper) {
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                AppStartupService.OutcomeMessages.LAUNCH_NEXT.ordinal -> onMessageReceived.invoke(AppStartupService.OutcomeMessages.LAUNCH_NEXT)
-                AppStartupService.OutcomeMessages.STOP_CHAIN.ordinal -> onMessageReceived.invoke(AppStartupService.OutcomeMessages.STOP_CHAIN)
-                else -> super.handleMessage(msg)
-            }
-        }
-    }
-
     companion object {
 
         const val APPS_TO_START = "payload"
@@ -59,34 +46,26 @@ class HolderActivity : ComponentActivity() {
 
     private val startPayloadLauncher = registerForActivityResult(StartPayloadContract()) {}
 
-    private var serviceMessenger: Messenger? = null
+    private val messenger = AppsServiceIpcMessenger(
+        tag = "holder",
+        onMessageReceived = ::handleMessage
+    )
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(
             name: ComponentName,
             service: IBinder,
         ) {
-            val serviceMessenger = Messenger(service)
             try {
-                val msg = Message.obtain(null, AppStartupService.IncomeMessages.REGISTER_CLIENT.ordinal)
-                msg.replyTo = clientMessenger
-                serviceMessenger.send(msg)
-                this@HolderActivity.serviceMessenger = serviceMessenger
-            } catch (_: RemoteException) {}
+                messenger.sendMessage(
+                    AppsServiceIpcMessenger.IpcMessage.RegisterClient(Messenger(service))
+                )
+            } catch (_: Exception) {}
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            serviceMessenger = null
+            messenger.sendMessage(AppsServiceIpcMessenger.IpcMessage.UnregisterClient)
         }
-    }
-
-    private val clientMessenger by lazy {
-        Messenger(
-            MessagesHandler(
-                looper = Looper.myLooper()!!,
-                onMessageReceived = ::handleMessage,
-            )
-        )
     }
 
     private var isErrorOccurred: Boolean = false
@@ -117,21 +96,21 @@ class HolderActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        serviceMessenger?.send(Message.obtain(null, AppStartupService.IncomeMessages.UNREGISTER_CLIENT.ordinal))
         unbindService(serviceConnection)
     }
 
-    private fun handleMessage(message: AppStartupService.OutcomeMessages) {
+    private fun handleMessage(message: AppsServiceIpcMessenger.IpcMessage) {
         when (message) {
-            AppStartupService.OutcomeMessages.LAUNCH_NEXT -> {
+            is AppsServiceIpcMessenger.IpcMessage.LaunchNext -> {
                 startNextActivity(
                     isErrorOccurred = isErrorOccurred,
                     appsToStart = appsToStart,
                 )
             }
-            AppStartupService.OutcomeMessages.STOP_CHAIN ->{
+            is AppsServiceIpcMessenger.IpcMessage.StopChain -> {
                 finishAndRemoveTask()
             }
+            else -> {}
         }
     }
 
@@ -186,7 +165,7 @@ class HolderActivity : ComponentActivity() {
 
         if (appsToStart.isEmpty()) {
             moveTaskToBack(true)
-            serviceMessenger?.send(Message.obtain(null, AppStartupService.IncomeMessages.STOP_SERVICE.ordinal))
+            messenger.sendMessage(AppsServiceIpcMessenger.IpcMessage.StopService)
         } else {
             startActivity(
                 intent<HolderActivity> {
@@ -196,6 +175,8 @@ class HolderActivity : ComponentActivity() {
                     )
                 }
             )
+
+            unbindService(serviceConnection)
         }
     }
 }

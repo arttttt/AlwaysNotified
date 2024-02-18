@@ -6,73 +6,15 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
-import android.os.Message
-import android.os.Messenger
 import android.os.RemoteException
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.arttttt.alwaysnotified.utils.ipc.AppsServiceIpcMessenger
 
 class AppStartupService : Service() {
-
-    enum class IncomeMessages {
-        REGISTER_CLIENT,
-        UNREGISTER_CLIENT,
-        STOP_SERVICE;
-    }
-
-    sealed class InnerIncomeMessages {
-        abstract val code: Int
-
-        data class RegisterClient(
-            val messenger: Messenger,
-        ) : InnerIncomeMessages() {
-            override val code: Int = 0
-        }
-
-        data object UnregisterClient : InnerIncomeMessages() {
-            override val code: Int = 1
-        }
-
-        data object StopService : InnerIncomeMessages() {
-            override val code: Int = 2
-        }
-    }
-
-    enum class OutcomeMessages {
-        LAUNCH_NEXT,
-        STOP_CHAIN;
-    }
-
-    private class ServiceHandler(
-        looper: Looper,
-        private val onMessageReceived: (InnerIncomeMessages) -> Unit,
-    ) : Handler(looper) {
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                IncomeMessages.REGISTER_CLIENT.ordinal -> {
-                    onMessageReceived.invoke(
-                        InnerIncomeMessages.RegisterClient(msg.replyTo)
-                    )
-                }
-                IncomeMessages.UNREGISTER_CLIENT.ordinal -> {
-                    onMessageReceived.invoke(
-                        InnerIncomeMessages.UnregisterClient,
-                    )
-                }
-                IncomeMessages.STOP_SERVICE.ordinal -> {
-                    onMessageReceived.invoke(
-                        InnerIncomeMessages.StopService,
-                    )
-                }
-                else -> super.handleMessage(msg)
-            }
-        }
-    }
 
     companion object {
 
@@ -85,18 +27,14 @@ class AppStartupService : Service() {
         private const val STOP_CHAIN_ACTION = "stop_chain_action"
     }
 
-    private var clientMessenger: Messenger? = null
-
     private val messenger by lazy {
-        Messenger(
-            ServiceHandler(
-                looper = Looper.myLooper()!!,
-                onMessageReceived = ::handleInnerMessage,
-            )
+        AppsServiceIpcMessenger(
+            tag = "service",
+            onMessageReceived = ::handleMessage,
         )
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent?): IBinder {
         return messenger.binder
     }
 
@@ -123,20 +61,17 @@ class AppStartupService : Service() {
         return START_STICKY
     }
 
-    private fun handleAction(action: String?) {
-        when (action) {
-            LAUNCH_NEXT_ACTION -> trySendMessageToClient(OutcomeMessages.LAUNCH_NEXT)
-            STOP_CHAIN_ACTION -> trySendMessageToClient(OutcomeMessages.STOP_CHAIN)
+    private fun handleMessage(message: AppsServiceIpcMessenger.IpcMessage) {
+        when (message) {
+            is AppsServiceIpcMessenger.IpcMessage.StopService -> stopService()
+            else -> {}
         }
     }
 
-    private fun handleInnerMessage(message: InnerIncomeMessages) {
-        when (message) {
-            is InnerIncomeMessages.RegisterClient -> clientMessenger = message.messenger
-            is InnerIncomeMessages.UnregisterClient -> clientMessenger = null
-            is InnerIncomeMessages.StopService -> {
-                stopService()
-            }
+    private fun handleAction(action: String?) {
+        when (action) {
+            LAUNCH_NEXT_ACTION -> trySendMessageToClient(AppsServiceIpcMessenger.IpcMessage.LaunchNext)
+            STOP_CHAIN_ACTION -> trySendMessageToClient(AppsServiceIpcMessenger.IpcMessage.StopChain)
         }
     }
 
@@ -203,14 +138,9 @@ class AppStartupService : Service() {
         )
     }
 
-    private fun trySendMessageToClient(message: OutcomeMessages) {
+    private fun trySendMessageToClient(message: AppsServiceIpcMessenger.IpcMessage) {
         try {
-            clientMessenger?.send(
-                Message.obtain(
-                    null,
-                    message.ordinal,
-                )
-            )
+            messenger.sendMessage(message)
         } catch (_: RemoteException) {
             stopService()
         }
