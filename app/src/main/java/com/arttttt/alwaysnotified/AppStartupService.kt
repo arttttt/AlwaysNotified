@@ -25,6 +25,7 @@ class AppStartupService : Service() {
 
         private const val LAUNCH_NEXT_ACTION = "launch_next_action"
         private const val STOP_CHAIN_ACTION = "stop_chain_action"
+        private const val STOP_SELF_ACTION = "stop_self_action"
     }
 
     private val messenger by lazy {
@@ -72,6 +73,7 @@ class AppStartupService : Service() {
         when (action) {
             LAUNCH_NEXT_ACTION -> trySendMessageToClient(AppsServiceIpcMessenger.IpcMessage.LaunchNext)
             STOP_CHAIN_ACTION -> trySendMessageToClient(AppsServiceIpcMessenger.IpcMessage.StopChain)
+            STOP_SELF_ACTION -> stopService()
         }
     }
 
@@ -91,6 +93,9 @@ class AppStartupService : Service() {
                         getServiceIntent(LAUNCH_NEXT_ACTION),
                     )
                     .build()
+            )
+            .setDeleteIntent(
+                getServiceIntent(STOP_SELF_ACTION)
             )
             .setOngoing(true)
             .setAutoCancel(true)
