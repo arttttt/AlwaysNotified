@@ -13,6 +13,7 @@ import android.os.Messenger
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.core.os.postDelayed
 import com.arttttt.alwaysnotified.utils.extensions.getSerializable
 import com.arttttt.alwaysnotified.utils.extensions.intent
 import com.arttttt.alwaysnotified.utils.ipc.AppsServiceIpcMessenger
@@ -38,6 +39,7 @@ class HolderActivity : ComponentActivity() {
 
         const val APPS_TO_START = "payload"
         const val TARGET_TITLE = "title"
+        const val MANUAL_MODE = "manual_mode"
     }
 
     private val handler by lazy {
@@ -68,8 +70,12 @@ class HolderActivity : ComponentActivity() {
         }
     }
 
-    private var isErrorOccurred: Boolean = false
-    private lateinit var appsToStart: LinkedList<Intent>
+    private val appsToStart: LinkedList<Intent> by lazy {
+        intent
+            .getSerializable<ArrayList<Intent>?>(APPS_TO_START)
+            ?.let(::LinkedList)
+            ?: LinkedList()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +96,9 @@ class HolderActivity : ComponentActivity() {
                 .build()
         )
 
-        launchApp()
+        launchApp(
+            manualMode = intent.getBooleanExtra(MANUAL_MODE, false)
+        )
     }
 
     override fun onDestroy() {
@@ -102,8 +110,11 @@ class HolderActivity : ComponentActivity() {
     private fun handleMessage(message: AppsServiceIpcMessenger.IpcMessage) {
         when (message) {
             is AppsServiceIpcMessenger.IpcMessage.LaunchNext -> {
+                startActivity(
+                    intent<ProtectorActivity>()
+                )
+
                 startNextActivity(
-                    isErrorOccurred = isErrorOccurred,
                     appsToStart = appsToStart,
                 )
             }
@@ -114,12 +125,9 @@ class HolderActivity : ComponentActivity() {
         }
     }
 
-    private fun launchApp() {
-        val appsToStart = intent
-            .getSerializable<ArrayList<Intent>?>(APPS_TO_START)
-            ?.let(::LinkedList)
-            ?: LinkedList()
-
+    private fun launchApp(
+        manualMode: Boolean,
+    ) {
         if (appsToStart.isEmpty()) {
             moveTaskToBack(true)
             finish()
@@ -146,23 +154,38 @@ class HolderActivity : ComponentActivity() {
                 }
                 .getOrDefault(true)
 
-            this.isErrorOccurred = isErrorOccurred
-            this.appsToStart = appsToStart
+            when {
+                isErrorOccurred -> {
+                    finish()
+
+                    startNextActivity(appsToStart)
+                }
+                manualMode -> {
+                    /**
+                     * do nothing
+                     * wait for a command
+                     */
+                }
+                else -> {
+                    startActivity(
+                        intent<ProtectorActivity>()
+                    )
+
+                    handler.postDelayed(
+                        3000,
+                    ) {
+                        startNextActivity(
+                            appsToStart = appsToStart,
+                        )
+                    }
+                }
+            }
         }
     }
 
     private fun startNextActivity(
-        isErrorOccurred: Boolean,
         appsToStart: LinkedList<Intent>,
     ) {
-        if (isErrorOccurred) {
-            finish()
-        }
-
-        startActivity(
-            intent<ProtectorActivity>()
-        )
-
         if (appsToStart.isEmpty()) {
             moveTaskToBack(true)
             messenger.sendMessage(AppsServiceIpcMessenger.IpcMessage.StopService)
