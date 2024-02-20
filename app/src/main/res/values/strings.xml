@@ -22,4 +22,6 @@
     <string name="profile_empty_title_error">title can not be empty</string>
     <string name="can_not_save_profile">Can\'t save profile</string>
 
+    <string name="apps_list">Apps list</string>
+
 </resources>

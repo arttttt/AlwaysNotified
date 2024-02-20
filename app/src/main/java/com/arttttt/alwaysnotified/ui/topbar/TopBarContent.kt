@@ -24,9 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arttttt.alwaysnotified.R
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponent
 import com.arttttt.alwaysnotified.ui.theme.AppTheme
 import kotlinx.coroutines.flow.launchIn
@@ -46,7 +48,7 @@ fun TopBarContent(component: TopBarComponent) {
         uiState = state,
         title = {
             Text(
-                text = "Apps list",
+                text = stringResource(R.string.apps_list),
                 fontSize = 22.sp,
             )
         },
