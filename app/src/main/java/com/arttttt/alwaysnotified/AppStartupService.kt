@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.ServiceCompat
 import com.arttttt.alwaysnotified.utils.ipc.AppsServiceIpcMessenger
 
 class AppStartupService : Service() {
@@ -143,7 +144,7 @@ class AppStartupService : Service() {
     }
 
     private fun stopService() {
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         stopSelf()
-        NotificationManagerCompat.from(applicationContext).cancel(NOTIFICATION_ID)
     }
 }
