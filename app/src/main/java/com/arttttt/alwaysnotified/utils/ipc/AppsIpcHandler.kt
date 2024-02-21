@@ -28,6 +28,8 @@ class AppsIpcHandler(
             AppsServiceIpcMessenger.IpcMessageCode.STOP_SERVICE -> AppsServiceIpcMessenger.IpcMessage.StopService
             AppsServiceIpcMessenger.IpcMessageCode.STOP_CHAIN -> AppsServiceIpcMessenger.IpcMessage.StopChain
             AppsServiceIpcMessenger.IpcMessageCode.LAUNCH_NEXT -> AppsServiceIpcMessenger.IpcMessage.LaunchNext
+            AppsServiceIpcMessenger.IpcMessageCode.HIDE_LAUNCH_BUTTON -> AppsServiceIpcMessenger.IpcMessage.HideLaunchButton
+            AppsServiceIpcMessenger.IpcMessageCode.SHOW_LAUNCH_BUTTON -> AppsServiceIpcMessenger.IpcMessage.ShowLaunchButton
         }
     }
 
@@ -38,6 +40,8 @@ class AppsIpcHandler(
             AppsServiceIpcMessenger.IpcMessageCode.LAUNCH_NEXT.ordinal -> AppsServiceIpcMessenger.IpcMessageCode.LAUNCH_NEXT
             AppsServiceIpcMessenger.IpcMessageCode.STOP_CHAIN.ordinal -> AppsServiceIpcMessenger.IpcMessageCode.STOP_CHAIN
             AppsServiceIpcMessenger.IpcMessageCode.STOP_SERVICE.ordinal -> AppsServiceIpcMessenger.IpcMessageCode.STOP_SERVICE
+            AppsServiceIpcMessenger.IpcMessageCode.HIDE_LAUNCH_BUTTON.ordinal -> AppsServiceIpcMessenger.IpcMessageCode.HIDE_LAUNCH_BUTTON
+            AppsServiceIpcMessenger.IpcMessageCode.SHOW_LAUNCH_BUTTON.ordinal -> AppsServiceIpcMessenger.IpcMessageCode.SHOW_LAUNCH_BUTTON
             else -> throw IllegalArgumentException("unknown message code: $value")
         }
     }

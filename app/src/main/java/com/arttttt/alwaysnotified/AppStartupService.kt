@@ -1,11 +1,14 @@
 package com.arttttt.alwaysnotified
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.os.IBinder
 import android.os.RemoteException
 import androidx.core.app.ActivityCompat
@@ -27,6 +30,8 @@ class AppStartupService : Service() {
         private const val LAUNCH_NEXT_ACTION = "launch_next_action"
         private const val STOP_CHAIN_ACTION = "stop_chain_action"
         private const val STOP_SELF_ACTION = "stop_self_action"
+
+        private const val FOREGROUND_SERVICE_TYPE_ABSENT = 0
     }
 
     private val messenger by lazy {
@@ -35,6 +40,17 @@ class AppStartupService : Service() {
             onMessageReceived = ::handleMessage,
         )
     }
+
+    @get:SuppressLint("ObsoleteSdkInt")
+    @get:Suppress("DEPRECATION")
+    private val foregroundServiceTypeCompat: Int
+        get() {
+            return when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE
+                else -> FOREGROUND_SERVICE_TYPE_ABSENT
+            }
+        }
 
     override fun onBind(intent: Intent?): IBinder {
         return messenger.binder
@@ -48,12 +64,9 @@ class AppStartupService : Service() {
         } else {
             createNotificationChannel()
 
-            NotificationManagerCompat
-                .from(applicationContext)
-                .notify(
-                    NOTIFICATION_ID,
-                    createNotification(),
-                )
+            showNotification(
+                isActionAvailable = false
+            )
         }
     }
 
@@ -66,6 +79,16 @@ class AppStartupService : Service() {
     private fun handleMessage(message: AppsServiceIpcMessenger.IpcMessage) {
         when (message) {
             is AppsServiceIpcMessenger.IpcMessage.StopService -> stopService()
+            is AppsServiceIpcMessenger.IpcMessage.HideLaunchButton -> {
+                showNotification(
+                    isActionAvailable = false
+                )
+            }
+            is AppsServiceIpcMessenger.IpcMessage.ShowLaunchButton -> {
+                showNotification(
+                    isActionAvailable = true
+                )
+            }
             else -> {}
         }
     }
@@ -78,7 +101,9 @@ class AppStartupService : Service() {
         }
     }
 
-    private fun createNotification(): Notification {
+    private fun createNotification(
+        isActionAvailable: Boolean,
+    ): Notification {
         return NotificationCompat
             .Builder(this, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -86,20 +111,27 @@ class AppStartupService : Service() {
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setContentTitle("Always notified")
-            .addAction(
-                NotificationCompat.Action
-                    .Builder(
-                        null,
-                        "Launch next",
-                        getServiceIntent(LAUNCH_NEXT_ACTION),
+            .run {
+                if (isActionAvailable) {
+                    addAction(
+                        NotificationCompat.Action
+                            .Builder(
+                                null,
+                                "Launch next",
+                                getServiceIntent(LAUNCH_NEXT_ACTION),
+                            )
+                            .build()
                     )
-                    .build()
-            )
+                } else {
+                    this
+                }
+            }
             .setDeleteIntent(
                 getServiceIntent(STOP_SELF_ACTION)
             )
             .setOngoing(true)
             .setAutoCancel(true)
+            .setOnlyAlertOnce(true)
             .build()
     }
 
@@ -146,5 +178,15 @@ class AppStartupService : Service() {
     private fun stopService() {
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         stopSelf()
+    }
+
+    private fun showNotification(
+        isActionAvailable: Boolean,
+    ) {
+        startForeground(
+            NOTIFICATION_ID,
+            createNotification(isActionAvailable),
+            foregroundServiceTypeCompat,
+        )
     }
 }

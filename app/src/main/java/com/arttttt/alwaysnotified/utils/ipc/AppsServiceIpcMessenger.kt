@@ -18,7 +18,9 @@ class AppsServiceIpcMessenger(
         UNREGISTER_CLIENT,
         STOP_SERVICE,
         LAUNCH_NEXT,
-        STOP_CHAIN;
+        STOP_CHAIN,
+        HIDE_LAUNCH_BUTTON,
+        SHOW_LAUNCH_BUTTON;
 
         companion object;
     }
@@ -46,6 +48,14 @@ class AppsServiceIpcMessenger(
 
         data object StopChain : IpcMessage() {
             override val code = IpcMessageCode.STOP_CHAIN
+        }
+
+        data object HideLaunchButton : IpcMessage() {
+            override val code = IpcMessageCode.HIDE_LAUNCH_BUTTON
+        }
+
+        data object ShowLaunchButton : IpcMessage() {
+            override val code: IpcMessageCode = IpcMessageCode.SHOW_LAUNCH_BUTTON
         }
     }
 
@@ -82,6 +92,12 @@ class AppsServiceIpcMessenger(
             is IpcMessage.StopChain -> {
                 externalMessenger?.send(message.toSystemMessage())
             }
+            is IpcMessage.HideLaunchButton -> {
+                externalMessenger?.send(message.toSystemMessage())
+            }
+            is IpcMessage.ShowLaunchButton -> {
+                externalMessenger?.send(message.toSystemMessage())
+            }
         }
     }
 
@@ -100,6 +116,12 @@ class AppsServiceIpcMessenger(
                 onMessageReceived.invoke(message)
             }
             is IpcMessage.LaunchNext -> {
+                onMessageReceived.invoke(message)
+            }
+            is IpcMessage.ShowLaunchButton -> {
+                onMessageReceived.invoke(message)
+            }
+            is IpcMessage.HideLaunchButton -> {
                 onMessageReceived.invoke(message)
             }
         }
@@ -123,6 +145,8 @@ class AppsServiceIpcMessenger(
             is IpcMessage.LaunchNext -> IpcMessageCode.LAUNCH_NEXT
             is IpcMessage.StopService -> IpcMessageCode.STOP_SERVICE
             is IpcMessage.StopChain -> IpcMessageCode.STOP_CHAIN
+            is IpcMessage.HideLaunchButton -> IpcMessageCode.HIDE_LAUNCH_BUTTON
+            is IpcMessage.ShowLaunchButton -> IpcMessageCode.SHOW_LAUNCH_BUTTON
         }
     }
 }

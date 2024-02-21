@@ -65,6 +65,14 @@ class HolderActivity : ComponentActivity() {
                 messenger.sendMessage(
                     AppsServiceIpcMessenger.IpcMessage.RegisterClient(Messenger(service))
                 )
+
+                messenger.sendMessage(
+                    if (manualMode) {
+                        AppsServiceIpcMessenger.IpcMessage.ShowLaunchButton
+                    } else {
+                        AppsServiceIpcMessenger.IpcMessage.HideLaunchButton
+                    }
+                )
             } catch (_: Exception) {}
         }
 
@@ -79,6 +87,15 @@ class HolderActivity : ComponentActivity() {
             ?.let(::LinkedList)
             ?: LinkedList()
     }
+
+    private val appToLaunch by lazy {
+        appsToStart.poll()!!
+    }
+
+    private val manualMode: Boolean
+        get() {
+            return appToLaunch.getBooleanExtra(MANUAL_MODE, false)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,13 +161,9 @@ class HolderActivity : ComponentActivity() {
             moveTaskToBack(true)
             finish()
         } else {
-            val appToStart = appsToStart.poll()!!
-
-            val manualMode = appToStart.getBooleanExtra(MANUAL_MODE, false)
-
             val isErrorOccurred = kotlin
                 .runCatching {
-                    startPayloadLauncher.launch(appToStart)
+                    startPayloadLauncher.launch(appToLaunch)
 
                     false
                 }
@@ -159,7 +172,7 @@ class HolderActivity : ComponentActivity() {
                         applicationContext,
                         getString(
                             R.string.can_not_launch_activity,
-                            appToStart.getStringExtra(TARGET_TITLE),
+                            appToLaunch.getStringExtra(TARGET_TITLE),
                         ),
                         Toast.LENGTH_SHORT,
                     ).show()
