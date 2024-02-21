@@ -1,18 +1,24 @@
 package com.arttttt.alwaysnotified.components.appslist
 
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.AppsLauncher
+import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
 import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import com.arttttt.alwaysnotified.arch.shared.context.childAppContext
+import com.arttttt.alwaysnotified.arch.shared.context.customChildSlot
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
+import com.arttttt.alwaysnotified.components.activitieslist.ActivitiesListComponentImpl
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponent
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponentImpl
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
-import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.AppListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.DividerListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ProgressListItem
@@ -37,6 +43,11 @@ class AppsListComponentImpl(
     AppComponentContext by componentContext,
     EventsProducerDelegate<AppListComponent.Event> by EventsProducerDelegateImpl() {
 
+    private sealed class DialogConfig {
+
+        data object ActivitiesList : DialogConfig()
+    }
+
     private val scope = koinScope()
 
     private val appsStore: AppsStore by scope.inject()
@@ -56,7 +67,23 @@ class AppsListComponentImpl(
         )
     )
 
+    private val dialogNavigation = SlotNavigation<DialogConfig>()
+
+    override val dialog: Value<ChildSlot<*, DecomposeComponent>> =
+        customChildSlot(
+            parentScopeID = scope.id,
+            source = dialogNavigation,
+            serializer = null,
+            handleBackButton = true,
+        ) { config, childComponentContext ->
+            when (config) {
+                is DialogConfig.ActivitiesList -> ActivitiesListComponentImpl(childComponentContext)
+            }
+        }
+
     init {
+        dialogNavigation.activate(DialogConfig.ActivitiesList)
+
         combine(
             appsStore.states,
             topBarComponent.states,
@@ -74,7 +101,7 @@ class AppsListComponentImpl(
                         icon = resourcesProvider.getDrawable(app.pkg),
                     )
 
-                    if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
+                    /*if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
                         val selectedActivity = appsStoreState.getSelectedActivityForPkg(app.pkg)
 
                         app.activities.mapIndexedTo(acc) { activityIndex, activity ->
@@ -88,7 +115,7 @@ class AppsListComponentImpl(
                                 clipBottom = index == appsStoreState.applications.entries.size - 1 && activityIndex == app.activities.size - 1
                             )
                         }
-                    }
+                    }*/
 
                     if (index < appsStoreState.applications.size - 1) {
                         acc += DividerListItem()
@@ -140,11 +167,11 @@ class AppsListComponentImpl(
     }
 
     override fun onAppClicked(pkg: String) {
-        appsStore.accept(
+        /*appsStore.accept(
             AppsStore.Intent.SelectApp(
                 pkg = pkg,
             )
-        )
+        )*/
     }
 
     override fun onActivityClicked(pkg: String, name: String) {

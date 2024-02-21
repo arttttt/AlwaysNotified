@@ -41,7 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arttttt.alwaysnotified.R
+import com.arttttt.alwaysnotified.components.activitieslist.ActivitiesListComponent
 import com.arttttt.alwaysnotified.components.appslist.AppListComponent
+import com.arttttt.alwaysnotified.ui.activitieslist.ActivitiesListContent
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.ActivityListDelegate
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.AppListDelegate
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.DividerListDelegate
@@ -61,6 +63,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun AppsListContent(component: AppListComponent) {
     val state by component.uiState.subscribeAsState()
+    val dialog by component.dialog.subscribeAsState()
 
     Column(
         modifier = Modifier
@@ -81,6 +84,14 @@ fun AppsListContent(component: AppListComponent) {
             onUpdateProfileClicked = component::updateProfile,
             onManualModeChanged = component::onManualModeChanged,
         )
+    }
+
+    dialog.child?.instance?.let { dialogComponent ->
+        when (dialogComponent) {
+            is ActivitiesListComponent -> ActivitiesListContent(
+                component = dialogComponent,
+            )
+        }
     }
 }
 

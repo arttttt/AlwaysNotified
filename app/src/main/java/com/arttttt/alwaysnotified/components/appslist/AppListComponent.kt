@@ -1,5 +1,6 @@
 package com.arttttt.alwaysnotified.components.appslist
 
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
 import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducer
@@ -22,6 +23,8 @@ interface AppListComponent : DecomposeComponent, EventsProducer<AppListComponent
     val uiState: Value<UiState>
 
     val topBarComponent: TopBarComponent
+
+    val dialog: Value<ChildSlot<*, DecomposeComponent>>
 
     fun onAppClicked(pkg: String)
 
