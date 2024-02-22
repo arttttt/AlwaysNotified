@@ -73,7 +73,7 @@ class AppStartupService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         handleAction(intent?.action)
 
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     private fun handleMessage(message: AppsServiceIpcMessenger.IpcMessage) {
