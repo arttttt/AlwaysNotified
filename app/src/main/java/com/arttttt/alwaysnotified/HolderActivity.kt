@@ -226,7 +226,9 @@ class HolderActivity : ComponentActivity() {
                 }
             )
 
-            unbindService(serviceConnection)
+            runCatching {
+                unbindService(serviceConnection)
+            }
         }
     }
 }
