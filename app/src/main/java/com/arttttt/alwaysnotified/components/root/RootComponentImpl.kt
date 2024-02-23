@@ -87,9 +87,7 @@ class RootComponentImpl(
                 componentContext = context,
                 resourcesProvider = scope.get(),
             )
-            is Config.Permissions -> PermissionsComponentImpl(
-                componentContext = context,
-            )
+            is Config.Permissions -> permissionsComponent
             is Config.Settings -> SettingsComponentImpl(
                 componentContext = context,
             )
