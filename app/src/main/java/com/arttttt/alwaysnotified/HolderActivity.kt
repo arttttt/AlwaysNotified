@@ -103,14 +103,7 @@ class HolderActivity : ComponentActivity() {
         when {
             intent.getBooleanExtra(FINISH_CHAIN, false) -> finishAndRemoveTask()
             else -> {
-                bindService(
-                    Intent(
-                        applicationContext,
-                        AppStartupService::class.java,
-                    ),
-                    serviceConnection,
-                    Context.BIND_AUTO_CREATE
-                )
+                bindService(manualMode)
 
                 setTaskDescription(
                     ActivityManager.TaskDescription
@@ -127,9 +120,7 @@ class HolderActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        runCatching {
-            unbindService(serviceConnection)
-        }
+        unbindService(manualMode)
     }
 
     private fun handleMessage(message: AppsServiceIpcMessenger.IpcMessage) {
@@ -226,9 +217,28 @@ class HolderActivity : ComponentActivity() {
                 }
             )
 
-            runCatching {
-                unbindService(serviceConnection)
-            }
+            unbindService(manualMode)
+        }
+    }
+
+    private fun bindService(manualMode: Boolean) {
+        if (!manualMode) return
+
+        bindService(
+            Intent(
+                applicationContext,
+                AppStartupService::class.java,
+            ),
+            serviceConnection,
+            Context.BIND_AUTO_CREATE
+        )
+    }
+
+    private fun unbindService(manualMode: Boolean) {
+        if (!manualMode) return
+
+        runCatching {
+            unbindService(serviceConnection)
         }
     }
 }

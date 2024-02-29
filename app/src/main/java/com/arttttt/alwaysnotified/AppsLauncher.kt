@@ -39,13 +39,6 @@ class AppsLauncher(
 
         if (payload.isEmpty()) return
 
-        context.startForegroundService(
-            Intent(
-                context,
-                AppStartupService::class.java,
-            )
-        )
-
         context.startActivity(
             context.getHolderIntent(payload)
         )
