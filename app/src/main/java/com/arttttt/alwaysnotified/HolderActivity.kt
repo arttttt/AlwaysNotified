@@ -88,13 +88,13 @@ class HolderActivity : ComponentActivity() {
             ?: LinkedList()
     }
 
-    private val appToLaunch by lazy {
-        appsToStart.poll()!!
+    private val appToLaunch: Intent? by lazy {
+        appsToStart.poll()
     }
 
     private val manualMode: Boolean
         get() {
-            return appToLaunch.getBooleanExtra(MANUAL_MODE, false)
+            return appToLaunch?.getBooleanExtra(MANUAL_MODE, false) ?: false
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,7 +148,7 @@ class HolderActivity : ComponentActivity() {
     }
 
     private fun launchApp() {
-        if (appsToStart.isEmpty()) {
+        if (appToLaunch == null) {
             moveTaskToBack(true)
             finish()
         } else {
@@ -163,7 +163,7 @@ class HolderActivity : ComponentActivity() {
                         applicationContext,
                         getString(
                             R.string.can_not_launch_activity,
-                            appToLaunch.getStringExtra(TARGET_TITLE),
+                            appToLaunch!!.getStringExtra(TARGET_TITLE),
                         ),
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -206,7 +206,6 @@ class HolderActivity : ComponentActivity() {
     ) {
         if (appsToStart.isEmpty()) {
             moveTaskToBack(true)
-            messenger.sendMessage(AppsServiceIpcMessenger.IpcMessage.StopService)
         } else {
             startActivity(
                 intent<HolderActivity> {
@@ -216,9 +215,10 @@ class HolderActivity : ComponentActivity() {
                     )
                 }
             )
-
-            unbindService(manualMode)
         }
+
+        messenger.sendMessage(AppsServiceIpcMessenger.IpcMessage.StopService)
+        unbindService(manualMode)
     }
 
     private fun bindService(manualMode: Boolean) {
