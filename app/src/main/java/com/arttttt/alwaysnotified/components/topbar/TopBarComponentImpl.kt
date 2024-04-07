@@ -61,6 +61,7 @@ class TopBarComponentImpl(
                 TopBarAction.Profiles(
                     component = profilesComponent
                 ),
+                TopBarAction.AppsSearch,
                 TopBarAction.Settings,
             ),
         )
