@@ -9,6 +9,7 @@ import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
+import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponentImpl
 import com.arttttt.alwaysnotified.components.profiles.ProfilesComponentImpl
 import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
 import com.arttttt.alwaysnotified.components.topbar.actions.ExpandableTopBarAction
@@ -32,6 +33,15 @@ class TopBarComponentImpl(
         context = wrapComponentContext(
             context = childContext(
                 key = "profiles",
+            ),
+            parentScopeID = parentScopeID,
+        )
+    )
+
+    private val appsSearchComponent = AppsSearchComponentImpl(
+        context = wrapComponentContext(
+            context = childContext(
+                key = "apps_search",
             ),
             parentScopeID = parentScopeID,
         )
@@ -61,7 +71,9 @@ class TopBarComponentImpl(
                 TopBarAction.Profiles(
                     component = profilesComponent
                 ),
-                TopBarAction.AppsSearch,
+                TopBarAction.AppsSearch(
+                    component = appsSearchComponent,
+                ),
                 TopBarAction.Settings,
             ),
         )
