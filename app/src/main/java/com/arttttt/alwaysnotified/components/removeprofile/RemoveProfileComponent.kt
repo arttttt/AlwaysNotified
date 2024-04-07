@@ -1,6 +1,5 @@
 package com.arttttt.alwaysnotified.components.removeprofile
 
-import com.arkivanov.decompose.ComponentContext
 import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
 import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventConsumer
 import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventProducer

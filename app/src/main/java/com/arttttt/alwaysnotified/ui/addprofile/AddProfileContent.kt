@@ -36,19 +36,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.arkivanov.decompose.ComponentContextFactory
-import com.arkivanov.essenty.backhandler.BackHandler
-import com.arkivanov.essenty.instancekeeper.InstanceKeeper
-import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.arkivanov.essenty.statekeeper.StateKeeper
 import com.arttttt.alwaysnotified.R
-import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEvent
 import com.arttttt.alwaysnotified.components.addprofile.AddProfileComponent
 import com.arttttt.alwaysnotified.ui.theme.AppTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import org.koin.core.scope.ScopeID
 import kotlin.math.abs
 
 @Preview
@@ -57,19 +49,6 @@ private fun AddProfileContentPreview() {
     AppTheme {
         AddProfileContent(
             component = object : AddProfileComponent {
-                override val stateKeeper: StateKeeper
-                    get() = TODO("Not yet implemented")
-                override val instanceKeeper: InstanceKeeper
-                    get() = TODO("Not yet implemented")
-                override val backHandler: BackHandler
-                    get() = TODO("Not yet implemented")
-                override val componentContextFactory: ComponentContextFactory<AppComponentContext>
-                    get() = TODO("Not yet implemented")
-                override val lifecycle: Lifecycle
-                    get() = TODO("Not yet implemented")
-                override val parentScopeID: ScopeID?
-                    get() = TODO("Not yet implemented")
-
                 override fun onDismiss(event: DismissEvent) {
                     TODO("Not yet implemented")
                 }

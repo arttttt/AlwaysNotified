@@ -37,6 +37,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import org.koin.core.component.getScopeId
+import org.koin.core.qualifier.qualifier
 
 class ProfilesComponentImpl(
     context: AppComponentContext
@@ -53,8 +55,10 @@ class ProfilesComponentImpl(
 
     private val coroutineScope = coroutineScope()
 
-    private val koinScope = koinScope<ProfilesComponent>(
+    private val koinScope = koinScope(
         profilesModule,
+        scopeID = getScopeId(),
+        qualifier = qualifier<ProfilesComponent>(),
     )
 
     private val profilesStore by koinScope.inject<ProfilesStore>()

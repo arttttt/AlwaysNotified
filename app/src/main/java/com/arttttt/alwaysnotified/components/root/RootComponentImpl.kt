@@ -23,6 +23,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.serialization.Serializable
+import org.koin.core.component.getScopeId
+import org.koin.core.qualifier.qualifier
 
 class RootComponentImpl(
     componentContext: AppComponentContext,
@@ -43,7 +45,10 @@ class RootComponentImpl(
     }
 
     private val coroutineScope = coroutineScope()
-    private val scope = koinScope()
+    private val scope = koinScope(
+        scopeID = getScopeId(),
+        qualifier = qualifier<RootComponent>(),
+    )
 
     private val navigation = StackNavigation<Config>()
 

@@ -2,7 +2,6 @@ package com.arttttt.alwaysnotified.components.permissions
 
 import com.arkivanov.decompose.value.Value
 import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
-import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducer
 import com.arttttt.alwaysnotified.domain.entity.permission.Permission2
 import com.arttttt.alwaysnotified.ui.base.ListItem
@@ -10,7 +9,6 @@ import kotlin.reflect.KClass
 
 interface PermissionsComponent :
     DecomposeComponent,
-    AppComponentContext,
     EventsProducer<PermissionsComponent.Event> {
 
     data class State(

@@ -31,6 +31,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.core.component.getScopeId
+import org.koin.core.qualifier.qualifier
 
 class AppsListComponentImpl(
     componentContext: AppComponentContext,
@@ -39,7 +41,10 @@ class AppsListComponentImpl(
     AppComponentContext by componentContext,
     EventsProducerDelegate<AppListComponent.Event> by EventsProducerDelegateImpl() {
 
-    private val scope = koinScope()
+    private val scope = koinScope(
+        scopeID = getScopeId(),
+        qualifier = qualifier<AppListComponent>()
+    )
 
     private val appsStore: AppsStore by scope.inject()
     private val appsLauncher: AppsLauncher by scope.inject()

@@ -25,6 +25,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
+import org.koin.core.component.getScopeId
+import org.koin.core.qualifier.qualifier
 import kotlin.reflect.KClass
 
 class PermissionsComponentImpl(
@@ -35,8 +37,10 @@ class PermissionsComponentImpl(
 
     private val coroutineScope = coroutineScope()
 
-    private val scope = koinScope<PermissionsComponent>(
+    private val scope = koinScope(
         permissionsModule,
+        scopeID = getScopeId(),
+        qualifier = qualifier<PermissionsComponent>()
     )
 
     private val permissionsStore = scope.get<PermissionsStore>()

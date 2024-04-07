@@ -11,6 +11,8 @@ import com.arttttt.alwaysnotified.domain.repository.ProfilesRepository
 import com.arttttt.alwaysnotified.utils.extensions.koinScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.component.getScopeId
+import org.koin.core.qualifier.qualifier
 
 /**
  * todo: introduce store
@@ -25,7 +27,10 @@ class AddProfileComponentImpl(
     DismissEventConsumer by dismissEventDelegate,
     DismissEventProducer by dismissEventDelegate {
 
-    private val scope = koinScope()
+    private val scope = koinScope(
+        scopeID = getScopeId(),
+        qualifier = qualifier<AddProfileComponent>(),
+    )
 
     private val profilesRepository: ProfilesRepository by scope.inject()
 
