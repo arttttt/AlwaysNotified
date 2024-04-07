@@ -48,7 +48,8 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin-
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-core" }
 decompose = { group ="com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
 decompose-compose = { group ="com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose" }
-essenty-lifecycle = { group = "com.arkivanov.essenty", name = "lifecycle", version.ref = "essenty" }
+essenty-lifecycle-lib = { group = "com.arkivanov.essenty", name = "lifecycle", version.ref = "essenty" }
+essenty-lifecycle-coroutines = { group = "com.arkivanov.essenty", name = "lifecycle-coroutines", version.ref = "essenty" }
 essenty-stateKeeper = { group = "com.arkivanov.essenty", name = "state-keeper", version.ref = "essenty" }
 essenty-instanceKeeper = { group = "com.arkivanov.essenty", name = "instance-keeper", version.ref = "essenty" }
 essenty-backHandler = { group = "com.arkivanov.essenty", name = "back-handler", version.ref = "essenty" }

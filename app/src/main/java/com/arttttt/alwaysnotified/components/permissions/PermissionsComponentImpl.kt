@@ -1,6 +1,7 @@
 package com.arttttt.alwaysnotified.components.permissions
 
 import com.arkivanov.decompose.value.operator.map
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
@@ -32,6 +33,7 @@ class PermissionsComponentImpl(
     EventsProducerDelegate<PermissionsComponent.Event> by EventsProducerDelegateImpl(),
     AppComponentContext by componentContext {
 
+    private val coroutineScope = coroutineScope()
 
     private val scope = koinScope<PermissionsComponent>(
         permissionsModule,

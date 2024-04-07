@@ -1,11 +1,33 @@
 package com.arttttt.alwaysnotified.arch.shared.context
 
-import com.arkivanov.decompose.ComponentContext
-import kotlinx.coroutines.CoroutineScope
+import com.arkivanov.decompose.ComponentContextFactory
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.decompose.GenericComponentContext
+import com.arkivanov.essenty.backhandler.BackHandlerOwner
+import com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
+import com.arkivanov.essenty.statekeeper.StateKeeperOwner
 import org.koin.core.scope.ScopeID
 
 class DefaultAppComponentContext(
-    context: ComponentContext,
+    context: GenericComponentContext<*>,
     override val parentScopeID: ScopeID?,
-    override val coroutineScope: CoroutineScope,
-) : AppComponentContext, ComponentContext by context
+) : AppComponentContext,
+    LifecycleOwner by context,
+    StateKeeperOwner by context,
+    InstanceKeeperOwner by context,
+    BackHandlerOwner by context {
+
+    override val componentContextFactory =
+        ComponentContextFactory<AppComponentContext> { lifecycle, stateKeeper, instanceKeeper, backHandler ->
+            DefaultAppComponentContext(
+                context = DefaultComponentContext(
+                    lifecycle = lifecycle,
+                    stateKeeper = stateKeeper,
+                    instanceKeeper = instanceKeeper,
+                    backHandler = backHandler,
+                ),
+                parentScopeID = parentScopeID,
+            )
+        }
+}

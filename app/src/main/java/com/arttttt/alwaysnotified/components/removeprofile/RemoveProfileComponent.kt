@@ -7,7 +7,6 @@ import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventProducer
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducer
 
 interface RemoveProfileComponent : DecomposeComponent,
-    ComponentContext,
     EventsProducer<RemoveProfileComponent.Event>,
     DismissEventProducer,
     DismissEventConsumer {

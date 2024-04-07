@@ -14,10 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.arkivanov.essenty.backhandler.BackHandler
-import com.arkivanov.essenty.instancekeeper.InstanceKeeper
-import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.arkivanov.essenty.statekeeper.StateKeeper
 import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEvent
 import com.arttttt.alwaysnotified.components.removeprofile.RemoveProfileComponent
 import com.arttttt.alwaysnotified.ui.theme.AppTheme
@@ -28,15 +24,6 @@ import kotlinx.coroutines.flow.Flow
 private fun RemoveProfileContentPreview() {
     RemoveProfileContent(
         component = object : RemoveProfileComponent {
-            override val stateKeeper: StateKeeper
-                get() = TODO("Not yet implemented")
-            override val instanceKeeper: InstanceKeeper
-                get() = TODO("Not yet implemented")
-            override val backHandler: BackHandler
-                get() = TODO("Not yet implemented")
-            override val lifecycle: Lifecycle
-                get() = TODO("Not yet implemented")
-
             override fun onDismiss(event: DismissEvent) {
                 TODO("Not yet implemented")
             }

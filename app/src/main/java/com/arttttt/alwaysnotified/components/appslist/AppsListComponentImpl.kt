@@ -1,12 +1,14 @@
 package com.arttttt.alwaysnotified.components.appslist
 
+import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.AppsLauncher
 import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.childAppContext
+import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponent
@@ -42,6 +44,8 @@ class AppsListComponentImpl(
     private val appsStore: AppsStore by scope.inject()
     private val appsLauncher: AppsLauncher by scope.inject()
 
+    private val coroutineScope = coroutineScope()
+
     override val uiState = MutableValue(
         initialValue = AppListComponent.UiState(
             apps = persistentListOf(),
@@ -51,9 +55,12 @@ class AppsListComponentImpl(
     )
 
     override val topBarComponent: TopBarComponent = TopBarComponentImpl(
-        componentContext = childAppContext(
-            key = "topbar",
-        )
+        componentContext = wrapComponentContext(
+            context = childContext(
+                key = "topbar",
+            ),
+            parentScopeID = scope.id,
+        ),
     )
 
     init {

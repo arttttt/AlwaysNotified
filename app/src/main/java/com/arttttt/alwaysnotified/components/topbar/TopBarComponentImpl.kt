@@ -1,10 +1,12 @@
 package com.arttttt.alwaysnotified.components.topbar
 
+import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.childAppContext
+import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
 import com.arttttt.alwaysnotified.components.profiles.ProfilesComponentImpl
@@ -18,15 +20,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-@Suppress("IntroduceWhenSubject")
 class TopBarComponentImpl(
     componentContext: AppComponentContext,
 ) : TopBarComponent,
     AppComponentContext by componentContext,
     EventsProducerDelegate<TopBarComponent.Events.Output> by EventsProducerDelegateImpl() {
 
+    private val coroutineScope = coroutineScope()
+
     private val profilesComponent = ProfilesComponentImpl(
-        context = childAppContext("profiles")
+        context = wrapComponentContext(
+            context = childContext(
+                key = "profiles",
+            ),
+            parentScopeID = parentScopeID,
+        )
     )
 
     override val states: StateFlow<TopBarComponent.State> = profilesComponent

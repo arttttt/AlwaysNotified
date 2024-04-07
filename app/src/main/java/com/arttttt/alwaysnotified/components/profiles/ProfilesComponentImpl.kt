@@ -3,14 +3,16 @@ package com.arttttt.alwaysnotified.components.profiles
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.slot.SlotNavigation
 import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
 import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.customChildSlot
+import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducer
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
@@ -48,6 +50,8 @@ class ProfilesComponentImpl(
         data class RemoveProfile(val id: String) : DialogConfig()
         data class ProfileActions(val id: String) : DialogConfig()
     }
+
+    private val coroutineScope = coroutineScope()
 
     private val koinScope = koinScope<ProfilesComponent>(
         profilesModule,
@@ -93,27 +97,31 @@ class ProfilesComponentImpl(
     private val dialogNavigation = SlotNavigation<DialogConfig>()
 
     override val dialog: Value<ChildSlot<*, DecomposeComponent>> =
-        customChildSlot(
-            parentScopeID = koinScope.id,
+        childSlot(
             source = dialogNavigation,
             serializer = null,
             handleBackButton = true,
         ) { config, childComponentContext ->
+            val wrappedContext = wrapComponentContext(
+                context = childComponentContext,
+                parentScopeID = koinScope.id,
+            )
+
             when (config) {
                 is DialogConfig.ProfileActions -> {
                     ProfileActionsComponentImpl(
-                        context = childComponentContext,
+                        context = wrappedContext,
                         profileUUID = config.id,
                     )
                 }
                 is DialogConfig.AddProfile -> {
                     AddProfileComponentImpl(
-                        context = context,
+                        context = wrappedContext,
                     )
                 }
                 is DialogConfig.RemoveProfile -> {
                     RemoveProfileComponentImpl(
-                        context = context,
+                        context = wrappedContext,
                         profileUUID = config.id,
                     )
                 }

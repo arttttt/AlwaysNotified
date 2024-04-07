@@ -87,7 +87,8 @@ dependencies {
 
     implementation(libs.decompose)
     implementation(libs.decompose.compose)
-    implementation(libs.essenty.lifecycle)
+    implementation(libs.essenty.lifecycle.lib)
+    implementation(libs.essenty.lifecycle.coroutines)
     implementation(libs.essenty.backHandler)
     implementation(libs.essenty.instanceKeeper)
     implementation(libs.essenty.stateKeeper)

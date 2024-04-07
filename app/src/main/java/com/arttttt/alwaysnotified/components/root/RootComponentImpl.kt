@@ -1,14 +1,16 @@
 package com.arttttt.alwaysnotified.components.root
 
+import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
 import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.childAppContext
-import com.arttttt.alwaysnotified.arch.shared.context.customChildStack
+import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.arch.shared.stackComponentEvents
 import com.arttttt.alwaysnotified.components.appslist.AppListComponent
 import com.arttttt.alwaysnotified.components.appslist.AppsListComponentImpl
@@ -40,18 +42,21 @@ class RootComponentImpl(
         data object Settings : Config()
     }
 
+    private val coroutineScope = coroutineScope()
     private val scope = koinScope()
 
     private val navigation = StackNavigation<Config>()
 
     private val permissionsComponent: PermissionsComponent = PermissionsComponentImpl(
-        componentContext = childAppContext(
-            key = PermissionsComponent::class.java.name,
+        componentContext = wrapComponentContext(
+            context = childContext(
+                key = PermissionsComponent::class.java.name,
+            ),
+            parentScopeID = scope.id,
         )
     )
 
-    override val stack: Value<ChildStack<*, DecomposeComponent>> = customChildStack(
-        parentScopeID = scope.id,
+    override val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         serializer = Config.serializer(),
         source = navigation,
         initialConfiguration = initialConfiguration(),
@@ -82,14 +87,19 @@ class RootComponentImpl(
         config: Config,
         context: AppComponentContext,
     ): DecomposeComponent {
+        val wrappedContext = wrapComponentContext(
+            context = context,
+            parentScopeID = scope.id,
+        )
+
         return when (config) {
             is Config.AppsList -> AppsListComponentImpl(
-                componentContext = context,
+                componentContext = wrappedContext,
                 resourcesProvider = scope.get(),
             )
             is Config.Permissions -> permissionsComponent
             is Config.Settings -> SettingsComponentImpl(
-                componentContext = context,
+                componentContext = wrappedContext,
             )
         }
     }
