@@ -35,9 +35,11 @@ class AppsListTransformer(
     ): List<ListItem> {
         if (appsStoreState.needShowProgress) return listOf(ProgressListItem)
 
-        return appsStoreState
+        val filteredApps = appsStoreState
             .applications!!
             .filter { (_, app) -> appsSearchState.needShowApp(app) }
+
+        return filteredApps
             .entries
             .foldIndexed(
                 initial = mutableListOf()
@@ -49,6 +51,7 @@ class AppsListTransformer(
                     clipBottom = appsStoreState.clipBottom(
                         app = app,
                         index = index,
+                        filteredApps = filteredApps,
                     ),
                 )
 
@@ -58,12 +61,12 @@ class AppsListTransformer(
                     app.activities.mapIndexedTo(acc) { activityIndex, activity ->
                         activity.toListItem(
                             isSelected = activity.isSelected(selectedActivity),
-                            clipBottom = index == appsStoreState.applications.entries.size - 1 && activityIndex == app.activities.size - 1,
+                            clipBottom = index == filteredApps.entries.size - 1 && activityIndex == app.activities.size - 1,
                         )
                     }
                 }
 
-                if (index < appsStoreState.applications.size - 1) {
+                if (index < filteredApps.size - 1) {
                     acc += DividerListItem()
                 }
 
@@ -82,8 +85,9 @@ class AppsListTransformer(
     private fun AppsStore.State.clipBottom(
         app: AppInfo,
         index: Int,
+        filteredApps: Map<String, AppInfo>,
     ): Boolean {
-        return index == applications!!.entries.size - 1 && (selectedApps == null || !selectedApps.contains(app.pkg))
+        return index == filteredApps.entries.size - 1 && (selectedApps == null || !selectedApps.contains(app.pkg))
     }
 
     private fun AppsStore.State.isManualModeForAppAvailable(app: AppInfo): Boolean {
