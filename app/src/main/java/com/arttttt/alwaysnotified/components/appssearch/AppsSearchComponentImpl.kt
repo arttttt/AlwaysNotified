@@ -5,7 +5,6 @@ import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -40,8 +39,8 @@ class AppsSearchComponentImpl(
         )
 
     override fun onTextChanged(text: String) {
-        _states.update { uiState ->
-            uiState.copy(
+        _states.update { state ->
+            state.copy(
                 filter = text,
             )
         }
