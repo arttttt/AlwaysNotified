@@ -4,32 +4,23 @@ import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
-import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
-import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
 import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponentImpl
 import com.arttttt.alwaysnotified.components.profiles.ProfilesComponentImpl
-import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
 import com.arttttt.alwaysnotified.components.topbar.actions.ExpandableTopBarAction
 import com.arttttt.alwaysnotified.components.topbar.actions.TopBarAction
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 
 class TopBarComponentImpl(
     componentContext: AppComponentContext,
 ) : TopBarComponent,
-    AppComponentContext by componentContext,
-    EventsProducerDelegate<TopBarComponent.Events.Output> by EventsProducerDelegateImpl() {
+    AppComponentContext by componentContext {
 
     private val coroutineScope = coroutineScope()
 
-    private val profilesComponent = ProfilesComponentImpl(
+    override val profilesComponent = ProfilesComponentImpl(
         context = wrapComponentContext(
             context = childContext(
                 key = "profiles",
@@ -38,7 +29,7 @@ class TopBarComponentImpl(
         )
     )
 
-    private val appsSearchComponent = AppsSearchComponentImpl(
+    override val appsSearchComponent = AppsSearchComponentImpl(
         context = wrapComponentContext(
             context = childContext(
                 key = "apps_search",
@@ -46,23 +37,6 @@ class TopBarComponentImpl(
             parentScopeID = parentScopeID,
         )
     )
-
-    override val states: StateFlow<TopBarComponent.State> = profilesComponent
-        .states
-        .map { state ->
-            TopBarComponent.State(
-                currentProfile = state.currentProfile,
-                isProfileDirty = state.isCurrentProfileDirty,
-            )
-        }
-        .stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.Eagerly,
-            initialValue = TopBarComponent.State(
-                currentProfile = null,
-                isProfileDirty = false,
-            ),
-        )
 
     override val uiState = MutableValue(
         initialValue = TopBarComponent.UiState(
@@ -80,17 +54,6 @@ class TopBarComponentImpl(
     )
 
     override val commands = MutableSharedFlow<TopBarComponent.Command>(extraBufferCapacity = 1)
-
-    init {
-        lifecycle.doOnDestroy { coroutineScope.coroutineContext.cancelChildren() }
-    }
-
-    override fun consume(event: TopBarComponent.Events.Input) {
-        when (event) {
-            is TopBarComponent.Events.Input.MarkProfileAsDirty -> profilesComponent.consume(ProfilesComponent.Events.Input.MarkCurrentProfileAsDirty)
-            is TopBarComponent.Events.Input.UpdateCurrentProfile -> profilesComponent.consume(ProfilesComponent.Events.Input.UpdateCurrentProfile)
-        }
-    }
 
     override fun actionClicked(action: TopBarAction) {
         when {

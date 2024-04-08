@@ -11,6 +11,7 @@ import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
+import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponent
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponentImpl
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
@@ -71,10 +72,10 @@ class AppsListComponentImpl(
     init {
         combine(
             appsStore.states,
-            topBarComponent.states,
+            topBarComponent.profilesComponent.states,
             ::Pair,
         )
-            .map { (appsStoreState, topBarState) ->
+            .map { (appsStoreState, profilesState) ->
                 val apps = appsStoreState.applications?.entries?.foldIndexed(mutableListOf<ListItem>()) { index, acc, (_, app) ->
                     acc += AppListItem(
                         pkg = app.pkg,
@@ -116,7 +117,7 @@ class AppsListComponentImpl(
                 AppListComponent.UiState(
                     apps = apps.toPersistentList(),
                     isStartButtonVisible = appsStoreState.selectedActivities?.isNotEmpty() ?: false,
-                    isSaveProfileButtonVisible = topBarState.isProfileDirty,
+                    isSaveProfileButtonVisible = profilesState.isCurrentProfileDirty,
                 )
             }
             .onEach { updatedState ->
@@ -127,6 +128,7 @@ class AppsListComponentImpl(
             .launchIn(coroutineScope)
 
         topBarComponent
+            .profilesComponent
             .states
             .map { state -> state.currentProfile }
             .filterNotNull()
@@ -139,9 +141,9 @@ class AppsListComponentImpl(
             .labels
             .filterIsInstance<AppsStore.Label.ActivitiesChanged>()
             .map {
-                TopBarComponent.Events.Input.MarkProfileAsDirty
+                ProfilesComponent.Events.Input.MarkCurrentProfileAsDirty
             }
-            .onEach(topBarComponent::consume)
+            .onEach(topBarComponent.profilesComponent::consume)
             .launchIn(coroutineScope)
     }
 
@@ -173,7 +175,7 @@ class AppsListComponentImpl(
     }
 
     override fun updateProfile() {
-        topBarComponent.consume(TopBarComponent.Events.Input.UpdateCurrentProfile)
+        topBarComponent.profilesComponent.consume(ProfilesComponent.Events.Input.UpdateCurrentProfile)
     }
 
     override fun onManualModeChanged(pkg: String) {
