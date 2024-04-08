@@ -5,6 +5,7 @@ import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponent
 import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
+import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.AppListItem
@@ -32,28 +33,23 @@ class AppsListTransformer(
         appsStoreState: AppsStore.State,
         appsSearchState: AppsSearchComponent.State,
     ): List<ListItem> {
-        if (appsStoreState.needShowProgress || appsStoreState.applications == null) return listOf(ProgressListItem)
+        if (appsStoreState.needShowProgress) return listOf(ProgressListItem)
 
         return appsStoreState
-            .applications
-            .filter { (_, app) ->
-                appsSearchState
-                    .filter
-                    .takeIf { filter -> filter.isNotEmpty() }
-                    ?.let { filter ->
-                        app.title.startsWith(filter, true)
-                    }
-                    ?: true
-            }
+            .applications!!
+            .filter { (_, app) -> appsSearchState.needShowApp(app) }
             .entries
             .foldIndexed(
                 initial = mutableListOf()
             ) { index, acc, (_, app) ->
                 acc += app.toListItem(
                     clipTop = index == 0,
-                    manualMode = appsStoreState.selectedActivities?.get(app.pkg)?.manualMode == true,
-                    isManualModeAvailable = appsStoreState.selectedActivities?.get(app.pkg) != null,
-                    clipBottom = index == appsStoreState.applications.entries.size - 1 && (appsStoreState.selectedApps == null || !appsStoreState.selectedApps.contains(app.pkg)),
+                    manualMode = appsStoreState.isManualModeForApp(app),
+                    isManualModeAvailable = appsStoreState.isManualModeForAppAvailable(app),
+                    clipBottom = appsStoreState.clipBottom(
+                        app = app,
+                        index = index,
+                    ),
                 )
 
                 if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
@@ -61,7 +57,7 @@ class AppsListTransformer(
 
                     app.activities.mapIndexedTo(acc) { activityIndex, activity ->
                         activity.toListItem(
-                            isSelected = activity.name.contentEquals(selectedActivity?.name, true),
+                            isSelected = activity.isSelected(selectedActivity),
                             clipBottom = index == appsStoreState.applications.entries.size - 1 && activityIndex == app.activities.size - 1,
                         )
                     }
@@ -73,6 +69,38 @@ class AppsListTransformer(
 
                 acc
             }
+    }
+
+    private fun ActivityInfo.isSelected(selectedActivity: SelectedActivity?): Boolean {
+        return name.contentEquals(selectedActivity?.name, true)
+    }
+
+    private fun AppsStore.State.getSelectedActivityForPkg(pkg: String): SelectedActivity? {
+        return selectedActivities?.get(pkg)
+    }
+
+    private fun AppsStore.State.clipBottom(
+        app: AppInfo,
+        index: Int,
+    ): Boolean {
+        return index == applications!!.entries.size - 1 && (selectedApps == null || !selectedApps.contains(app.pkg))
+    }
+
+    private fun AppsStore.State.isManualModeForAppAvailable(app: AppInfo): Boolean {
+        return selectedActivities?.get(app.pkg) != null
+    }
+
+    private fun AppsStore.State.isManualModeForApp(app: AppInfo): Boolean {
+        return selectedActivities?.get(app.pkg)?.manualMode == true
+    }
+
+    private fun AppsSearchComponent.State.needShowApp(app: AppInfo) : Boolean {
+        return filter
+            .takeIf { filter -> filter.isNotEmpty() }
+            ?.let { filter ->
+                app.title.startsWith(filter, true)
+            }
+            ?: true
     }
 
     private fun AppInfo.toListItem(
@@ -109,7 +137,7 @@ class AppsListTransformer(
 
     private val AppsStore.State.needShowProgress: Boolean
         get() {
-            return isInProgress && isAppsEmpty
+            return isInProgress || isAppsEmpty
         }
 
     private val AppsStore.State.isAppsEmpty: Boolean
