@@ -10,7 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.defaultComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.defaultAppComponentContext
+import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.components.root.RootComponent
 import com.arttttt.alwaysnotified.components.root.RootComponentImpl
 import com.arttttt.alwaysnotified.di.mainActivityModule
@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         scope.declare(this.unsafeCastTo<ComponentActivity>())
 
         val rootComponent: RootComponent = RootComponentImpl(
-            componentContext = defaultAppComponentContext(
+            componentContext = wrapComponentContext(
                 context = defaultComponentContext(),
                 parentScopeID = scope.id,
             ),
