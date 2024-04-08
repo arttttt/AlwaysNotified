@@ -27,6 +27,7 @@ inline fun <reified T : Serializable?> Intent.getSerializable(name: String): T {
     return if (Build.VERSION.SDK_INT >= 34) {
         getSerializableExtra(name, T::class.java) as T
     } else {
+        @Suppress("DEPRECATION")
         getSerializableExtra(name) as T
     }
 }

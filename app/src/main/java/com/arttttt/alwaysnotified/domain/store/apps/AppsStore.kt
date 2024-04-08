@@ -12,12 +12,7 @@ interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> 
         val applications: Map<String, AppInfo>?,
         val selectedApps: Set<String>?,
         val selectedActivities: Map<String, SelectedActivity>?,
-    ) {
-
-        fun getSelectedActivityForPkg(pkg: String): SelectedActivity? {
-            return selectedActivities?.get(pkg)
-        }
-    }
+    )
 
     sealed class Action {
 

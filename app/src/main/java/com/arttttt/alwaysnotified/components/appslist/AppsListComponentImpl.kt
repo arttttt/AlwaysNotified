@@ -11,6 +11,7 @@ import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
+import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponent
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponentImpl
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
@@ -23,10 +24,12 @@ import com.arttttt.alwaysnotified.utils.extensions.koinScope
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProvider
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -36,7 +39,7 @@ import org.koin.core.qualifier.qualifier
 
 class AppsListComponentImpl(
     componentContext: AppComponentContext,
-    resourcesProvider: ResourcesProvider,
+    transformer: AppsListTransformer,
 ) : AppListComponent,
     AppComponentContext by componentContext,
     EventsProducerDelegate<AppListComponent.Event> by EventsProducerDelegateImpl() {
@@ -71,54 +74,12 @@ class AppsListComponentImpl(
     init {
         combine(
             appsStore.states,
-            topBarComponent.states,
-            ::Pair,
+            topBarComponent.profilesComponent.states,
+            topBarComponent.appsSearchComponent.states,
+            ::Triple,
         )
-            .map { (appsStoreState, topBarState) ->
-                val apps = appsStoreState.applications?.entries?.foldIndexed(mutableListOf<ListItem>()) { index, acc, (_, app) ->
-                    acc += AppListItem(
-                        pkg = app.pkg,
-                        title = app.title,
-                        clipTop = index == 0,
-                        manualMode = appsStoreState.selectedActivities?.get(app.pkg)?.manualMode == true,
-                        isManualModeAvailable = appsStoreState.selectedActivities?.get(app.pkg) != null,
-                        clipBottom = index == appsStoreState.applications.entries.size - 1 && (appsStoreState.selectedApps == null || !appsStoreState.selectedApps.contains(app.pkg)),
-                        icon = resourcesProvider.getDrawable(app.pkg),
-                    )
-
-                    if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
-                        val selectedActivity = appsStoreState.getSelectedActivityForPkg(app.pkg)
-
-                        app.activities.mapIndexedTo(acc) { activityIndex, activity ->
-                            ActivityListItem(
-                                pkg = activity.pkg,
-                                title = activity.title,
-                                name = activity.name,
-                                isSelected = activity.name.contentEquals(selectedActivity?.name, true),
-                                key = "${activity.pkg}_${activity.name}",
-                                clipTop = false,
-                                clipBottom = index == appsStoreState.applications.entries.size - 1 && activityIndex == app.activities.size - 1
-                            )
-                        }
-                    }
-
-                    if (index < appsStoreState.applications.size - 1) {
-                        acc += DividerListItem()
-                    }
-
-                    acc
-                } ?: mutableListOf()
-
-                if (apps.isEmpty() && appsStoreState.isInProgress) {
-                    apps += ProgressListItem()
-                }
-
-                AppListComponent.UiState(
-                    apps = apps.toPersistentList(),
-                    isStartButtonVisible = appsStoreState.selectedActivities?.isNotEmpty() ?: false,
-                    isSaveProfileButtonVisible = topBarState.isProfileDirty,
-                )
-            }
+            .map(transformer::invoke)
+            .flowOn(Dispatchers.IO)
             .onEach { updatedState ->
                 uiState.update {
                     updatedState
@@ -127,6 +88,7 @@ class AppsListComponentImpl(
             .launchIn(coroutineScope)
 
         topBarComponent
+            .profilesComponent
             .states
             .map { state -> state.currentProfile }
             .filterNotNull()
@@ -139,9 +101,9 @@ class AppsListComponentImpl(
             .labels
             .filterIsInstance<AppsStore.Label.ActivitiesChanged>()
             .map {
-                TopBarComponent.Events.Input.MarkProfileAsDirty
+                ProfilesComponent.Events.Input.MarkCurrentProfileAsDirty
             }
-            .onEach(topBarComponent::consume)
+            .onEach(topBarComponent.profilesComponent::consume)
             .launchIn(coroutineScope)
     }
 
@@ -173,7 +135,7 @@ class AppsListComponentImpl(
     }
 
     override fun updateProfile() {
-        topBarComponent.consume(TopBarComponent.Events.Input.UpdateCurrentProfile)
+        topBarComponent.profilesComponent.consume(ProfilesComponent.Events.Input.UpdateCurrentProfile)
     }
 
     override fun onManualModeChanged(pkg: String) {

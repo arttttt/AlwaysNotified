@@ -14,6 +14,7 @@ import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.arch.shared.stackComponentEvents
 import com.arttttt.alwaysnotified.components.appslist.AppListComponent
 import com.arttttt.alwaysnotified.components.appslist.AppsListComponentImpl
+import com.arttttt.alwaysnotified.components.appslist.AppsListTransformer
 import com.arttttt.alwaysnotified.components.permissions.PermissionsComponent
 import com.arttttt.alwaysnotified.components.permissions.PermissionsComponentImpl
 import com.arttttt.alwaysnotified.components.settings.SettingsComponentImpl
@@ -100,7 +101,9 @@ class RootComponentImpl(
         return when (config) {
             is Config.AppsList -> AppsListComponentImpl(
                 componentContext = wrappedContext,
-                resourcesProvider = scope.get(),
+                transformer = AppsListTransformer(
+                    resourcesProvider = scope.get(),
+                ),
             )
             is Config.Permissions -> permissionsComponent
             is Config.Settings -> SettingsComponentImpl(

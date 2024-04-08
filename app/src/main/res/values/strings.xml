@@ -24,4 +24,6 @@
 
     <string name="apps_list">Apps list</string>
 
+    <string name="search_hint">search</string>
+
 </resources>

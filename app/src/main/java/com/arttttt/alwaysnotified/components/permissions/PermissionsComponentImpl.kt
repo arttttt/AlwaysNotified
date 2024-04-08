@@ -2,21 +2,19 @@ package com.arttttt.alwaysnotified.components.permissions
 
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
 import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
+import com.arttttt.alwaysnotified.components.permissions.di.permissionsModule
 import com.arttttt.alwaysnotified.domain.entity.permission.Permission2
 import com.arttttt.alwaysnotified.domain.store.permissions.PermissionsStore
 import com.arttttt.alwaysnotified.ui.base.ListItem
-import com.arttttt.alwaysnotified.components.permissions.di.permissionsModule
 import com.arttttt.alwaysnotified.ui.permissions.models.PermissionLazyListItem
 import com.arttttt.alwaysnotified.utils.extensions.asValue
 import com.arttttt.alwaysnotified.utils.extensions.koinScope
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
@@ -53,8 +51,6 @@ class PermissionsComponentImpl(
         }
 
     init {
-        lifecycle.doOnDestroy { coroutineScope.coroutineContext.cancelChildren() }
-
         permissionsStore
             .labels
             .filterIsInstance<PermissionsStore.Label.AllPermissionsGranted>()
