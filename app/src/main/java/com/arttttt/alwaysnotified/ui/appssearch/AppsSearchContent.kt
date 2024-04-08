@@ -58,7 +58,9 @@ fun AppsSearchContent(
             modifier = Modifier.width(8.dp),
         )
 
-        val textState = rememberTextFieldState()
+        val textState = rememberTextFieldState(
+            initialText = uiState.text,
+        )
 
         BasicTextField2(
             modifier = Modifier.weight(1f),
