@@ -24,10 +24,12 @@ import com.arttttt.alwaysnotified.utils.extensions.koinScope
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProvider
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -77,6 +79,7 @@ class AppsListComponentImpl(
             ::Triple,
         )
             .map(transformer::invoke)
+            .flowOn(Dispatchers.IO)
             .onEach { updatedState ->
                 uiState.update {
                     updatedState

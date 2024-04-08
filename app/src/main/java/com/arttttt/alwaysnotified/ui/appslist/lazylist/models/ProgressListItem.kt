@@ -2,7 +2,7 @@ package com.arttttt.alwaysnotified.ui.appslist.lazylist.models
 
 import com.arttttt.alwaysnotified.ui.base.ListItem
 
-class ProgressListItem : ListItem {
+data object ProgressListItem : ListItem {
 
     override val key: Any = hashCode()
 }
