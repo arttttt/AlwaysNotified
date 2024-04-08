@@ -9,7 +9,13 @@ interface AppsSearchComponent : DecomposeComponent {
         val text: String
     )
 
+    data class State(
+        val filter: String
+    )
+
     val uiState: StateFlow<UiState>
+
+    val states: StateFlow<State>
 
     fun onTextChanged(text: String)
 }
