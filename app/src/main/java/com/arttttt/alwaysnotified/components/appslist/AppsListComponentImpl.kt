@@ -37,7 +37,7 @@ import org.koin.core.qualifier.qualifier
 
 class AppsListComponentImpl(
     componentContext: AppComponentContext,
-    resourcesProvider: ResourcesProvider,
+    transformer: AppsListTransformer,
 ) : AppListComponent,
     AppComponentContext by componentContext,
     EventsProducerDelegate<AppListComponent.Event> by EventsProducerDelegateImpl() {
@@ -73,53 +73,10 @@ class AppsListComponentImpl(
         combine(
             appsStore.states,
             topBarComponent.profilesComponent.states,
-            ::Pair,
+            topBarComponent.appsSearchComponent.states,
+            ::Triple,
         )
-            .map { (appsStoreState, profilesState) ->
-                val apps = appsStoreState.applications?.entries?.foldIndexed(mutableListOf<ListItem>()) { index, acc, (_, app) ->
-                    acc += AppListItem(
-                        pkg = app.pkg,
-                        title = app.title,
-                        clipTop = index == 0,
-                        manualMode = appsStoreState.selectedActivities?.get(app.pkg)?.manualMode == true,
-                        isManualModeAvailable = appsStoreState.selectedActivities?.get(app.pkg) != null,
-                        clipBottom = index == appsStoreState.applications.entries.size - 1 && (appsStoreState.selectedApps == null || !appsStoreState.selectedApps.contains(app.pkg)),
-                        icon = resourcesProvider.getDrawable(app.pkg),
-                    )
-
-                    if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
-                        val selectedActivity = appsStoreState.getSelectedActivityForPkg(app.pkg)
-
-                        app.activities.mapIndexedTo(acc) { activityIndex, activity ->
-                            ActivityListItem(
-                                pkg = activity.pkg,
-                                title = activity.title,
-                                name = activity.name,
-                                isSelected = activity.name.contentEquals(selectedActivity?.name, true),
-                                key = "${activity.pkg}_${activity.name}",
-                                clipTop = false,
-                                clipBottom = index == appsStoreState.applications.entries.size - 1 && activityIndex == app.activities.size - 1
-                            )
-                        }
-                    }
-
-                    if (index < appsStoreState.applications.size - 1) {
-                        acc += DividerListItem()
-                    }
-
-                    acc
-                } ?: mutableListOf()
-
-                if (apps.isEmpty() && appsStoreState.isInProgress) {
-                    apps += ProgressListItem()
-                }
-
-                AppListComponent.UiState(
-                    apps = apps.toPersistentList(),
-                    isStartButtonVisible = appsStoreState.selectedActivities?.isNotEmpty() ?: false,
-                    isSaveProfileButtonVisible = profilesState.isCurrentProfileDirty,
-                )
-            }
+            .map(transformer::invoke)
             .onEach { updatedState ->
                 uiState.update {
                     updatedState
