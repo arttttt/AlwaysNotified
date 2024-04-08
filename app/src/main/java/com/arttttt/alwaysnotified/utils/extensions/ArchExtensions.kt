@@ -13,12 +13,12 @@ import org.koin.core.scope.ScopeCallback
 import org.koin.core.scope.ScopeID
 import org.koin.mp.KoinPlatform
 
-inline fun <reified T> T.koinScope(
+context(LifecycleOwner, ParentScopeIdOwner)
+fun koinScope(
     vararg modules: Module,
     scopeID: ScopeID,
     qualifier: Qualifier,
-) : Scope where T : LifecycleOwner,
-                T : ParentScopeIdOwner
+) : Scope
 {
     val scope = KoinPlatform.getKoin().createScope(
         scopeId = scopeID,

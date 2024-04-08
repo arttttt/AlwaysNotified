@@ -18,7 +18,7 @@ inline fun <T> Result<T>.finally(block: () -> Unit): Result<T> {
     }
 }
 
-inline fun <T> Result<T>.exceptCancellationException(): Result<T> {
+fun <T> Result<T>.exceptCancellationException(): Result<T> {
     return onFailure { e ->
         if (e is CancellationException) throw e
     }
