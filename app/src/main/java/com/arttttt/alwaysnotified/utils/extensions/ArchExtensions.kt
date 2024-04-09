@@ -3,8 +3,8 @@ package com.arttttt.alwaysnotified.utils.extensions
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.arttttt.alwaysnotified.arch.shared.FlowValue
-import com.arttttt.alwaysnotified.arch.shared.context.ParentScopeIdOwner
+import com.arttttt.core.arch.FlowValue
+import com.arttttt.core.arch.context.ParentScopeIdOwner
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.core.module.Module
 import org.koin.core.qualifier.Qualifier

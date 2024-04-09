@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared.dialog
+package com.arttttt.core.arch.dialog
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

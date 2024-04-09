@@ -33,10 +33,6 @@ android {
 
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
 
             resValue("string", "app_name", "@string/app_name_release")
             signingConfig = signingConfigs.getByName("debug")
@@ -75,6 +71,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:arch"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -88,14 +86,6 @@ dependencies {
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)
-
-    implementation(libs.decompose)
-    implementation(libs.decompose.compose)
-    implementation(libs.essenty.lifecycle.lib)
-    implementation(libs.essenty.lifecycle.coroutines)
-    implementation(libs.essenty.backHandler)
-    implementation(libs.essenty.instanceKeeper)
-    implementation(libs.essenty.stateKeeper)
 
     implementation(libs.kotlin.collections)
 

@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared.context
+package com.arttttt.core.arch.context
 
 import com.arkivanov.decompose.GenericComponentContext
 import org.koin.core.scope.ScopeID

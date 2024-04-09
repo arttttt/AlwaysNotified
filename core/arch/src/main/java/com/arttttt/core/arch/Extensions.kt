@@ -1,11 +1,11 @@
-package com.arttttt.alwaysnotified.arch.shared
+package com.arttttt.core.arch
 
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEvent
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventProducer
-import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducer
+import com.arttttt.core.arch.dialog.DismissEvent
+import com.arttttt.core.arch.dialog.DismissEventProducer
+import com.arttttt.core.arch.events.producer.EventsProducer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared.events.producer
+package com.arttttt.core.arch.events.producer
 
 interface EventsProducerDelegate<Event : Any> : EventsProducer<Event> {
 

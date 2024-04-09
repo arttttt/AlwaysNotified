@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared.events.consumer
+package com.arttttt.core.arch.events.consumer
 
 interface EventsConsumer<in Event : Any> {
 

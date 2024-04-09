@@ -1,8 +1,8 @@
 package com.arttttt.alwaysnotified.components.addprofile
 
-import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventConsumer
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventProducer
+import com.arttttt.core.arch.DecomposeComponent
+import com.arttttt.core.arch.dialog.DismissEventConsumer
+import com.arttttt.core.arch.dialog.DismissEventProducer
 
 interface AddProfileComponent : DecomposeComponent,
     DismissEventConsumer,

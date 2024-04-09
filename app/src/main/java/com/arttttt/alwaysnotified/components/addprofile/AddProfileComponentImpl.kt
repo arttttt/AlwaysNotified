@@ -1,14 +1,14 @@
 package com.arttttt.alwaysnotified.components.addprofile
 
-import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEvent
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventConsumer
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventDelegate
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventProducer
-import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
-import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
+import com.arttttt.core.arch.context.AppComponentContext
+import com.arttttt.core.arch.dialog.DismissEventConsumer
 import com.arttttt.alwaysnotified.domain.repository.ProfilesRepository
 import com.arttttt.alwaysnotified.utils.extensions.koinScope
+import com.arttttt.core.arch.dialog.DismissEvent
+import com.arttttt.core.arch.dialog.DismissEventDelegate
+import com.arttttt.core.arch.dialog.DismissEventProducer
+import com.arttttt.core.arch.events.producer.EventsProducerDelegate
+import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.getScopeId

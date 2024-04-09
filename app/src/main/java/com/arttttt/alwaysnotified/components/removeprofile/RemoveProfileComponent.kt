@@ -1,9 +1,9 @@
 package com.arttttt.alwaysnotified.components.removeprofile
 
-import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventConsumer
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventProducer
-import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducer
+import com.arttttt.core.arch.DecomposeComponent
+import com.arttttt.core.arch.dialog.DismissEventConsumer
+import com.arttttt.core.arch.dialog.DismissEventProducer
+import com.arttttt.core.arch.events.producer.EventsProducer
 
 interface RemoveProfileComponent : DecomposeComponent,
     EventsProducer<RemoveProfileComponent.Event>,

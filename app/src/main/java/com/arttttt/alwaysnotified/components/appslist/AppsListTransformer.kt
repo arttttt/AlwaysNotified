@@ -1,6 +1,5 @@
 package com.arttttt.alwaysnotified.components.appslist
 
-import com.arttttt.alwaysnotified.arch.shared.Transformer
 import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponent
 import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
@@ -13,6 +12,7 @@ import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.DividerListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ProgressListItem
 import com.arttttt.alwaysnotified.ui.base.ListItem
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProvider
+import com.arttttt.core.arch.Transformer
 import kotlinx.collections.immutable.toPersistentList
 
 class AppsListTransformer(

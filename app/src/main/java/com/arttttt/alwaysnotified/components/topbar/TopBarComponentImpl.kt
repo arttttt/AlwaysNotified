@@ -3,22 +3,18 @@ package com.arttttt.alwaysnotified.components.topbar
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponentImpl
 import com.arttttt.alwaysnotified.components.profiles.ProfilesComponentImpl
 import com.arttttt.alwaysnotified.components.topbar.actions.ExpandableTopBarAction
 import com.arttttt.alwaysnotified.components.topbar.actions.TopBarAction
-import kotlinx.coroutines.cancelChildren
+import com.arttttt.core.arch.context.AppComponentContext
+import com.arttttt.core.arch.context.wrapComponentContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class TopBarComponentImpl(
     componentContext: AppComponentContext,
 ) : TopBarComponent,
     AppComponentContext by componentContext {
-
-    private val coroutineScope = coroutineScope()
 
     override val profilesComponent = ProfilesComponentImpl(
         context = wrapComponentContext(

@@ -14,9 +14,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEvent
 import com.arttttt.alwaysnotified.components.removeprofile.RemoveProfileComponent
 import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.core.arch.dialog.DismissEvent
 import kotlinx.coroutines.flow.Flow
 
 @Preview

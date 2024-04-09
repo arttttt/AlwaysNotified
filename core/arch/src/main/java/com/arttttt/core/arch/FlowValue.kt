@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared
+package com.arttttt.core.arch
 
 import com.arkivanov.decompose.Cancellation
 import com.arkivanov.decompose.value.Value

@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared.events.producer
+package com.arttttt.core.arch.events.producer
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

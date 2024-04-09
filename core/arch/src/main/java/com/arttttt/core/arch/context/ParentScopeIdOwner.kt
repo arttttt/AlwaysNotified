@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared.context
+package com.arttttt.core.arch.context
 
 import org.koin.core.scope.ScopeID
 

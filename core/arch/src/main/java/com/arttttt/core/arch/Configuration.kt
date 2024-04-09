@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared
+package com.arttttt.core.arch
 
 import android.os.Parcelable
 

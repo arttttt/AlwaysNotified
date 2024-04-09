@@ -1,6 +1,6 @@
 package com.arttttt.alwaysnotified.components.appssearch
 
-import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
+import com.arttttt.core.arch.DecomposeComponent
 import kotlinx.coroutines.flow.StateFlow
 
 interface AppsSearchComponent : DecomposeComponent {

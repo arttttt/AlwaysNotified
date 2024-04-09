@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Always Notified"
 include(":app")
+include(":core:arch")

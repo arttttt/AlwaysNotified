@@ -10,7 +10,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.defaultComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
 import com.arttttt.alwaysnotified.components.root.RootComponent
 import com.arttttt.alwaysnotified.components.root.RootComponentImpl
 import com.arttttt.alwaysnotified.di.mainActivityModule
@@ -19,6 +18,7 @@ import com.arttttt.alwaysnotified.ui.custom.rememberHapticFeedback
 import com.arttttt.alwaysnotified.ui.root.RootContent
 import com.arttttt.alwaysnotified.ui.theme.AppTheme
 import com.arttttt.alwaysnotified.utils.extensions.unsafeCastTo
+import com.arttttt.core.arch.context.wrapComponentContext
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityScope
 import org.koin.core.context.loadKoinModules

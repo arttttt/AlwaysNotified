@@ -8,10 +8,7 @@ import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
-import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
-import com.arttttt.alwaysnotified.arch.shared.stackComponentEvents
+import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.alwaysnotified.components.appslist.AppListComponent
 import com.arttttt.alwaysnotified.components.appslist.AppsListComponentImpl
 import com.arttttt.alwaysnotified.components.appslist.AppsListTransformer
@@ -19,6 +16,9 @@ import com.arttttt.alwaysnotified.components.permissions.PermissionsComponent
 import com.arttttt.alwaysnotified.components.permissions.PermissionsComponentImpl
 import com.arttttt.alwaysnotified.components.settings.SettingsComponentImpl
 import com.arttttt.alwaysnotified.utils.extensions.koinScope
+import com.arttttt.core.arch.DecomposeComponent
+import com.arttttt.core.arch.context.wrapComponentContext
+import com.arttttt.core.arch.stackComponentEvents
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

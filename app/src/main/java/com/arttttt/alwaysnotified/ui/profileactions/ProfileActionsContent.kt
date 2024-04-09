@@ -16,10 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEvent
 import com.arttttt.alwaysnotified.components.profileactions.ProfileActionsComponent
 import com.arttttt.alwaysnotified.ui.common.TextButtonWithIcon
 import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.core.arch.dialog.DismissEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.arch.shared.context
+package com.arttttt.core.arch.context
 
 import com.arkivanov.decompose.ComponentContextFactory
 import com.arkivanov.decompose.DefaultComponentContext

@@ -1,13 +1,13 @@
 package com.arttttt.alwaysnotified.components.profileactions
 
 import com.arkivanov.decompose.value.MutableValue
-import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventConsumer
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventDelegate
-import com.arttttt.alwaysnotified.arch.shared.dialog.DismissEventProducer
-import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegate
-import com.arttttt.alwaysnotified.arch.shared.events.producer.EventsProducerDelegateImpl
+import com.arttttt.core.arch.context.AppComponentContext
+import com.arttttt.core.arch.dialog.DismissEventConsumer
 import com.arttttt.alwaysnotified.ui.profileactions.ProfileAction
+import com.arttttt.core.arch.dialog.DismissEventDelegate
+import com.arttttt.core.arch.dialog.DismissEventProducer
+import com.arttttt.core.arch.events.producer.EventsProducerDelegate
+import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import kotlinx.collections.immutable.persistentListOf
 
 class ProfileActionsComponentImpl(
