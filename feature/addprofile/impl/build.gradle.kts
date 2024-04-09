@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation(project(":uikit"))
+    implementation(project(":localization"))
     implementation(project(":core:arch"))
     implementation(project(":feature:addprofile:api"))
 }

@@ -48,7 +48,7 @@ fun TopBarContent(component: TopBarComponent) {
         uiState = state,
         title = {
             Text(
-                text = stringResource(R.string.apps_list),
+                text = stringResource(com.arttttt.localization.R.string.apps_list),
                 fontSize = 22.sp,
             )
         },

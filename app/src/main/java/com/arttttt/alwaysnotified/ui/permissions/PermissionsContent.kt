@@ -46,7 +46,7 @@ fun PermissionsContent(component: PermissionsComponent) {
             ),
             colors = AppTheme.widgets.topAppBarColors,
             title = { 
-                Text(text = stringResource(R.string.permissions))
+                Text(text = stringResource(com.arttttt.localization.R.string.permissions))
             }
         )
 

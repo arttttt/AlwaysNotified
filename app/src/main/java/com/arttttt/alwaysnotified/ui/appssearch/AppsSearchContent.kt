@@ -84,7 +84,7 @@ fun AppsSearchContent(
                         if (uiState.text.isEmpty()) {
                             Text(
                                 text = stringResource(
-                                    id = R.string.search_hint,
+                                    id = com.arttttt.localization.R.string.search_hint,
                                 ),
                                 color = AppTheme.colors.textAndIcons.copy(
                                     alpha = 0.3f,

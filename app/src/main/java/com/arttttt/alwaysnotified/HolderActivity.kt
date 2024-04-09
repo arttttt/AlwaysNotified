@@ -19,9 +19,7 @@ import com.arttttt.alwaysnotified.utils.extensions.intent
 import com.arttttt.alwaysnotified.utils.ipc.AppsServiceIpcMessenger
 import timber.log.Timber
 import java.io.Serializable
-import java.lang.Exception
 import java.util.LinkedList
-import kotlin.system.exitProcess
 
 class HolderActivity : ComponentActivity() {
 
@@ -108,7 +106,7 @@ class HolderActivity : ComponentActivity() {
                 setTaskDescription(
                     ActivityManager.TaskDescription
                         .Builder()
-                        .setLabel(getString(R.string.do_not_close))
+                        .setLabel(getString(com.arttttt.localization.R.string.do_not_close))
                         .build()
                 )
 
@@ -162,7 +160,7 @@ class HolderActivity : ComponentActivity() {
                     Toast.makeText(
                         applicationContext,
                         getString(
-                            R.string.can_not_launch_activity,
+                            com.arttttt.localization.R.string.can_not_launch_activity,
                             appToLaunch!!.getStringExtra(TARGET_TITLE),
                         ),
                         Toast.LENGTH_SHORT,

@@ -238,7 +238,7 @@ private fun ActionsRow(
                 onClick = onUpdateProfileClicked,
                 colors = AppTheme.widgets.buttonColors,
             ) {
-                Text(text = stringResource(R.string.update_profile))
+                Text(text = stringResource(com.arttttt.localization.R.string.update_profile))
             }
         }
 
@@ -248,7 +248,7 @@ private fun ActionsRow(
                 onClick = onStartAppsClicked,
                 colors = AppTheme.widgets.buttonColors,
             ) {
-                Text(text = stringResource(R.string.start_apps))
+                Text(text = stringResource(com.arttttt.localization.R.string.start_apps))
             }
         }
     }

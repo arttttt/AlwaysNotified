@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arttttt.addprofile.api.AddProfileComponent
@@ -79,7 +80,7 @@ internal class AddProfileContentImpl(
                         bottom = 8.dp,
                     ),
             ) {
-                Text(text = "add profile"/*stringResource(R.string.add_profile)*/)
+                Text(text = stringResource(com.arttttt.localization.R.string.add_profile))
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -99,9 +100,9 @@ internal class AddProfileContentImpl(
                     ),
                     supportingText = {
                         if (isInError) {
-                            /*Text(
-                                text = stringResource(R.string.profile_exists_error)
-                            )*/
+                            Text(
+                                text = stringResource(com.arttttt.localization.R.string.profile_exists_error)
+                            )
                         }
                     },
                     trailingIcon = {
@@ -121,7 +122,7 @@ internal class AddProfileContentImpl(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "test"//stringResource(R.string.color)
+                        text = stringResource(com.arttttt.localization.R.string.color)
                     )
 
                     Spacer(modifier = Modifier.width(16.dp))
@@ -140,7 +141,7 @@ internal class AddProfileContentImpl(
 
                 SwitchWithTextRow(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "test",//stringResource(R.string.add_selected_apps),
+                    text = stringResource(com.arttttt.localization.R.string.add_selected_apps),
                     checked = addSelectedApps,
                     onCheckedChange = { isChecked -> addSelectedApps = isChecked }
                 )
@@ -148,13 +149,13 @@ internal class AddProfileContentImpl(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 DialogButtonsRow(
-                    positiveButtonText = "test",//stringResource(R.string.add),
-                    negativeButtonText = "test",//stringResource(R.string.cancel),
+                    positiveButtonText = stringResource(com.arttttt.localization.R.string.add),
+                    negativeButtonText = stringResource(com.arttttt.localization.R.string.cancel),
                     onPositiveClicked = {
                         if (isInError) {
                             Toast.makeText(
                                 context,
-                                "test",//context.getString(R.string.can_not_save_profile),
+                                context.getString(com.arttttt.localization.R.string.can_not_save_profile),
                                 Toast.LENGTH_SHORT,
                             ).show()
                         } else {
