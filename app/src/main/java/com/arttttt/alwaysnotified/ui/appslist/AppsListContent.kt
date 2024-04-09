@@ -46,10 +46,10 @@ import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.ActivityListDel
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.AppListDelegate
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.DividerListDelegate
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.ProgressListDelegate
-import com.arttttt.alwaysnotified.ui.base.ListItem
-import com.arttttt.alwaysnotified.ui.base.dsl.rememberLazyListDelegateManager
-import com.arttttt.alwaysnotified.ui.custom.LocalCorrectHapticFeedback
-import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.core.arch.base.ListItem
+import com.arttttt.core.arch.base.dsl.rememberLazyListDelegateManager
+import com.arttttt.uikit.LocalCorrectHapticFeedback
+import com.arttttt.uikit.theme.AppTheme
 import com.arttttt.alwaysnotified.ui.topbar.TopBarContent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

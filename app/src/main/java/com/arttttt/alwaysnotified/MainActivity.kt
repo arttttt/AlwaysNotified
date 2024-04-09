@@ -13,10 +13,10 @@ import com.arkivanov.decompose.defaultComponentContext
 import com.arttttt.alwaysnotified.components.root.RootComponent
 import com.arttttt.alwaysnotified.components.root.RootComponentImpl
 import com.arttttt.alwaysnotified.di.mainActivityModule
-import com.arttttt.alwaysnotified.ui.custom.LocalCorrectHapticFeedback
-import com.arttttt.alwaysnotified.ui.custom.rememberHapticFeedback
+import com.arttttt.uikit.LocalCorrectHapticFeedback
+import com.arttttt.uikit.rememberHapticFeedback
 import com.arttttt.alwaysnotified.ui.root.RootContent
-import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.uikit.theme.AppTheme
 import com.arttttt.alwaysnotified.utils.extensions.unsafeCastTo
 import com.arttttt.core.arch.context.wrapComponentContext
 import org.koin.android.scope.AndroidScopeComponent

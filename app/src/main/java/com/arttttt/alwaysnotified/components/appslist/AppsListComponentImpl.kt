@@ -7,11 +7,11 @@ import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.AppsLauncher
-import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
+import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponent
 import com.arttttt.alwaysnotified.components.topbar.TopBarComponentImpl
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
-import com.arttttt.alwaysnotified.utils.extensions.koinScope
+import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.core.arch.events.producer.EventsProducerDelegate

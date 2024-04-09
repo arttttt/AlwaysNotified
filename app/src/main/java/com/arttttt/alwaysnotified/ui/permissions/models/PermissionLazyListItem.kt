@@ -1,7 +1,7 @@
 package com.arttttt.alwaysnotified.ui.permissions.models
 
 import com.arttttt.alwaysnotified.domain.entity.permission.Permission2
-import com.arttttt.alwaysnotified.ui.base.ListItem
+import com.arttttt.core.arch.base.ListItem
 import kotlin.reflect.KClass
 
 sealed class PermissionLazyListItem : ListItem {

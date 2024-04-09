@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arttttt.alwaysnotified.components.profileactions.ProfileActionsComponent
 import com.arttttt.alwaysnotified.ui.common.TextButtonWithIcon
-import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.uikit.theme.AppTheme
 import com.arttttt.core.arch.dialog.DismissEvent
 
 @OptIn(ExperimentalMaterial3Api::class)

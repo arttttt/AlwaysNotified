@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arttttt.alwaysnotified.R
 import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponent
-import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.uikit.theme.AppTheme
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 

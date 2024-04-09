@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.fromClippableItem
-import com.arttttt.alwaysnotified.ui.base.dsl.lazyListDelegate
-import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.core.arch.base.dsl.lazyListDelegate
+import com.arttttt.uikit.theme.AppTheme
 
 fun ActivityListDelegate(
     onClick: (String, String) -> Unit,

@@ -2,8 +2,8 @@ package com.arttttt.alwaysnotified.domain.store.apps
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
-import com.arttttt.alwaysnotified.domain.entity.profiles.Profile
-import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
+import com.arttttt.profiles.api.Profile
+import com.arttttt.profiles.api.SelectedActivity
 
 interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> {
 

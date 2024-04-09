@@ -6,7 +6,7 @@ import android.content.Intent
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
-import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
+import com.arttttt.profiles.api.SelectedActivity
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
 import com.arttttt.alwaysnotified.utils.extensions.intent
 import kotlinx.coroutines.Dispatchers

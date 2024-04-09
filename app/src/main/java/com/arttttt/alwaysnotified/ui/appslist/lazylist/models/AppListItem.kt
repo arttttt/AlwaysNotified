@@ -1,7 +1,7 @@
 package com.arttttt.alwaysnotified.ui.appslist.lazylist.models
 
 import android.graphics.drawable.Drawable
-import com.arttttt.alwaysnotified.ui.base.ListItem
+import com.arttttt.core.arch.base.ListItem
 
 data class AppListItem(
     val pkg: String,

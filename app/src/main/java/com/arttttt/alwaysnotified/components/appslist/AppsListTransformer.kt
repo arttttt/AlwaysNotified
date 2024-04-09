@@ -1,16 +1,16 @@
 package com.arttttt.alwaysnotified.components.appslist
 
 import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponent
-import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
+import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
-import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
+import com.arttttt.profiles.api.SelectedActivity
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.AppListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.DividerListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ProgressListItem
-import com.arttttt.alwaysnotified.ui.base.ListItem
+import com.arttttt.core.arch.base.ListItem
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProvider
 import com.arttttt.core.arch.Transformer
 import kotlinx.collections.immutable.toPersistentList

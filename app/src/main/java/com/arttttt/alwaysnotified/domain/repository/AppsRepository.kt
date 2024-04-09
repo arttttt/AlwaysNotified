@@ -1,8 +1,8 @@
 package com.arttttt.alwaysnotified.domain.repository
 
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
-import com.arttttt.alwaysnotified.domain.entity.profiles.Profile
-import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
+import com.arttttt.profiles.api.Profile
+import com.arttttt.profiles.api.SelectedActivity
 
 interface AppsRepository {
 

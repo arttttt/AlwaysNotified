@@ -25,7 +25,7 @@ import com.arttttt.alwaysnotified.ui.custom.EqualHeightColumn
 import com.arttttt.alwaysnotified.ui.permissions.content.DeniedPermissionContent
 import com.arttttt.alwaysnotified.ui.permissions.content.GrantedPermissionContent
 import com.arttttt.alwaysnotified.ui.permissions.models.PermissionLazyListItem
-import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.uikit.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

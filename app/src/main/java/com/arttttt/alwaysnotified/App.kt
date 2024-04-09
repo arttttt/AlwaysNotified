@@ -4,6 +4,7 @@ import android.app.Application
 import com.arkivanov.mvikotlin.core.utils.isAssertOnMainThreadEnabled
 import com.arttttt.alwaysnotified.di.commonModule
 import com.arttttt.alwaysnotified.utils.timber.CrashReportingTree
+import com.arttttt.profiles.impl.di.profileFeatureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -27,7 +28,10 @@ class App : Application() {
             androidContext(this@App)
             androidLogger(Level.DEBUG)
 
-            modules(commonModule)
+            modules(
+                commonModule,
+                profileFeatureModule,
+            )
         }
     }
 }

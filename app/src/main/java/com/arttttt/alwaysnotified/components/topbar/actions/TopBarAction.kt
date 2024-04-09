@@ -5,11 +5,11 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponent
-import com.arttttt.alwaysnotified.components.profiles.ProfilesComponent
+import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.alwaysnotified.ui.appssearch.AppsSearchContent
-import com.arttttt.alwaysnotified.ui.profiles.ProfilesContent
 
 sealed interface TopBarAction {
 
@@ -24,7 +24,9 @@ sealed interface TopBarAction {
 
         @Composable
         override fun Content() {
-            ProfilesContent(component)
+            component.content.Content(
+                modifier = Modifier,
+            )
         }
     }
 

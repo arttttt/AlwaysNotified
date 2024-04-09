@@ -2,8 +2,8 @@ package com.arttttt.alwaysnotified.domain.store.apps
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
-import com.arttttt.alwaysnotified.domain.entity.profiles.Profile
-import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
+import com.arttttt.profiles.api.Profile
+import com.arttttt.profiles.api.SelectedActivity
 import com.arttttt.alwaysnotified.domain.repository.AppsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

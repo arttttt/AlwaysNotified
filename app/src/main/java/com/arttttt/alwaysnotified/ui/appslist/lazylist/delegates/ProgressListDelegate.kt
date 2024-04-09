@@ -5,8 +5,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ProgressListItem
-import com.arttttt.alwaysnotified.ui.base.dsl.lazyListDelegate
-import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.core.arch.base.dsl.lazyListDelegate
+import com.arttttt.uikit.theme.AppTheme
 
 fun ProgressListDelegate() = lazyListDelegate<ProgressListItem> {
     Box(

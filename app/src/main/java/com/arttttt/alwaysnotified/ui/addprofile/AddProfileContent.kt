@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arttttt.alwaysnotified.R
 import com.arttttt.alwaysnotified.components.addprofile.AddProfileComponent
-import com.arttttt.alwaysnotified.ui.theme.AppTheme
+import com.arttttt.uikit.theme.AppTheme
 import com.arttttt.core.arch.dialog.DismissEvent
 import kotlinx.coroutines.flow.Flow
 import kotlin.math.abs

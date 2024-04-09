@@ -15,7 +15,7 @@ import com.arttttt.alwaysnotified.components.appslist.AppsListTransformer
 import com.arttttt.alwaysnotified.components.permissions.PermissionsComponent
 import com.arttttt.alwaysnotified.components.permissions.PermissionsComponentImpl
 import com.arttttt.alwaysnotified.components.settings.SettingsComponentImpl
-import com.arttttt.alwaysnotified.utils.extensions.koinScope
+import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.core.arch.stackComponentEvents

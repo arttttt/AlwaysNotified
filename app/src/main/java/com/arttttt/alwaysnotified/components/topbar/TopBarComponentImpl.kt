@@ -4,33 +4,43 @@ import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponentImpl
-import com.arttttt.alwaysnotified.components.profiles.ProfilesComponentImpl
 import com.arttttt.alwaysnotified.components.topbar.actions.ExpandableTopBarAction
 import com.arttttt.alwaysnotified.components.topbar.actions.TopBarAction
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.context.wrapComponentContext
+import com.arttttt.core.arch.koinScope
+import com.arttttt.profiles.api.ProfilesComponent
 import kotlinx.coroutines.flow.MutableSharedFlow
+import org.koin.core.component.getScopeId
+import org.koin.core.qualifier.qualifier
 
 class TopBarComponentImpl(
     componentContext: AppComponentContext,
 ) : TopBarComponent,
     AppComponentContext by componentContext {
 
-    override val profilesComponent = ProfilesComponentImpl(
-        context = wrapComponentContext(
-            context = childContext(
-                key = "profiles",
-            ),
-            parentScopeID = parentScopeID,
-        )
+    private val koinScope = koinScope(
+        scopeID = getScopeId(),
+        qualifier = qualifier<TopBarComponent>(),
     )
+
+    override val profilesComponent = koinScope
+        .get<ProfilesComponent.Factory>()
+        .create(
+            context = wrapComponentContext(
+                context = childContext(
+                    key = "profiles",
+                ),
+                parentScopeID = koinScope.id,
+            ),
+        )
 
     override val appsSearchComponent = AppsSearchComponentImpl(
         context = wrapComponentContext(
             context = childContext(
                 key = "apps_search",
             ),
-            parentScopeID = parentScopeID,
+            parentScopeID = koinScope.id,
         )
     )
 

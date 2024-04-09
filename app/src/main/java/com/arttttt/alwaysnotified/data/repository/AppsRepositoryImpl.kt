@@ -7,8 +7,8 @@ import android.content.pm.PackageManager
 import com.arttttt.alwaysnotified.data.database.dao.ProfilesDao
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
-import com.arttttt.alwaysnotified.domain.entity.profiles.Profile
-import com.arttttt.alwaysnotified.domain.entity.profiles.SelectedActivity
+import com.arttttt.profiles.api.Profile
+import com.arttttt.profiles.api.SelectedActivity
 import com.arttttt.alwaysnotified.domain.repository.AppsRepository
 
 class AppsRepositoryImpl(

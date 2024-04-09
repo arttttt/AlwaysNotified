@@ -17,6 +17,14 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -42,7 +50,24 @@ dependencies {
     api(libs.essenty.instanceKeeper)
     api(libs.essenty.stateKeeper)
 
+    api(libs.mviKotlin.core)
+    api(libs.mviKotlin.main)
+    api(libs.mviKotlin.logging)
+    api(libs.mviKotlin.timetravel)
+    api(libs.mviKotlin.coroutines)
+
     api(libs.kotlinx.coroutines.core)
 
     api(libs.koin.core)
+
+    api(libs.activity.compose)
+    api(platform(libs.compose.bom))
+    api(libs.ui)
+    api(libs.ui.graphics)
+    api(libs.ui.tooling.preview)
+    api(libs.material3)
+    debugApi(libs.ui.tooling)
+    debugApi(libs.ui.test.manifest)
+
+    api(libs.kotlin.collections)
 }

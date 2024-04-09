@@ -8,7 +8,7 @@ import com.arttttt.alwaysnotified.data.database.AppDatabase
 import com.arttttt.alwaysnotified.data.repository.AppsRepositoryImpl
 import com.arttttt.alwaysnotified.data.repository.ProfilesRepositoryImpl
 import com.arttttt.alwaysnotified.domain.repository.AppsRepository
-import com.arttttt.alwaysnotified.domain.repository.ProfilesRepository
+import com.arttttt.profiles.impl.domain.repository.ProfilesRepository
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStoreFactory
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProvider

@@ -2,8 +2,8 @@ package com.arttttt.alwaysnotified.components.addprofile
 
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.dialog.DismissEventConsumer
-import com.arttttt.alwaysnotified.domain.repository.ProfilesRepository
-import com.arttttt.alwaysnotified.utils.extensions.koinScope
+import com.arttttt.profiles.impl.domain.repository.ProfilesRepository
+import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.dialog.DismissEvent
 import com.arttttt.core.arch.dialog.DismissEventDelegate
 import com.arttttt.core.arch.dialog.DismissEventProducer
