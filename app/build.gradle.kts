@@ -75,6 +75,8 @@ dependencies {
     implementation(project(":core:arch"))
     implementation(project(":feature:profiles:api"))
     implementation(project(":feature:profiles:impl"))
+    implementation(project(":feature:addprofile:api"))
+    implementation(project(":feature:addprofile:impl"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)

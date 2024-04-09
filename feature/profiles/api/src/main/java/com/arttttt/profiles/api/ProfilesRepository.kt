@@ -1,7 +1,4 @@
-package com.arttttt.profiles.impl.domain.repository
-
-import com.arttttt.profiles.api.Profile
-import com.arttttt.profiles.api.SelectedActivity
+package com.arttttt.profiles.api
 
 interface ProfilesRepository {
 
@@ -13,5 +10,5 @@ interface ProfilesRepository {
 
     suspend fun removeProfileByUUID(uuid: String)
 
-    suspend fun doesProfileExist(title: String): Boolean
+    suspend fun isProfileExist(title: String): Boolean
 }

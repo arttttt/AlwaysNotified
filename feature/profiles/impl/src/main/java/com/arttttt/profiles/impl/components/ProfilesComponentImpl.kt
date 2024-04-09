@@ -4,26 +4,34 @@ import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.slot.SlotNavigation
 import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
+import com.arttttt.addprofile.api.AddProfileComponent
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.context.wrapComponentContext
+import com.arttttt.core.arch.events.producer.EventsProducer
 import com.arttttt.core.arch.events.producer.EventsProducerDelegate
 import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import com.arttttt.core.arch.koinScope
+import com.arttttt.core.arch.slotComponentEvents
+import com.arttttt.core.arch.slotDismissEvents
 import com.arttttt.profiles.api.ProfilesComponent
-import com.arttttt.profiles.impl.components.di.profilesModule
+import com.arttttt.profiles.impl.components.di.profilesFeatureModule
 import com.arttttt.profiles.impl.domain.store.ProfilesStore
-import com.arttttt.profiles.impl.ui.ProfilesContent
+import com.arttttt.profiles.impl.ui.ProfilesContentImpl
 import com.arttttt.profiles.impl.ui.lazylist.models.ProfileListItem
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import org.koin.core.component.getScopeId
 import org.koin.core.qualifier.qualifier
@@ -44,12 +52,14 @@ class ProfilesComponentImpl(
     private val coroutineScope = coroutineScope()
 
     private val koinScope = koinScope(
-        profilesModule,
+        profilesFeatureModule,
         scopeID = getScopeId(),
         qualifier = qualifier<ProfilesComponent>(),
     )
 
     private val profilesStore by koinScope.inject<ProfilesStore>()
+
+    private val addProfileComponentFactory: AddProfileComponent.Factory by koinScope.inject()
 
     override val states: StateFlow<ProfilesComponent.State> = profilesStore
         .states
@@ -92,7 +102,7 @@ class ProfilesComponentImpl(
 
     override val commands: MutableSharedFlow<ProfilesComponent.Command> = MutableSharedFlow()
 
-    override val content: ComponentContent = ProfilesContent(this)
+    override val content: ComponentContent = ProfilesContentImpl(this)
 
     private val dialogNavigation = SlotNavigation<DialogConfig>()
 
@@ -107,18 +117,17 @@ class ProfilesComponentImpl(
                 parentScopeID = koinScope.id,
             )
 
-            TODO()
-
-            /*when (config) {
-                is DialogConfig.ProfileActions -> {
+            when (config) {
+                is DialogConfig.AddProfile -> {
+                    addProfileComponentFactory.create(
+                        context = wrappedContext,
+                    )
+                }
+                else -> TODO()
+                /*is DialogConfig.ProfileActions -> {
                     ProfileActionsComponentImpl(
                         context = wrappedContext,
                         profileUUID = config.id,
-                    )
-                }
-                is DialogConfig.AddProfile -> {
-                    AddProfileComponentImpl(
-                        context = wrappedContext,
                     )
                 }
                 is DialogConfig.RemoveProfile -> {
@@ -126,17 +135,17 @@ class ProfilesComponentImpl(
                         context = wrappedContext,
                         profileUUID = config.id,
                     )
-                }
-            }*/
+                }*/
+            }
         }
 
     init {
-        /*dialog
+        dialog
             .slotDismissEvents()
             .onEach { dialogNavigation.dismiss() }
             .launchIn(coroutineScope)
 
-        dialog
+        /*dialog
             .slotComponentEvents<EventsProducer<ProfileActionsComponent.Event>>()
             .filterIsInstance<ProfileActionsComponent.Event.RemoveProfile>()
             .onEach { event ->
@@ -168,7 +177,7 @@ class ProfilesComponentImpl(
                     )
                 )
             }
-            .launchIn(coroutineScope)
+            .launchIn(coroutineScope)*/
 
         dialog
             .slotComponentEvents<EventsProducer<AddProfileComponent.Event>>()
@@ -182,7 +191,7 @@ class ProfilesComponentImpl(
                     )
                 )
             }
-            .launchIn(coroutineScope)*/
+            .launchIn(coroutineScope)
     }
 
     override fun consume(event: ProfilesComponent.Events.Input) {

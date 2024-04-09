@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.arttttt.profiles.impl"
+    namespace = "com.arttttt.addprofile.impl"
     compileSdk = 34
 
     defaultConfig {
@@ -44,6 +44,5 @@ android {
 dependencies {
     implementation(project(":uikit"))
     implementation(project(":core:arch"))
-    implementation(project(":feature:profiles:api"))
     implementation(project(":feature:addprofile:api"))
 }

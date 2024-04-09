@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.arttttt.profiles.impl"
+    namespace = "com.arttttt.addprofile.api"
     compileSdk = 34
 
     defaultConfig {
@@ -16,15 +16,6 @@ android {
             isMinifyEnabled = false
         }
     }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -42,8 +33,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":uikit"))
     implementation(project(":core:arch"))
-    implementation(project(":feature:profiles:api"))
-    implementation(project(":feature:addprofile:api"))
 }

@@ -4,7 +4,7 @@ import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arttttt.profiles.api.SelectedActivity
-import com.arttttt.profiles.impl.domain.repository.ProfilesRepository
+import com.arttttt.profiles.api.ProfilesRepository
 
 class ProfilesStoreFactory(
     private val storeFactory: StoreFactory,

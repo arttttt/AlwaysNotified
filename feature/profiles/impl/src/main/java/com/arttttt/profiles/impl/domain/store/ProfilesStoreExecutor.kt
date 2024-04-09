@@ -4,7 +4,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.profiles.api.Profile
 import com.arttttt.profiles.api.SelectedActivity
 import com.arttttt.profiles.impl.utils.createDefault
-import com.arttttt.profiles.impl.domain.repository.ProfilesRepository
+import com.arttttt.profiles.api.ProfilesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

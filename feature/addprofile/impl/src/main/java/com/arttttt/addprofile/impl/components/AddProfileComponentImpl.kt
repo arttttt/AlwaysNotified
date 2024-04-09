@@ -1,14 +1,17 @@
-package com.arttttt.alwaysnotified.components.addprofile
+package com.arttttt.addprofile.impl.components
 
+import com.arttttt.addprofile.api.AddProfileComponent
+import com.arttttt.addprofile.api.ProfileExistsChecker
+import com.arttttt.addprofile.impl.ui.AddProfileContentImpl
+import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.context.AppComponentContext
-import com.arttttt.core.arch.dialog.DismissEventConsumer
-import com.arttttt.profiles.impl.domain.repository.ProfilesRepository
-import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.dialog.DismissEvent
+import com.arttttt.core.arch.dialog.DismissEventConsumer
 import com.arttttt.core.arch.dialog.DismissEventDelegate
 import com.arttttt.core.arch.dialog.DismissEventProducer
 import com.arttttt.core.arch.events.producer.EventsProducerDelegate
 import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
+import com.arttttt.core.arch.koinScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.getScopeId
@@ -31,8 +34,9 @@ class AddProfileComponentImpl(
         scopeID = getScopeId(),
         qualifier = qualifier<AddProfileComponent>(),
     )
+    override val content: ComponentContent = AddProfileContentImpl(this)
 
-    private val profilesRepository: ProfilesRepository by scope.inject()
+    private val profileExistsChecker: ProfileExistsChecker by scope.inject()
 
     override fun createProfileClicked(
         title: String,
@@ -47,7 +51,7 @@ class AddProfileComponentImpl(
         if (title.isEmpty()) return true
 
         return withContext(Dispatchers.IO) {
-            !profilesRepository.doesProfileExist(title)
+            !profileExistsChecker.isProfileExist(title)
         }
     }
 }

@@ -4,7 +4,7 @@ import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.profiles.impl.domain.store.ProfilesStoreFactory
 import org.koin.dsl.module
 
-val profilesModule = module {
+val profilesFeatureModule = module {
     scope<ProfilesComponent> {
         scoped {
             ProfilesStoreFactory(

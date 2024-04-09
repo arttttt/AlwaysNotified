@@ -4,7 +4,6 @@ import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.base.ListItem
-import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.events.consumer.EventsConsumer

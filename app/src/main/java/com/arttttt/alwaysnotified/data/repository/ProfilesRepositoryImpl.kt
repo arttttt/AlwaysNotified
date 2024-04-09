@@ -6,7 +6,7 @@ import com.arttttt.alwaysnotified.data.database.model.ProfileDbModel
 import com.arttttt.alwaysnotified.data.database.model.ProfileWithActivities
 import com.arttttt.profiles.api.Profile
 import com.arttttt.profiles.api.SelectedActivity
-import com.arttttt.profiles.impl.domain.repository.ProfilesRepository
+import com.arttttt.profiles.api.ProfilesRepository
 import java.util.UUID
 
 class ProfilesRepositoryImpl(
@@ -53,7 +53,7 @@ class ProfilesRepositoryImpl(
         profilesDao.removeProfileByUUID(uuid)
     }
 
-    override suspend fun doesProfileExist(title: String): Boolean {
+    override suspend fun isProfileExist(title: String): Boolean {
         return profilesDao.doesProfileExist(title)
     }
 }

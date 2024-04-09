@@ -1,6 +1,5 @@
 package com.arttttt.profiles.impl.ui
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,10 +25,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.core.arch.base.dsl.items
 import com.arttttt.core.arch.base.dsl.rememberLazyListDelegateManager
 import com.arttttt.core.arch.content.ComponentContent
+import com.arttttt.core.arch.content.ComponentContentOwner
+import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.profiles.impl.ui.lazylist.delegates.ProfileListDelegate
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
@@ -37,18 +37,12 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-internal class ProfilesContent(
+internal class ProfilesContentImpl(
     private val component: ProfilesComponent,
 ) : ComponentContent {
 
     @Composable
     override fun Content(modifier: Modifier) {
-        ProfilesContent()
-    }
-
-    @SuppressLint("NotConstructor")
-    @Composable
-    private fun ProfilesContent() {
         val state by component.uiState.collectAsState()
         val dialog by component.dialog.subscribeAsState()
 
@@ -87,19 +81,19 @@ internal class ProfilesContent(
             }
         }
 
-        /*dialog.child?.instance?.let { dialogComponent ->
+        dialog.child?.instance?.let { dialogComponent ->
             when (dialogComponent) {
-                is ProfileActionsComponent -> ProfileActionsContent(
+                /*is ProfileActionsComponent -> ProfileActionsContent(
                     component = dialogComponent,
                 )
                 is RemoveProfileComponent -> RemoveProfileContent(
                     component = dialogComponent,
-                )
-                is AddProfileComponent -> AddProfileContent(
-                    component = dialogComponent,
+                )*/
+                is ComponentContentOwner -> dialogComponent.content.Content(
+                    modifier = Modifier,
                 )
             }
-        }*/
+        }
 
         val context = LocalContext.current
         LaunchedEffect(component) {
