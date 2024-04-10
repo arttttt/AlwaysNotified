@@ -1,7 +1,7 @@
 package com.arttttt.alwaysnotified.components.topbar
 
 import com.arkivanov.decompose.value.Value
-import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponent
+import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.alwaysnotified.components.topbar.actions.ExpandableTopBarAction
 import com.arttttt.alwaysnotified.components.topbar.actions.TopBarAction

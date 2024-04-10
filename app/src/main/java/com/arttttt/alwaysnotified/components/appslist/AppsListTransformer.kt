@@ -1,6 +1,6 @@
 package com.arttttt.alwaysnotified.components.appslist
 
-import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponent
+import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
 import com.arttttt.alwaysnotified.domain.entity.info.AppInfo

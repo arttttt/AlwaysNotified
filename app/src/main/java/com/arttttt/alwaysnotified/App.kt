@@ -4,6 +4,7 @@ import android.app.Application
 import com.arkivanov.mvikotlin.core.utils.isAssertOnMainThreadEnabled
 import com.arttttt.alwaysnotified.di.commonModule
 import com.arttttt.alwaysnotified.utils.timber.CrashReportingTree
+import com.arttttt.appssearch.impl.di.appsSearchFeatureModule
 import com.arttttt.profiles.impl.di.profileFeatureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -31,6 +32,7 @@ class App : Application() {
             modules(
                 commonModule,
                 profileFeatureModule,
+                appsSearchFeatureModule,
             )
         }
     }

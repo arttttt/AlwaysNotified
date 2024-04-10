@@ -1,6 +1,9 @@
-package com.arttttt.alwaysnotified.components.appssearch
+package com.arttttt.appssearch.impl.components
 
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.arttttt.appssearch.api.AppsSearchComponent
+import com.arttttt.appssearch.impl.ui.AppsSearchComponentContentImpl
+import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.context.AppComponentContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -9,10 +12,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-class AppsSearchComponentImpl(
-    context: com.arttttt.core.arch.context.AppComponentContext,
+internal class AppsSearchComponentImpl(
+    context: AppComponentContext,
 ) : AppsSearchComponent,
-    com.arttttt.core.arch.context.AppComponentContext by context {
+    AppComponentContext by context {
 
     private val coroutinesScope = coroutineScope()
 
@@ -21,6 +24,8 @@ class AppsSearchComponentImpl(
             filter = "",
         )
     )
+
+    override val content: ComponentContent = AppsSearchComponentContentImpl(this)
 
     override val states: StateFlow<AppsSearchComponent.State> = _states
 

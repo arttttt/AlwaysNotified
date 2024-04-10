@@ -3,9 +3,9 @@ package com.arttttt.alwaysnotified.components.topbar
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import com.arttttt.alwaysnotified.components.appssearch.AppsSearchComponentImpl
 import com.arttttt.alwaysnotified.components.topbar.actions.ExpandableTopBarAction
 import com.arttttt.alwaysnotified.components.topbar.actions.TopBarAction
+import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.core.arch.koinScope
@@ -35,14 +35,16 @@ class TopBarComponentImpl(
             ),
         )
 
-    override val appsSearchComponent = AppsSearchComponentImpl(
-        context = wrapComponentContext(
-            context = childContext(
-                key = "apps_search",
+    override val appsSearchComponent = koinScope
+        .get<AppsSearchComponent.Factory>()
+        .create(
+            context = wrapComponentContext(
+                context = childContext(
+                    key = "apps_search",
+                ),
+                parentScopeID = koinScope.id,
             ),
-            parentScopeID = koinScope.id,
         )
-    )
 
     override val uiState = MutableValue(
         initialValue = TopBarComponent.UiState(
