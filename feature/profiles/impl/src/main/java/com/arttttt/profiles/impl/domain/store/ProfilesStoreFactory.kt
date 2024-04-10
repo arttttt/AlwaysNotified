@@ -3,12 +3,12 @@ package com.arttttt.profiles.impl.domain.store
 import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.arttttt.profiles.api.SelectedActivity
 import com.arttttt.profiles.api.ProfilesRepository
+import com.arttttt.profiles.api.SelectedActivitiesRepository
 
 internal class ProfilesStoreFactory(
     private val storeFactory: StoreFactory,
-    private val selectedAppsProvider: () -> List<SelectedActivity>,
+    private val selectedActivitiesRepository: SelectedActivitiesRepository,
     private val profilesRepository: ProfilesRepository,
 ) {
 
@@ -24,7 +24,7 @@ internal class ProfilesStoreFactory(
             bootstrapper = SimpleBootstrapper(ProfilesStore.Action.LoadProfiles),
             executorFactory = {
                 ProfilesStoreExecutor(
-                    selectedAppsProvider = selectedAppsProvider,
+                    selectedActivitiesRepository = selectedActivitiesRepository,
                     profilesRepository = profilesRepository,
                 )
             },

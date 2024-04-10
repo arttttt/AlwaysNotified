@@ -41,15 +41,7 @@ internal val profilesModule = module {
         scoped {
             ProfilesStoreFactory(
                 storeFactory = get(),
-                selectedAppsProvider = {
-                    emptyList()
-                    /*get<AppsStore>()
-                        .state
-                        .selectedActivities
-                        ?.values
-                        ?.toList()
-                        ?: emptyList()*/
-                },
+                selectedActivitiesRepository = get(),
                 profilesRepository = get(),
             ).create()
         }

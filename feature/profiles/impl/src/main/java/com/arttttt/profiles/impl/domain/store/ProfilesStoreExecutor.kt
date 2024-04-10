@@ -2,16 +2,16 @@ package com.arttttt.profiles.impl.domain.store
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.profiles.api.Profile
-import com.arttttt.profiles.api.SelectedActivity
 import com.arttttt.profiles.impl.utils.createDefault
 import com.arttttt.profiles.api.ProfilesRepository
+import com.arttttt.profiles.api.SelectedActivitiesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
 internal class ProfilesStoreExecutor(
-    private val selectedAppsProvider: () -> List<SelectedActivity>,
+    private val selectedActivitiesRepository: SelectedActivitiesRepository,
     private val profilesRepository: ProfilesRepository,
 ) : CoroutineExecutor<ProfilesStore.Intent, ProfilesStore.Action, ProfilesStore.State, ProfilesStore.Message, ProfilesStore.Label>() {
 
@@ -42,7 +42,7 @@ internal class ProfilesStoreExecutor(
             withContext(Dispatchers.IO) {
                 profilesRepository.saveProfile(
                     profile = profile,
-                    selectedActivities = selectedAppsProvider.invoke(),
+                    selectedActivities = selectedActivitiesRepository.getSelectedActivities(),
                 )
             }
 
@@ -63,7 +63,7 @@ internal class ProfilesStoreExecutor(
     private fun createProfile(
         title: String,
         color: Int,
-        addSeletedApps: Boolean,
+        addSelectedActivities: Boolean,
     ) {
         scope.launch {
             val profile = Profile(
@@ -75,8 +75,8 @@ internal class ProfilesStoreExecutor(
             withContext(Dispatchers.IO) {
                 profilesRepository.saveProfile(
                     profile = profile,
-                    selectedActivities = if (addSeletedApps) {
-                        selectedAppsProvider.invoke()
+                    selectedActivities = if (addSelectedActivities) {
+                        selectedActivitiesRepository.getSelectedActivities()
                     } else {
                         emptyList()
                     },

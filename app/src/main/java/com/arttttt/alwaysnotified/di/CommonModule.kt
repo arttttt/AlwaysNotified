@@ -13,6 +13,7 @@ import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStoreFactory
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProvider
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProviderImpl
+import com.arttttt.profiles.api.SelectedActivitiesRepository
 import org.koin.dsl.module
 
 val commonModule = module {
@@ -63,5 +64,16 @@ val commonModule = module {
         ResourcesProviderImpl(
             context = get(),
         )
+    }
+
+    factory {
+        SelectedActivitiesRepository {
+            get<AppsStore>()
+                .state
+                .selectedActivities
+                ?.values
+                ?.toList()
+                ?: emptyList()
+        }
     }
 }
