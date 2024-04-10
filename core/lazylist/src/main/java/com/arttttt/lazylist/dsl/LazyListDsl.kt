@@ -1,4 +1,4 @@
-package com.arttttt.core.arch.base.dsl
+package com.arttttt.lazylist.dsl
 
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
@@ -6,10 +6,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.arttttt.core.arch.base.ListItem
-import com.arttttt.core.arch.base.delegate.LazyListDelegate
-import com.arttttt.core.arch.base.delegate.LazyListDelegatesManager
-import com.arttttt.core.arch.base.delegate.LazyListViewHolder
+import com.arttttt.lazylist.ListItem
+import com.arttttt.lazylist.delegate.LazyListDelegate
+import com.arttttt.lazylist.delegate.LazyListDelegatesManager
+import com.arttttt.lazylist.delegate.LazyListViewHolder
 import kotlinx.collections.immutable.ImmutableList
 
 inline fun <reified T : ListItem> lazyListDelegate(

@@ -1,10 +1,10 @@
-package com.arttttt.core.arch.base.delegate
+package com.arttttt.lazylist.delegate
 
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.arttttt.core.arch.base.ListItem
+import com.arttttt.lazylist.ListItem
 import kotlinx.collections.immutable.ImmutableList
 
 class LazyListDelegatesManager(

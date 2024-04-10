@@ -1,4 +1,4 @@
-package com.arttttt.core.arch.base
+package com.arttttt.lazylist
 
 interface ListItem {
 

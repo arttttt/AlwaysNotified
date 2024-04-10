@@ -25,8 +25,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.core.arch.base.dsl.items
-import com.arttttt.core.arch.base.dsl.rememberLazyListDelegateManager
+import com.arttttt.lazylist.dsl.items
+import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent

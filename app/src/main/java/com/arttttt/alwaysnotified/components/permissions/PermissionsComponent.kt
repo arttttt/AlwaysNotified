@@ -2,7 +2,7 @@ package com.arttttt.alwaysnotified.components.permissions
 
 import com.arkivanov.decompose.value.Value
 import com.arttttt.alwaysnotified.domain.entity.permission.Permission2
-import com.arttttt.core.arch.base.ListItem
+import com.arttttt.lazylist.ListItem
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.events.producer.EventsProducer
 import kotlin.reflect.KClass

@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.arttttt.core.arch.base.dsl.lazyListDelegate
+import com.arttttt.lazylist.dsl.lazyListDelegate
 import com.arttttt.profiles.impl.ui.profiles.lazylist.models.ProfileListItem
 import com.arttttt.uikit.theme.AppTheme
 

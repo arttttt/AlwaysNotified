@@ -1,6 +1,6 @@
 package com.arttttt.profiles.impl.ui.profiles.lazylist.models
 
-import com.arttttt.core.arch.base.ListItem
+import com.arttttt.lazylist.ListItem
 
 internal data class ProfileListItem(
     val id: String,

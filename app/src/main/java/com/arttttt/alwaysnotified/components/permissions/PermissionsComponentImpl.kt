@@ -9,7 +9,7 @@ import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.alwaysnotified.components.permissions.di.permissionsModule
 import com.arttttt.alwaysnotified.domain.entity.permission.Permission2
 import com.arttttt.alwaysnotified.domain.store.permissions.PermissionsStore
-import com.arttttt.core.arch.base.ListItem
+import com.arttttt.lazylist.ListItem
 import com.arttttt.alwaysnotified.ui.permissions.models.PermissionLazyListItem
 import com.arttttt.core.arch.asValue
 import com.arttttt.core.arch.koinScope

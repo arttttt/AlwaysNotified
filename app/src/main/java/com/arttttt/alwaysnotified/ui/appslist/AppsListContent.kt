@@ -40,14 +40,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.alwaysnotified.R
 import com.arttttt.alwaysnotified.components.appslist.AppListComponent
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.ActivityListDelegate
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.AppListDelegate
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.DividerListDelegate
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.delegates.ProgressListDelegate
-import com.arttttt.core.arch.base.ListItem
-import com.arttttt.core.arch.base.dsl.rememberLazyListDelegateManager
+import com.arttttt.lazylist.ListItem
+import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
 import com.arttttt.alwaysnotified.ui.topbar.TopBarContent

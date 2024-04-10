@@ -1,6 +1,6 @@
 package com.arttttt.alwaysnotified.ui.appslist.lazylist.models
 
-import com.arttttt.core.arch.base.ListItem
+import com.arttttt.lazylist.ListItem
 
 data class ActivityListItem(
     val pkg: String,

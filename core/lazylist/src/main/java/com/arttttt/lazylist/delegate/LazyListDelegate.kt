@@ -1,6 +1,6 @@
-package com.arttttt.core.arch.base.delegate
+package com.arttttt.lazylist.delegate
 
-import com.arttttt.core.arch.base.ListItem
+import com.arttttt.lazylist.ListItem
 
 abstract class LazyListDelegate<T : ListItem> {
 

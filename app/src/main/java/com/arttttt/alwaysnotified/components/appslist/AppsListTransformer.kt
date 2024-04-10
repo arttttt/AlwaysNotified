@@ -10,7 +10,7 @@ import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.AppListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.DividerListItem
 import com.arttttt.alwaysnotified.ui.appslist.lazylist.models.ProgressListItem
-import com.arttttt.core.arch.base.ListItem
+import com.arttttt.lazylist.ListItem
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProvider
 import com.arttttt.core.arch.Transformer
 import kotlinx.collections.immutable.toPersistentList

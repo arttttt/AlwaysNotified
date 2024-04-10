@@ -45,5 +45,6 @@ dependencies {
     implementation(project(":localization"))
     implementation(project(":uikit"))
     implementation(project(":core:arch"))
+    implementation(project(":core:lazylist"))
     implementation(project(":feature:profiles:api"))
 }

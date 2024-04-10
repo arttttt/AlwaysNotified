@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.arttttt.profiles.api"
+    namespace = "com.arttttt.lazylist"
     compileSdk = 34
 
     defaultConfig {
@@ -15,6 +15,14 @@ android {
         release {
             isMinifyEnabled = false
         }
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     compileOptions {
@@ -34,6 +42,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:arch"))
-    implementation(project(":core:lazylist"))
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+
+    implementation(libs.kotlin.collections)
 }
