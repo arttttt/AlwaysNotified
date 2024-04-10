@@ -24,6 +24,7 @@ import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.profiles.impl.domain.store.ProfilesStore
 import com.arttttt.profiles.impl.ui.profiles.ProfilesContent
 import com.arttttt.profiles.impl.components.profiles.di.profilesModule
+import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponent
 import com.arttttt.profiles.impl.ui.profiles.lazylist.models.ProfileListItem
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -60,6 +61,7 @@ class ProfilesComponentImpl(
     private val profilesStore by koinScope.inject<ProfilesStore>()
 
     private val addProfileComponentFactory: AddProfileComponent.Factory by koinScope.inject()
+    private val removeProfileComponentFactory: RemoveProfileComponent.Factory by koinScope.inject()
 
     override val states: StateFlow<ProfilesComponent.State> = profilesStore
         .states
@@ -123,15 +125,15 @@ class ProfilesComponentImpl(
                         context = wrappedContext,
                     )
                 }
-                else -> TODO()
-                /*is DialogConfig.ProfileActions -> {
-                    ProfileActionsComponentImpl(
+                is DialogConfig.RemoveProfile -> {
+                    removeProfileComponentFactory.create(
                         context = wrappedContext,
                         profileUUID = config.id,
                     )
                 }
-                is DialogConfig.RemoveProfile -> {
-                    RemoveProfileComponentImpl(
+                else -> TODO()
+                /*is DialogConfig.ProfileActions -> {
+                    ProfileActionsComponentImpl(
                         context = wrappedContext,
                         profileUUID = config.id,
                     )
@@ -165,7 +167,7 @@ class ProfilesComponentImpl(
                 commands.emit(ProfilesComponent.Command.ShowMessage("Not implemented yet"))
                 dialogNavigation.dismiss()
             }
-            .launchIn(coroutineScope)
+            .launchIn(coroutineScope)*/
 
         dialog
             .slotComponentEvents<EventsProducer<RemoveProfileComponent.Event>>()
@@ -177,7 +179,7 @@ class ProfilesComponentImpl(
                     )
                 )
             }
-            .launchIn(coroutineScope)*/
+            .launchIn(coroutineScope)
 
         dialog
             .slotComponentEvents<EventsProducer<AddProfileComponent.Event>>()

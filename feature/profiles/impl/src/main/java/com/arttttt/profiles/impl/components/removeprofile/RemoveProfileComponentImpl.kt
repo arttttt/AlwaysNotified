@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.components.removeprofile
+package com.arttttt.profiles.impl.components.removeprofile
 
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.dialog.DismissEvent

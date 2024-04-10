@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.ui.removeprofile
+package com.arttttt.profiles.impl.ui.removeprofile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,34 +11,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.arttttt.alwaysnotified.components.removeprofile.RemoveProfileComponent
-import com.arttttt.uikit.theme.AppTheme
 import com.arttttt.core.arch.dialog.DismissEvent
-import kotlinx.coroutines.flow.Flow
-
-@Preview
-@Composable
-private fun RemoveProfileContentPreview() {
-    RemoveProfileContent(
-        component = object : RemoveProfileComponent {
-            override fun onDismiss(event: DismissEvent) {
-                TODO("Not yet implemented")
-            }
-            override val dismissEvents: Flow<DismissEvent>
-                get() = TODO("Not yet implemented")
-
-            override val events: Flow<RemoveProfileComponent.Event>
-                get() = TODO("Not yet implemented")
-
-            override fun confirmedClicked() {
-                TODO("Not yet implemented")
-            }
-        }
-    )
-}
+import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponent
+import com.arttttt.uikit.theme.AppTheme
 
 @Composable
 fun RemoveProfileContent(

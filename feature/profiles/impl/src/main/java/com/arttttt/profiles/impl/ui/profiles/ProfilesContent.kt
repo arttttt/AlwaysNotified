@@ -30,8 +30,10 @@ import com.arttttt.core.arch.base.dsl.rememberLazyListDelegateManager
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent
+import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponent
 import com.arttttt.profiles.impl.ui.addprofile.AddProfileContent
 import com.arttttt.profiles.impl.ui.profiles.lazylist.delegates.ProfileListDelegate
+import com.arttttt.profiles.impl.ui.removeprofile.RemoveProfileContent
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -86,12 +88,12 @@ internal class ProfilesContent(
             when (dialogComponent) {
                 /*is ProfileActionsComponent -> ProfileActionsContent(
                     component = dialogComponent,
-                )
-                is RemoveProfileComponent -> RemoveProfileContent(
-                    component = dialogComponent,
                 )*/
                 is AddProfileComponent -> AddProfileContent(
                     modifier = Modifier,
+                    component = dialogComponent,
+                )
+                is RemoveProfileComponent -> RemoveProfileContent(
                     component = dialogComponent,
                 )
             }
