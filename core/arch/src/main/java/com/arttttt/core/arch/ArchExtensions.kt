@@ -17,8 +17,7 @@ fun koinScope(
     vararg modules: Module,
     scopeID: ScopeID,
     qualifier: Qualifier,
-) : Scope
-{
+) : Scope {
     val scope = KoinPlatform.getKoin().createScope(
         scopeId = scopeID,
         qualifier = qualifier,
