@@ -6,7 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arttttt.profiles.api.SelectedActivity
 import com.arttttt.profiles.api.ProfilesRepository
 
-class ProfilesStoreFactory(
+internal class ProfilesStoreFactory(
     private val storeFactory: StoreFactory,
     private val selectedAppsProvider: () -> List<SelectedActivity>,
     private val profilesRepository: ProfilesRepository,

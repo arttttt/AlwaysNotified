@@ -3,7 +3,7 @@ package com.arttttt.profiles.impl.domain.store
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arttttt.profiles.api.Profile
 
-interface ProfilesStore : Store<ProfilesStore.Intent, ProfilesStore.State, ProfilesStore.Label> {
+internal interface ProfilesStore : Store<ProfilesStore.Intent, ProfilesStore.State, ProfilesStore.Label> {
 
     data class State(
         val selectedProfile: Profile?,

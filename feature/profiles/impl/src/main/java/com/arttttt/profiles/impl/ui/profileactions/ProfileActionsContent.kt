@@ -23,7 +23,7 @@ import com.arttttt.uikit.widgets.TextButtonWithIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileActionsContent(
+internal fun ProfileActionsContent(
     component: ProfileActionsComponent
 ) {
     val state by component.uiState.subscribeAsState()

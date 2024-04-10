@@ -44,7 +44,7 @@ import kotlin.math.abs
  * TODO: move out logic from the UI
  */
 @Composable
-fun AddProfileContent(
+internal fun AddProfileContent(
     component: AddProfileComponent,
 ) {
     var title by remember {

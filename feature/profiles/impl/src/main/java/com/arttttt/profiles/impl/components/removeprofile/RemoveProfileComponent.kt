@@ -6,7 +6,7 @@ import com.arttttt.core.arch.dialog.DismissEventConsumer
 import com.arttttt.core.arch.dialog.DismissEventProducer
 import com.arttttt.core.arch.events.producer.EventsProducer
 
-interface RemoveProfileComponent : DecomposeComponent,
+internal interface RemoveProfileComponent : DecomposeComponent,
     EventsProducer<RemoveProfileComponent.Event>,
     DismissEventProducer,
     DismissEventConsumer {

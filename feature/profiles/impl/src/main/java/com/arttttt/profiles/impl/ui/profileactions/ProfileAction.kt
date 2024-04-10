@@ -5,7 +5,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class ProfileAction {
+internal sealed class ProfileAction {
 
     abstract val title: String
     abstract val icon: ImageVector

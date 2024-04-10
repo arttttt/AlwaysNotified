@@ -2,7 +2,7 @@ package com.arttttt.profiles.impl.domain.store
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 
-object ProfilesStoreReducer : Reducer<ProfilesStore.State, ProfilesStore.Message> {
+internal object ProfilesStoreReducer : Reducer<ProfilesStore.State, ProfilesStore.Message> {
 
     override fun ProfilesStore.State.reduce(msg: ProfilesStore.Message): ProfilesStore.State {
         return when (msg) {

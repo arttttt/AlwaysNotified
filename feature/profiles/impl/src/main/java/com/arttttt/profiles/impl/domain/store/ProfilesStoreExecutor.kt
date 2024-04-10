@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
-class ProfilesStoreExecutor(
+internal class ProfilesStoreExecutor(
     private val selectedAppsProvider: () -> List<SelectedActivity>,
     private val profilesRepository: ProfilesRepository,
 ) : CoroutineExecutor<ProfilesStore.Intent, ProfilesStore.Action, ProfilesStore.State, ProfilesStore.Message, ProfilesStore.Label>() {

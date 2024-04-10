@@ -18,7 +18,7 @@ import org.koin.core.qualifier.qualifier
  * todo: introduce store
  * todo: handle different errors
  */
-class AddProfileComponentImpl(
+internal class AddProfileComponentImpl(
     context: AppComponentContext,
     dismissEventDelegate: DismissEventDelegate = DismissEventDelegate(),
 ) : AddProfileComponent,

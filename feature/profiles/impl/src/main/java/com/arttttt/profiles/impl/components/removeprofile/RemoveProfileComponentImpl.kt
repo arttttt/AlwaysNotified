@@ -8,7 +8,7 @@ import com.arttttt.core.arch.dialog.DismissEventProducer
 import com.arttttt.core.arch.events.producer.EventsProducerDelegate
 import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 
-class RemoveProfileComponentImpl(
+internal class RemoveProfileComponentImpl(
     private val profileUUID: String,
     context: AppComponentContext,
     dismissEventDelegate: DismissEventDelegate = DismissEventDelegate(),

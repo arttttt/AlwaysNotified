@@ -9,7 +9,7 @@ import com.arttttt.core.arch.events.producer.EventsProducer
 import com.arttttt.profiles.impl.ui.profileactions.ProfileAction
 import kotlinx.collections.immutable.ImmutableList
 
-interface ProfileActionsComponent : DecomposeComponent,
+internal interface ProfileActionsComponent : DecomposeComponent,
     EventsProducer<ProfileActionsComponent.Event>,
     DismissEventConsumer,
     DismissEventProducer {

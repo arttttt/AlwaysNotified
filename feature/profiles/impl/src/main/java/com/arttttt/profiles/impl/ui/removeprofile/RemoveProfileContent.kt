@@ -18,7 +18,7 @@ import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponent
 import com.arttttt.uikit.theme.AppTheme
 
 @Composable
-fun RemoveProfileContent(
+internal fun RemoveProfileContent(
     component: RemoveProfileComponent,
 ) {
 

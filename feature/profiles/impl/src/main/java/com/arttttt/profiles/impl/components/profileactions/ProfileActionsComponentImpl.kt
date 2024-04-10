@@ -10,7 +10,7 @@ import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import com.arttttt.profiles.impl.ui.profileactions.ProfileAction
 import kotlinx.collections.immutable.persistentListOf
 
-class ProfileActionsComponentImpl(
+internal class ProfileActionsComponentImpl(
     private val profileUUID: String,
     context: AppComponentContext,
     dismissEventDelegate: DismissEventDelegate = DismissEventDelegate(),

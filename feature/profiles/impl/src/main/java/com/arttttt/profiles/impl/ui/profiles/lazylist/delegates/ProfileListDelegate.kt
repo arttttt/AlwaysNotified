@@ -24,7 +24,7 @@ import com.arttttt.profiles.impl.ui.profiles.lazylist.models.ProfileListItem
 import com.arttttt.uikit.theme.AppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
-fun ProfileListDelegate(
+internal fun ProfileListDelegate(
     onClick: (String) -> Unit,
     longClick: (String) -> Unit,
 ) = lazyListDelegate<ProfileListItem> {

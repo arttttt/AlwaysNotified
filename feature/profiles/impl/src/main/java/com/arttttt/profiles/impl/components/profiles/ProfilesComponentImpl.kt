@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.stateIn
 import org.koin.core.component.getScopeId
 import org.koin.core.qualifier.qualifier
 
-class ProfilesComponentImpl(
+internal class ProfilesComponentImpl(
     context: AppComponentContext
 ) : ProfilesComponent,
     AppComponentContext by context,
