@@ -77,6 +77,8 @@ dependencies {
     implementation(project(":core:lazylist"))
     implementation(project(":feature:profiles:api"))
     implementation(project(":feature:profiles:impl"))
+    implementation(project(":feature:appssearch:api"))
+    implementation(project(":feature:appssearch:impl"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
