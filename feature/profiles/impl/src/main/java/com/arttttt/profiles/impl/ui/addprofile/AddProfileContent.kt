@@ -35,7 +35,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.dialog.DismissEvent
 import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent
 import com.arttttt.uikit.theme.AppTheme
@@ -46,7 +45,6 @@ import kotlin.math.abs
  */
 @Composable
 fun AddProfileContent(
-    modifier: Modifier,
     component: AddProfileComponent,
 ) {
     var title by remember {

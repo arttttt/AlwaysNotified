@@ -30,8 +30,10 @@ import com.arttttt.core.arch.base.dsl.rememberLazyListDelegateManager
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent
+import com.arttttt.profiles.impl.components.profileactions.ProfileActionsComponent
 import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponent
 import com.arttttt.profiles.impl.ui.addprofile.AddProfileContent
+import com.arttttt.profiles.impl.ui.profileactions.ProfileActionsContent
 import com.arttttt.profiles.impl.ui.profiles.lazylist.delegates.ProfileListDelegate
 import com.arttttt.profiles.impl.ui.removeprofile.RemoveProfileContent
 import com.arttttt.uikit.LocalCorrectHapticFeedback
@@ -86,11 +88,10 @@ internal class ProfilesContent(
 
         dialog.child?.instance?.let { dialogComponent ->
             when (dialogComponent) {
-                /*is ProfileActionsComponent -> ProfileActionsContent(
+                is ProfileActionsComponent -> ProfileActionsContent(
                     component = dialogComponent,
-                )*/
+                )
                 is AddProfileComponent -> AddProfileContent(
-                    modifier = Modifier,
                     component = dialogComponent,
                 )
                 is RemoveProfileComponent -> RemoveProfileContent(

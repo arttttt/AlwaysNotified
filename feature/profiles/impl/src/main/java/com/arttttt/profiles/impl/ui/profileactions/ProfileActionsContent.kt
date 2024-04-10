@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.ui.profileactions
+package com.arttttt.profiles.impl.ui.profileactions
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,10 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.alwaysnotified.components.profileactions.ProfileActionsComponent
-import com.arttttt.alwaysnotified.ui.common.TextButtonWithIcon
+import com.arttttt.profiles.impl.components.profileactions.ProfileActionsComponent
 import com.arttttt.uikit.theme.AppTheme
 import com.arttttt.core.arch.dialog.DismissEvent
+import com.arttttt.uikit.widgets.TextButtonWithIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

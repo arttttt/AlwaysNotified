@@ -18,9 +18,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.alwaysnotified.R
 import com.arttttt.alwaysnotified.components.permissions.PermissionsComponent
-import com.arttttt.alwaysnotified.ui.common.Divider
+import com.arttttt.uikit.widgets.Divider
 import com.arttttt.alwaysnotified.ui.custom.EqualHeightColumn
 import com.arttttt.alwaysnotified.ui.permissions.content.DeniedPermissionContent
 import com.arttttt.alwaysnotified.ui.permissions.content.GrantedPermissionContent

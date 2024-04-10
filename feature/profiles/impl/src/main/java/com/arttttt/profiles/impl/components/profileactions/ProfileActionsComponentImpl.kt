@@ -1,13 +1,13 @@
-package com.arttttt.alwaysnotified.components.profileactions
+package com.arttttt.profiles.impl.components.profileactions
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.dialog.DismissEventConsumer
-import com.arttttt.alwaysnotified.ui.profileactions.ProfileAction
 import com.arttttt.core.arch.dialog.DismissEventDelegate
 import com.arttttt.core.arch.dialog.DismissEventProducer
 import com.arttttt.core.arch.events.producer.EventsProducerDelegate
 import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
+import com.arttttt.profiles.impl.ui.profileactions.ProfileAction
 import kotlinx.collections.immutable.persistentListOf
 
 class ProfileActionsComponentImpl(
@@ -31,8 +31,16 @@ class ProfileActionsComponentImpl(
 
     override fun profileActionClicked(action: ProfileAction) {
         when (action) {
-            is ProfileAction.Rename -> dispatch(ProfileActionsComponent.Event.RenameProfile(profileUUID))
-            is ProfileAction.Remove -> dispatch(ProfileActionsComponent.Event.RemoveProfile(profileUUID))
+            is ProfileAction.Rename -> dispatch(
+                ProfileActionsComponent.Event.RenameProfile(
+                    profileUUID
+                )
+            )
+            is ProfileAction.Remove -> dispatch(
+                ProfileActionsComponent.Event.RemoveProfile(
+                    profileUUID
+                )
+            )
         }
     }
 }

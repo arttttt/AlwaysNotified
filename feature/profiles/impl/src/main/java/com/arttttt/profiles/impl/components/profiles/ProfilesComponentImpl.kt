@@ -21,6 +21,7 @@ import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.slotComponentEvents
 import com.arttttt.core.arch.slotDismissEvents
 import com.arttttt.profiles.api.ProfilesComponent
+import com.arttttt.profiles.impl.components.profileactions.ProfileActionsComponent
 import com.arttttt.profiles.impl.domain.store.ProfilesStore
 import com.arttttt.profiles.impl.ui.profiles.ProfilesContent
 import com.arttttt.profiles.impl.components.profiles.di.profilesModule
@@ -62,6 +63,7 @@ class ProfilesComponentImpl(
 
     private val addProfileComponentFactory: AddProfileComponent.Factory by koinScope.inject()
     private val removeProfileComponentFactory: RemoveProfileComponent.Factory by koinScope.inject()
+    private val profileActionsComponentFactory: ProfileActionsComponent.Factory by koinScope.inject()
 
     override val states: StateFlow<ProfilesComponent.State> = profilesStore
         .states
@@ -131,13 +133,12 @@ class ProfilesComponentImpl(
                         profileUUID = config.id,
                     )
                 }
-                else -> TODO()
-                /*is DialogConfig.ProfileActions -> {
-                    ProfileActionsComponentImpl(
+                is DialogConfig.ProfileActions -> {
+                    profileActionsComponentFactory.create(
                         context = wrappedContext,
                         profileUUID = config.id,
                     )
-                }*/
+                }
             }
         }
 
@@ -147,7 +148,7 @@ class ProfilesComponentImpl(
             .onEach { dialogNavigation.dismiss() }
             .launchIn(coroutineScope)
 
-        /*dialog
+        dialog
             .slotComponentEvents<EventsProducer<ProfileActionsComponent.Event>>()
             .filterIsInstance<ProfileActionsComponent.Event.RemoveProfile>()
             .onEach { event ->
@@ -167,7 +168,7 @@ class ProfilesComponentImpl(
                 commands.emit(ProfilesComponent.Command.ShowMessage("Not implemented yet"))
                 dialogNavigation.dismiss()
             }
-            .launchIn(coroutineScope)*/
+            .launchIn(coroutineScope)
 
         dialog
             .slotComponentEvents<EventsProducer<RemoveProfileComponent.Event>>()

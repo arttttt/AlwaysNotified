@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.ui.profileactions
+package com.arttttt.profiles.impl.ui.profileactions
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete

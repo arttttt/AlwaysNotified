@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.ui.common
+package com.arttttt.uikit.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer

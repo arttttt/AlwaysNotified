@@ -3,6 +3,8 @@ package com.arttttt.profiles.impl.components.profiles.di
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent
 import com.arttttt.profiles.impl.components.addprofile.AddProfileComponentImpl
+import com.arttttt.profiles.impl.components.profileactions.ProfileActionsComponent
+import com.arttttt.profiles.impl.components.profileactions.ProfileActionsComponentImpl
 import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponent
 import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponentImpl
 import com.arttttt.profiles.impl.domain.store.ProfilesStoreFactory
@@ -23,6 +25,15 @@ internal val profilesModule = module {
                 RemoveProfileComponentImpl(
                     context = context,
                     profileUUID = profileUUID,
+                )
+            }
+        }
+
+        scoped {
+            ProfileActionsComponent.Factory { context, profilesUUID ->
+                ProfileActionsComponentImpl(
+                    profileUUID = profilesUUID,
+                    context = context,
                 )
             }
         }
