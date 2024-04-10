@@ -1,13 +1,11 @@
-package com.arttttt.addprofile.api
+package com.arttttt.profiles.impl.components.addprofile
 
 import com.arttttt.core.arch.DecomposeComponent
-import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.dialog.DismissEventConsumer
 import com.arttttt.core.arch.dialog.DismissEventProducer
 
 interface AddProfileComponent : DecomposeComponent,
-    ComponentContentOwner,
     DismissEventConsumer,
     DismissEventProducer {
 

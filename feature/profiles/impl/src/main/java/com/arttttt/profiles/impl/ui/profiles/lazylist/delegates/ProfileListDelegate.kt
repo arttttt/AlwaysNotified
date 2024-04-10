@@ -1,4 +1,4 @@
-package com.arttttt.profiles.impl.ui.lazylist.delegates
+package com.arttttt.profiles.impl.ui.profiles.lazylist.delegates
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arttttt.core.arch.base.dsl.lazyListDelegate
-import com.arttttt.profiles.impl.ui.lazylist.models.ProfileListItem
+import com.arttttt.profiles.impl.ui.profiles.lazylist.models.ProfileListItem
 import com.arttttt.uikit.theme.AppTheme
 
 @OptIn(ExperimentalFoundationApi::class)

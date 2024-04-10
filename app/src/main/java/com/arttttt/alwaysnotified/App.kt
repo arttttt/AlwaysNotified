@@ -2,7 +2,6 @@ package com.arttttt.alwaysnotified
 
 import android.app.Application
 import com.arkivanov.mvikotlin.core.utils.isAssertOnMainThreadEnabled
-import com.arttttt.addprofile.impl.di.addProfileFeatureModule
 import com.arttttt.alwaysnotified.di.commonModule
 import com.arttttt.alwaysnotified.utils.timber.CrashReportingTree
 import com.arttttt.profiles.impl.di.profileFeatureModule
@@ -32,7 +31,6 @@ class App : Application() {
             modules(
                 commonModule,
                 profileFeatureModule,
-                addProfileFeatureModule,
             )
         }
     }

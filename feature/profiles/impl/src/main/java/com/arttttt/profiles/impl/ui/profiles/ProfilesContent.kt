@@ -1,4 +1,4 @@
-package com.arttttt.profiles.impl.ui
+package com.arttttt.profiles.impl.ui.profiles
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -28,16 +28,17 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arttttt.core.arch.base.dsl.items
 import com.arttttt.core.arch.base.dsl.rememberLazyListDelegateManager
 import com.arttttt.core.arch.content.ComponentContent
-import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.profiles.api.ProfilesComponent
-import com.arttttt.profiles.impl.ui.lazylist.delegates.ProfileListDelegate
+import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent
+import com.arttttt.profiles.impl.ui.addprofile.AddProfileContent
+import com.arttttt.profiles.impl.ui.profiles.lazylist.delegates.ProfileListDelegate
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-internal class ProfilesContentImpl(
+internal class ProfilesContent(
     private val component: ProfilesComponent,
 ) : ComponentContent {
 
@@ -89,8 +90,9 @@ internal class ProfilesContentImpl(
                 is RemoveProfileComponent -> RemoveProfileContent(
                     component = dialogComponent,
                 )*/
-                is ComponentContentOwner -> dialogComponent.content.Content(
+                is AddProfileComponent -> AddProfileContent(
                     modifier = Modifier,
+                    component = dialogComponent,
                 )
             }
         }

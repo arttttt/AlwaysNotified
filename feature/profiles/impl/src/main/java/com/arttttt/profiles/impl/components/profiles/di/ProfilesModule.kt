@@ -1,11 +1,21 @@
-package com.arttttt.profiles.impl.components.di
+package com.arttttt.profiles.impl.components.profiles.di
 
 import com.arttttt.profiles.api.ProfilesComponent
+import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent
+import com.arttttt.profiles.impl.components.addprofile.AddProfileComponentImpl
 import com.arttttt.profiles.impl.domain.store.ProfilesStoreFactory
 import org.koin.dsl.module
 
-val profilesFeatureModule = module {
+internal val profilesModule = module {
     scope<ProfilesComponent> {
+        scoped {
+            AddProfileComponent.Factory { context ->
+                AddProfileComponentImpl(
+                    context = context,
+                )
+            }
+        }
+
         scoped {
             ProfilesStoreFactory(
                 storeFactory = get(),

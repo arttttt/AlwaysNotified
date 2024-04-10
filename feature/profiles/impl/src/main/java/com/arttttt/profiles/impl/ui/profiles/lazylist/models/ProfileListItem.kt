@@ -1,4 +1,4 @@
-package com.arttttt.profiles.impl.ui.lazylist.models
+package com.arttttt.profiles.impl.ui.profiles.lazylist.models
 
 import com.arttttt.core.arch.base.ListItem
 

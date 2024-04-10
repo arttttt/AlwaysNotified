@@ -3,7 +3,6 @@ package com.arttttt.alwaysnotified.di
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import com.arttttt.addprofile.api.ProfileExistsChecker
 import com.arttttt.alwaysnotified.AppsLauncher
 import com.arttttt.alwaysnotified.data.database.AppDatabase
 import com.arttttt.alwaysnotified.data.repository.AppsRepositoryImpl
@@ -64,11 +63,5 @@ val commonModule = module {
         ResourcesProviderImpl(
             context = get(),
         )
-    }
-
-    factory {
-        ProfileExistsChecker { title ->
-            get<ProfilesRepository>().isProfileExist(title)
-        }
     }
 }

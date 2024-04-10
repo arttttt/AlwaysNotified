@@ -1,4 +1,4 @@
-package com.arttttt.profiles.impl.components
+package com.arttttt.profiles.impl.components.profiles
 
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.slot.SlotNavigation
@@ -9,7 +9,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
-import com.arttttt.addprofile.api.AddProfileComponent
+import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.context.AppComponentContext
@@ -21,10 +21,10 @@ import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.slotComponentEvents
 import com.arttttt.core.arch.slotDismissEvents
 import com.arttttt.profiles.api.ProfilesComponent
-import com.arttttt.profiles.impl.components.di.profilesFeatureModule
 import com.arttttt.profiles.impl.domain.store.ProfilesStore
-import com.arttttt.profiles.impl.ui.ProfilesContentImpl
-import com.arttttt.profiles.impl.ui.lazylist.models.ProfileListItem
+import com.arttttt.profiles.impl.ui.profiles.ProfilesContent
+import com.arttttt.profiles.impl.components.profiles.di.profilesModule
+import com.arttttt.profiles.impl.ui.profiles.lazylist.models.ProfileListItem
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -52,7 +52,7 @@ class ProfilesComponentImpl(
     private val coroutineScope = coroutineScope()
 
     private val koinScope = koinScope(
-        profilesFeatureModule,
+        profilesModule,
         scopeID = getScopeId(),
         qualifier = qualifier<ProfilesComponent>(),
     )
@@ -102,7 +102,7 @@ class ProfilesComponentImpl(
 
     override val commands: MutableSharedFlow<ProfilesComponent.Command> = MutableSharedFlow()
 
-    override val content: ComponentContent = ProfilesContentImpl(this)
+    override val content: ComponentContent = ProfilesContent(this)
 
     private val dialogNavigation = SlotNavigation<DialogConfig>()
 
