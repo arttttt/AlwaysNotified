@@ -81,6 +81,8 @@ dependencies {
     implementation(project(":feature:appssearch:impl"))
     implementation(project(":feature:topbar:api"))
     implementation(project(":feature:topbar:impl"))
+    implementation(project(":feature:appslist:api"))
+    implementation(project(":feature:appslist:impl"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
