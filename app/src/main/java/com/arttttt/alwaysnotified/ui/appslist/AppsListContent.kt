@@ -49,7 +49,6 @@ import com.arttttt.lazylist.ListItem
 import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
-import com.arttttt.alwaysnotified.ui.topbar.TopBarContent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -67,8 +66,7 @@ fun AppsListContent(component: AppListComponent) {
             .background(AppTheme.colors.primary)
             .navigationBarsPadding()
     ) {
-
-        TopBarContent(component.topBarComponent)
+        component.topBarComponent.content.Content(modifier = Modifier)
 
         AppsListContainer(
             apps = state.apps,

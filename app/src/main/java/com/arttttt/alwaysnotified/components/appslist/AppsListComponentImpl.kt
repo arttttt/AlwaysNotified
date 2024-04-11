@@ -8,8 +8,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.alwaysnotified.AppsLauncher
 import com.arttttt.profiles.api.ProfilesComponent
-import com.arttttt.alwaysnotified.components.topbar.TopBarComponent
-import com.arttttt.alwaysnotified.components.topbar.TopBarComponentImpl
+import com.arttttt.topbar.api.TopBarComponent
 import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
 import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.context.AppComponentContext
@@ -37,13 +36,13 @@ class AppsListComponentImpl(
     AppComponentContext by componentContext,
     EventsProducerDelegate<AppListComponent.Event> by EventsProducerDelegateImpl() {
 
-    private val scope = koinScope(
+    private val koinScope = koinScope(
         scopeID = getScopeId(),
         qualifier = qualifier<AppListComponent>()
     )
 
-    private val appsStore: AppsStore by scope.inject()
-    private val appsLauncher: AppsLauncher by scope.inject()
+    private val appsStore: AppsStore by koinScope.inject()
+    private val appsLauncher: AppsLauncher by koinScope.inject()
 
     private val coroutineScope = coroutineScope()
 
@@ -55,14 +54,16 @@ class AppsListComponentImpl(
         )
     )
 
-    override val topBarComponent: TopBarComponent = TopBarComponentImpl(
-        componentContext = wrapComponentContext(
-            context = childContext(
-                key = "topbar",
+    override val topBarComponent: TopBarComponent = koinScope
+        .get<TopBarComponent.Factory>()
+        .create(
+            context = wrapComponentContext(
+                context = childContext(
+                    key = "topbar",
+                ),
+                parentScopeID = koinScope.id,
             ),
-            parentScopeID = scope.id,
-        ),
-    )
+        )
 
     init {
         combine(

@@ -35,4 +35,6 @@ android {
 
 dependencies {
     implementation(project(":core:arch"))
+    implementation(project(":feature:appssearch:api"))
+    implementation(project(":feature:profiles:api"))
 }

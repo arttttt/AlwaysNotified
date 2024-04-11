@@ -6,6 +6,7 @@ import com.arttttt.alwaysnotified.di.commonModule
 import com.arttttt.alwaysnotified.utils.timber.CrashReportingTree
 import com.arttttt.appssearch.impl.di.appsSearchFeatureModule
 import com.arttttt.profiles.impl.di.profileFeatureModule
+import com.arttttt.topbar.impl.di.topBarFeatureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -33,6 +34,7 @@ class App : Application() {
                 commonModule,
                 profileFeatureModule,
                 appsSearchFeatureModule,
+                topBarFeatureModule,
             )
         }
     }

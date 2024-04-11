@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.components.topbar.actions
+package com.arttttt.topbar.impl.components.actions
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.profiles.api.ProfilesComponent
 
-sealed interface TopBarAction {
+internal sealed interface TopBarAction {
 
     val icon: ImageVector
 

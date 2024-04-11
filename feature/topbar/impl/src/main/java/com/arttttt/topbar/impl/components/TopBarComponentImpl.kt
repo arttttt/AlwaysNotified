@@ -1,23 +1,29 @@
-package com.arttttt.alwaysnotified.components.topbar
+package com.arttttt.topbar.impl.components
 
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import com.arttttt.alwaysnotified.components.topbar.actions.ExpandableTopBarAction
-import com.arttttt.alwaysnotified.components.topbar.actions.TopBarAction
+import com.arttttt.topbar.impl.components.actions.ExpandableTopBarAction
+import com.arttttt.topbar.impl.components.actions.TopBarAction
 import com.arttttt.appssearch.api.AppsSearchComponent
+import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.core.arch.koinScope
 import com.arttttt.profiles.api.ProfilesComponent
+import com.arttttt.topbar.api.TopBarComponent
+import com.arttttt.topbar.impl.ui.TopBarContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.core.component.getScopeId
 import org.koin.core.qualifier.qualifier
 
-class TopBarComponentImpl(
-    componentContext: AppComponentContext,
+internal class TopBarComponentImpl(
+    context: AppComponentContext,
 ) : TopBarComponent,
-    AppComponentContext by componentContext {
+    InternalTopBarComponent,
+    AppComponentContext by context {
+
+    override val content: ComponentContent = TopBarContent(this)
 
     private val koinScope = koinScope(
         scopeID = getScopeId(),
@@ -47,7 +53,7 @@ class TopBarComponentImpl(
         )
 
     override val uiState = MutableValue(
-        initialValue = TopBarComponent.UiState(
+        initialValue = InternalTopBarComponent.UiState(
             expandedAction = null,
             actions = listOf(
                 TopBarAction.Profiles(
@@ -61,13 +67,13 @@ class TopBarComponentImpl(
         )
     )
 
-    override val commands = MutableSharedFlow<TopBarComponent.Command>(extraBufferCapacity = 1)
+    override val commands = MutableSharedFlow<InternalTopBarComponent.Command>(extraBufferCapacity = 1)
 
     override fun actionClicked(action: TopBarAction) {
         when {
             action is ExpandableTopBarAction -> toggleExpand(action)
             action is TopBarAction.Settings -> {
-                commands.tryEmit(TopBarComponent.Command.ShowMessage("Not implemented yet"))
+                commands.tryEmit(InternalTopBarComponent.Command.ShowMessage("Not implemented yet"))
             }
             else -> { /** TODO */ }
         }

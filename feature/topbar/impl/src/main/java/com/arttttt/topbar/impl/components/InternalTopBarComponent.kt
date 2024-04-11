@@ -1,14 +1,13 @@
-package com.arttttt.alwaysnotified.components.topbar
+package com.arttttt.topbar.impl.components
 
 import com.arkivanov.decompose.value.Value
 import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.profiles.api.ProfilesComponent
-import com.arttttt.alwaysnotified.components.topbar.actions.ExpandableTopBarAction
-import com.arttttt.alwaysnotified.components.topbar.actions.TopBarAction
-import com.arttttt.core.arch.DecomposeComponent
+import com.arttttt.topbar.impl.components.actions.ExpandableTopBarAction
+import com.arttttt.topbar.impl.components.actions.TopBarAction
 import kotlinx.coroutines.flow.Flow
 
-interface TopBarComponent : DecomposeComponent {
+internal interface InternalTopBarComponent {
 
     data class UiState(
         val expandedAction: ExpandableTopBarAction?,
@@ -19,10 +18,6 @@ interface TopBarComponent : DecomposeComponent {
 
         data class ShowMessage(val message: String) : Command()
     }
-
-    val profilesComponent: ProfilesComponent
-
-    val appsSearchComponent: AppsSearchComponent
 
     val uiState: Value<UiState>
 
