@@ -5,11 +5,11 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import com.arttttt.alwaysnotified.data.database.dao.ProfilesDao
-import com.arttttt.alwaysnotified.domain.entity.info.ActivityInfo
-import com.arttttt.alwaysnotified.domain.entity.info.AppInfo
-import com.arttttt.profiles.api.Profile
-import com.arttttt.profiles.api.SelectedActivity
-import com.arttttt.alwaysnotified.domain.repository.AppsRepository
+import com.arttttt.alwaysnotified.ActivityInfo
+import com.arttttt.alwaysnotified.AppInfo
+import com.arttttt.alwaysnotified.Profile
+import com.arttttt.alwaysnotified.SelectedActivity
+import com.arttttt.alwaysnotified.AppsRepository
 
 class AppsRepositoryImpl(
     private val context: Context,

@@ -4,6 +4,7 @@ import android.app.Application
 import com.arkivanov.mvikotlin.core.utils.isAssertOnMainThreadEnabled
 import com.arttttt.alwaysnotified.di.commonModule
 import com.arttttt.alwaysnotified.utils.timber.CrashReportingTree
+import com.arttttt.appslist.impl.di.appsListFeatureModule
 import com.arttttt.appssearch.impl.di.appsSearchFeatureModule
 import com.arttttt.profiles.impl.di.profileFeatureModule
 import com.arttttt.topbar.impl.di.topBarFeatureModule
@@ -35,6 +36,7 @@ class App : Application() {
                 profileFeatureModule,
                 appsSearchFeatureModule,
                 topBarFeatureModule,
+                appsListFeatureModule,
             )
         }
     }

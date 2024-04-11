@@ -1,7 +1,7 @@
 package com.arttttt.profiles.impl.domain.store
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.arttttt.profiles.api.Profile
+import com.arttttt.alwaysnotified.Profile
 import com.arttttt.profiles.impl.utils.createDefault
 import com.arttttt.profiles.api.ProfilesRepository
 import com.arttttt.profiles.api.SelectedActivitiesRepository
@@ -66,7 +66,7 @@ internal class ProfilesStoreExecutor(
         addSelectedActivities: Boolean,
     ) {
         scope.launch {
-            val profile = Profile(
+            val profile = com.arttttt.alwaysnotified.Profile(
                 uuid = UUID.nameUUIDFromBytes(title.toByteArray()).toString(),
                 title = title,
                 color = color,
@@ -102,7 +102,7 @@ internal class ProfilesStoreExecutor(
                     .getProfiles()
                     .takeIf { it.isNotEmpty() }
                     ?: let {
-                        val profile = Profile.createDefault()
+                        val profile = com.arttttt.alwaysnotified.Profile.createDefault()
                         profilesRepository.saveProfile(
                             profile = profile,
                             selectedActivities = emptyList(),

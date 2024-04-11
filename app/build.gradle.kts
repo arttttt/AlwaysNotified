@@ -74,6 +74,7 @@ dependencies {
     implementation(project(":uikit"))
     implementation(project(":localization"))
     implementation(project(":core:arch"))
+    implementation(project(":core:alwaysnotified"))
     implementation(project(":core:lazylist"))
     implementation(project(":feature:profiles:api"))
     implementation(project(":feature:profiles:impl"))

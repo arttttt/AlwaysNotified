@@ -4,8 +4,8 @@ import com.arttttt.alwaysnotified.data.database.dao.ProfilesDao
 import com.arttttt.alwaysnotified.data.database.model.ActivityDbModel
 import com.arttttt.alwaysnotified.data.database.model.ProfileDbModel
 import com.arttttt.alwaysnotified.data.database.model.ProfileWithActivities
-import com.arttttt.profiles.api.Profile
-import com.arttttt.profiles.api.SelectedActivity
+import com.arttttt.alwaysnotified.Profile
+import com.arttttt.alwaysnotified.SelectedActivity
 import com.arttttt.profiles.api.ProfilesRepository
 import java.util.UUID
 

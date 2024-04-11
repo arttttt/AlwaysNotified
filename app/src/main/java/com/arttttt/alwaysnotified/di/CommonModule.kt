@@ -4,14 +4,15 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.arttttt.alwaysnotified.AppsLauncher
+import com.arttttt.alwaysnotified.AppsLauncherImpl
 import com.arttttt.alwaysnotified.data.database.AppDatabase
 import com.arttttt.alwaysnotified.data.repository.AppsRepositoryImpl
 import com.arttttt.alwaysnotified.data.repository.ProfilesRepositoryImpl
-import com.arttttt.alwaysnotified.domain.repository.AppsRepository
+import com.arttttt.alwaysnotified.AppsRepository
 import com.arttttt.profiles.api.ProfilesRepository
-import com.arttttt.alwaysnotified.domain.store.apps.AppsStore
-import com.arttttt.alwaysnotified.domain.store.apps.AppsStoreFactory
-import com.arttttt.alwaysnotified.utils.resources.ResourcesProvider
+import com.arttttt.appslist.impl.domain.store.AppsStore
+import com.arttttt.appslist.impl.domain.store.AppsStoreFactory
+import com.arttttt.localization.ResourcesProvider
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProviderImpl
 import com.arttttt.profiles.api.SelectedActivitiesRepository
 import org.koin.dsl.module
@@ -37,8 +38,8 @@ val commonModule = module {
         ).create()
     }
 
-    single {
-        AppsLauncher(
+    single<AppsLauncher> {
+        AppsLauncherImpl(
             context = get(),
             appsStore = get(),
         )
