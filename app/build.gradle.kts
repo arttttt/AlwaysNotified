@@ -84,6 +84,8 @@ dependencies {
     implementation(project(":feature:topbar:impl"))
     implementation(project(":feature:appslist:api"))
     implementation(project(":feature:appslist:impl"))
+    implementation(project(":feature:permissions:api"))
+    implementation(project(":feature:permissions:impl"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
