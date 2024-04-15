@@ -5,7 +5,7 @@ import com.arttttt.permissions.api.Permission2
 import com.arttttt.permissions.impl.data.model.PostNotificationsPermission
 import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 
-class PermissionsRepositoryImpl(
+internal class PermissionsRepositoryImpl(
     private val context: Context
 ) : PermissionsRepository {
 

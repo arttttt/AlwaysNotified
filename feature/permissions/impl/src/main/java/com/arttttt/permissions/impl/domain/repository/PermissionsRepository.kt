@@ -2,7 +2,7 @@ package com.arttttt.permissions.impl.domain.repository
 
 import com.arttttt.permissions.api.Permission2
 
-interface PermissionsRepository {
+internal interface PermissionsRepository {
 
     fun getRequiredPermissions(): List<Permission2>
 

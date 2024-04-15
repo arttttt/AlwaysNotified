@@ -10,7 +10,7 @@ import com.arttttt.permissions.impl.utils.of
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 
-class StandardPermissionHandler : PermissionHandler<StandardPermission> {
+internal class StandardPermissionHandler : PermissionHandler<StandardPermission> {
 
     private val resultFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = 1)
 

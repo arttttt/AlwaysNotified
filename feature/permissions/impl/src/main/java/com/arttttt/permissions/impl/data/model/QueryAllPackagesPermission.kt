@@ -6,7 +6,7 @@ import com.arttttt.permissions.api.Permission2
 import com.arttttt.permissions.impl.domain.entity.StandardPermission
 import com.arttttt.permissions.impl.utils.checkStatusImpl
 
-data object QueryAllPackagesPermission: StandardPermission {
+internal data object QueryAllPackagesPermission: StandardPermission {
 
     override val title: String = "Query all packages"
     override val permission: String = Manifest.permission.QUERY_ALL_PACKAGES

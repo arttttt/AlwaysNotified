@@ -5,7 +5,7 @@ import android.content.pm.PackageManager
 import com.arttttt.permissions.api.Permission2
 import com.arttttt.permissions.impl.domain.entity.StandardPermission
 
-fun Permission2.Status.Companion.of(value: Int): Permission2.Status {
+internal fun Permission2.Status.Companion.of(value: Int): Permission2.Status {
     return if (value == PackageManager.PERMISSION_GRANTED) {
         Permission2.Status.Granted
     } else {
@@ -13,7 +13,7 @@ fun Permission2.Status.Companion.of(value: Int): Permission2.Status {
     }
 }
 
-fun Permission2.Status.Companion.of(value: Boolean): Permission2.Status {
+internal fun Permission2.Status.Companion.of(value: Boolean): Permission2.Status {
     return if (value) {
         Permission2.Status.Granted
     } else {
@@ -22,6 +22,6 @@ fun Permission2.Status.Companion.of(value: Boolean): Permission2.Status {
 }
 
 context(StandardPermission)
-fun checkStatusImpl(context: Context): Permission2.Status {
+internal fun checkStatusImpl(context: Context): Permission2.Status {
     return Permission2.Status.of(context.checkSelfPermission(permission))
 }

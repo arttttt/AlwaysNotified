@@ -6,7 +6,7 @@ import com.arttttt.permissions.api.Permission2
 import com.arttttt.permissions.impl.domain.entity.StandardPermission
 import kotlin.reflect.KClass
 
-class PermissionsRequesterImpl(
+internal class PermissionsRequesterImpl(
     private val activity: ComponentActivity,
     private val handlers: Map<KClass<out Permission2>, PermissionHandler<*>>,
 ) : PermissionsRequester {

@@ -13,7 +13,7 @@ import com.arttttt.permissions.impl.utils.PermissionHandler
 import com.arttttt.permissions.impl.utils.of
 import kotlinx.coroutines.channels.Channel
 
-class IgnoreBatteryOptimizationsPermissionHandler :
+internal class IgnoreBatteryOptimizationsPermissionHandler :
     PermissionHandler<IgnoreBatteryOptimizationsPermission> {
 
     private val lifecycleObserver = object : DefaultLifecycleObserver {

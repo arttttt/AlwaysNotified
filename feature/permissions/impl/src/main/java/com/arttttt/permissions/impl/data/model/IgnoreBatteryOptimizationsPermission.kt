@@ -12,7 +12,7 @@ import com.arttttt.permissions.impl.domain.entity.IntentPermission
 import com.arttttt.permissions.impl.utils.of
 
 @SuppressLint("BatteryLife")
-data object IgnoreBatteryOptimizationsPermission : IntentPermission {
+internal data object IgnoreBatteryOptimizationsPermission : IntentPermission {
 
     override val title: String = "Ignore battery optimizations"
 

@@ -6,7 +6,7 @@ import com.arttttt.permissions.api.Permission2
 import com.arttttt.permissions.impl.domain.entity.StandardPermission
 import com.arttttt.permissions.impl.utils.checkStatusImpl
 
-data object PostNotificationsPermission : StandardPermission {
+internal data object PostNotificationsPermission : StandardPermission {
 
     override val title: String = "Post notifications"
     override val permission: String = Manifest.permission.POST_NOTIFICATIONS
