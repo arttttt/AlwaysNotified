@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arttttt.core.arch.content.ComponentContent
-import com.arttttt.permissions.api.PermissionsComponent
+import com.arttttt.permissions.impl.components.InternalPermissionsComponent
 import com.arttttt.permissions.impl.ui.content.DeniedPermissionContent
 import com.arttttt.permissions.impl.ui.content.GrantedPermissionContent
 import com.arttttt.permissions.impl.ui.models.PermissionLazyListItem
@@ -28,7 +28,7 @@ import com.arttttt.uikit.widgets.Divider
 import com.arttttt.uikit.widgets.EqualHeightColumn
 
 internal class PermissionsContent(
-    private val component: PermissionsComponent,
+    private val component: InternalPermissionsComponent,
 ) : ComponentContent {
 
     @OptIn(ExperimentalMaterial3Api::class)

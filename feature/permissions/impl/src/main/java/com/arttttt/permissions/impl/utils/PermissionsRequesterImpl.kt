@@ -2,7 +2,7 @@ package com.arttttt.permissions.impl.utils
 
 import androidx.activity.ComponentActivity
 import com.arttttt.alwaysnotified.utils.castTo
-import com.arttttt.permissions.api.Permission2
+import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.permissions.impl.domain.entity.StandardPermission
 import kotlin.reflect.KClass
 

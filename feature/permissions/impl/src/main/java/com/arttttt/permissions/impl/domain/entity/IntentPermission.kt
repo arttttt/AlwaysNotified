@@ -2,7 +2,6 @@ package com.arttttt.permissions.impl.domain.entity
 
 import android.content.Context
 import android.content.Intent
-import com.arttttt.permissions.api.Permission2
 
 internal interface IntentPermission : Permission2 {
 

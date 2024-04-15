@@ -7,7 +7,7 @@ import androidx.core.content.getSystemService
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.arttttt.permissions.api.Permission2
+import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.permissions.impl.data.model.IgnoreBatteryOptimizationsPermission
 import com.arttttt.permissions.impl.utils.PermissionHandler
 import com.arttttt.permissions.impl.utils.of

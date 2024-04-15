@@ -7,7 +7,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.permissions.impl.components.di.permissionsModule
-import com.arttttt.permissions.api.Permission2
+import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.lazylist.ListItem
 import com.arttttt.core.arch.asValue
 import com.arttttt.core.arch.content.ComponentContent
@@ -33,6 +33,7 @@ import kotlin.reflect.KClass
 internal class PermissionsComponentImpl(
     context: AppComponentContext,
 ) : PermissionsComponent,
+    InternalPermissionsComponent,
     EventsProducerDelegate<PermissionsComponent.Event> by EventsProducerDelegateImpl(),
     AppComponentContext by context {
 
@@ -79,8 +80,8 @@ internal class PermissionsComponentImpl(
         permissionsStore.accept(PermissionsStore.Intent.RequestPermission(permission))
     }
 
-    private fun PermissionsStore.State.toComponentState(): PermissionsComponent.State {
-        return PermissionsComponent.State(
+    private fun PermissionsStore.State.toComponentState(): InternalPermissionsComponent.State {
+        return InternalPermissionsComponent.State(
             items = createItems(this)
         )
     }

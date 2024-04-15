@@ -1,7 +1,7 @@
 package com.arttttt.permissions.impl.data.repository
 
 import android.content.Context
-import com.arttttt.permissions.api.Permission2
+import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.permissions.impl.data.model.PostNotificationsPermission
 import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 

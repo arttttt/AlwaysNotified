@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.content.getSystemService
-import com.arttttt.permissions.api.Permission2
+import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.permissions.impl.domain.entity.IntentPermission
 import com.arttttt.permissions.impl.utils.of
 

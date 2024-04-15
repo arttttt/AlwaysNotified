@@ -3,7 +3,7 @@ package com.arttttt.permissions.impl.utils.handlers
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import com.arttttt.permissions.api.Permission2
+import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.permissions.impl.domain.entity.StandardPermission
 import com.arttttt.permissions.impl.utils.PermissionHandler
 import com.arttttt.permissions.impl.utils.of

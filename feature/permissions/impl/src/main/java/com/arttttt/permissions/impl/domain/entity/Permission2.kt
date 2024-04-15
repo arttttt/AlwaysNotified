@@ -1,12 +1,12 @@
-package com.arttttt.permissions.api
+package com.arttttt.permissions.impl.domain.entity
 
 import android.content.Context
 
-interface Permission2 {
+internal interface Permission2 {
 
     sealed class Status {
 
-        companion object {}
+        companion object;
 
         data object Granted : Status()
         data object Denied : Status()

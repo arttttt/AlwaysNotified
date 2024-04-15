@@ -1,6 +1,6 @@
 package com.arttttt.permissions.impl.ui.models
 
-import com.arttttt.permissions.api.Permission2
+import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.lazylist.ListItem
 import kotlin.reflect.KClass
 

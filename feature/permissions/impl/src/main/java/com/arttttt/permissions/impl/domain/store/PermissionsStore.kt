@@ -1,7 +1,7 @@
 package com.arttttt.permissions.impl.domain.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.arttttt.permissions.api.Permission2
+import com.arttttt.permissions.impl.domain.entity.Permission2
 import kotlin.reflect.KClass
 
 internal interface PermissionsStore : Store<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.Label> {
