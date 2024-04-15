@@ -10,8 +10,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.appslist.api.AppsListComponent
-import com.arttttt.alwaysnotified.components.permissions.PermissionsComponent
-import com.arttttt.alwaysnotified.components.permissions.PermissionsComponentImpl
+import com.arttttt.permissions.api.PermissionsComponent
 import com.arttttt.alwaysnotified.components.settings.SettingsComponentImpl
 import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.DecomposeComponent
@@ -51,16 +50,18 @@ class RootComponentImpl(
 
     private val appsListComponentFactory: AppsListComponent.Factory by koinScope.inject()
 
-    private val navigation = StackNavigation<Config>()
-
-    private val permissionsComponent: PermissionsComponent = PermissionsComponentImpl(
-        componentContext = wrapComponentContext(
-            context = childContext(
-                key = PermissionsComponent::class.java.name,
-            ),
-            parentScopeID = koinScope.id,
+    private val permissionsComponent = koinScope
+        .get<PermissionsComponent.Factory>()
+        .create(
+            context = wrapComponentContext(
+                context = childContext(
+                    key = PermissionsComponent::class.java.name,
+                ),
+                parentScopeID = koinScope.id,
+            )
         )
-    )
+
+    private val navigation = StackNavigation<Config>()
 
     override val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         serializer = Config.serializer(),

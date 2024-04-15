@@ -6,6 +6,7 @@ import com.arttttt.alwaysnotified.di.commonModule
 import com.arttttt.alwaysnotified.utils.timber.CrashReportingTree
 import com.arttttt.appslist.impl.di.appsListFeatureModule
 import com.arttttt.appssearch.impl.di.appsSearchFeatureModule
+import com.arttttt.permissions.impl.di.permissionsFeatureModule
 import com.arttttt.profiles.impl.di.profileFeatureModule
 import com.arttttt.topbar.impl.di.topBarFeatureModule
 import org.koin.android.ext.koin.androidContext
@@ -37,6 +38,7 @@ class App : Application() {
                 appsSearchFeatureModule,
                 topBarFeatureModule,
                 appsListFeatureModule,
+                permissionsFeatureModule,
             )
         }
     }

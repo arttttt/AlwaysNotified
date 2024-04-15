@@ -17,6 +17,14 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -34,5 +42,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":localization"))
+    implementation(project(":uikit"))
+    implementation(project(":core:alwaysnotified"))
+    implementation(project(":core:arch"))
+    implementation(project(":core:lazylist"))
     implementation(project(":feature:permissions:api"))
 }

@@ -1,12 +1,12 @@
 package com.arttttt.alwaysnotified.di
 
 import com.arttttt.alwaysnotified.MainActivity
-import com.arttttt.alwaysnotified.data.model.IgnoreBatteryOptimizationsPermission
-import com.arttttt.alwaysnotified.domain.entity.permission.StandardPermission
-import com.arttttt.alwaysnotified.utils.permissions.PermissionsRequester
-import com.arttttt.alwaysnotified.utils.permissions.handlers.IgnoreBatteryOptimizationsPermissionHandler
-import com.arttttt.alwaysnotified.utils.permissions.PermissionsRequesterImpl
-import com.arttttt.alwaysnotified.utils.permissions.handlers.StandardPermissionHandler
+import com.arttttt.permissions.impl.data.model.IgnoreBatteryOptimizationsPermission
+import com.arttttt.permissions.impl.domain.entity.StandardPermission
+import com.arttttt.permissions.impl.utils.PermissionsRequester
+import com.arttttt.permissions.impl.utils.handlers.IgnoreBatteryOptimizationsPermissionHandler
+import com.arttttt.permissions.impl.utils.PermissionsRequesterImpl
+import com.arttttt.permissions.impl.utils.handlers.StandardPermissionHandler
 import org.koin.dsl.module
 
 val mainActivityModule = module {

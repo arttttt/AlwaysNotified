@@ -17,7 +17,7 @@ import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.rememberHapticFeedback
 import com.arttttt.alwaysnotified.ui.root.RootContent
 import com.arttttt.uikit.theme.AppTheme
-import com.arttttt.alwaysnotified.utils.extensions.unsafeCastTo
+import com.arttttt.alwaysnotified.utils.unsafeCastTo
 import com.arttttt.core.arch.context.wrapComponentContext
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityScope
