@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
 }
@@ -75,6 +74,7 @@ dependencies {
     implementation(project(":localization"))
     implementation(project(":core:arch"))
     implementation(project(":core:alwaysnotified"))
+    implementation(project(":core:database"))
     implementation(project(":core:lazylist"))
     implementation(project(":feature:profiles:api"))
     implementation(project(":feature:profiles:impl"))
@@ -116,10 +116,6 @@ dependencies {
     implementation(libs.mviKotlin.coroutines)
 
     implementation(libs.flowext)
-
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 
     implementation(libs.accompanist.drawablepainter)
 

@@ -1,13 +1,13 @@
-package com.arttttt.alwaysnotified.data.database.dao
+package com.arttttt.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.arttttt.alwaysnotified.data.database.model.ActivityDbModel
-import com.arttttt.alwaysnotified.data.database.model.ProfileDbModel
-import com.arttttt.alwaysnotified.data.database.model.ProfileWithActivities
+import com.arttttt.database.model.ActivityDbModel
+import com.arttttt.database.model.ProfileDbModel
+import com.arttttt.database.model.ProfileWithActivities
 import kotlinx.coroutines.runBlocking
 
 @Dao

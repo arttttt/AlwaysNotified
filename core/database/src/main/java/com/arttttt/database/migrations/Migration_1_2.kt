@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.data.database.migrations
+package com.arttttt.database.migrations
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase

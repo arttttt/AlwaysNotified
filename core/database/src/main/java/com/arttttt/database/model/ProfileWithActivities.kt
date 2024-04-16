@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.data.database.model
+package com.arttttt.database.model
 
 import androidx.room.Embedded
 import androidx.room.Relation

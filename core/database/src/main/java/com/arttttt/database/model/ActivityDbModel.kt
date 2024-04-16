@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.data.database.model
+package com.arttttt.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

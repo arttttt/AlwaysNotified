@@ -1,11 +1,14 @@
 package com.arttttt.profiles.api
 
+import com.arttttt.alwaysnotified.Profile
+import com.arttttt.alwaysnotified.SelectedActivity
+
 interface ProfilesRepository {
 
-    suspend fun getProfiles(): List<com.arttttt.alwaysnotified.Profile>
+    suspend fun getProfiles(): List<Profile>
     suspend fun saveProfile(
-        profile: com.arttttt.alwaysnotified.Profile,
-        selectedActivities: List<com.arttttt.alwaysnotified.SelectedActivity>,
+        profile: Profile,
+        selectedActivities: List<SelectedActivity>,
     )
 
     suspend fun removeProfileByUUID(uuid: String)

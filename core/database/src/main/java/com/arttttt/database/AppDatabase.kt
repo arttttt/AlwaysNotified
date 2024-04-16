@@ -1,13 +1,13 @@
-package com.arttttt.alwaysnotified.data.database
+package com.arttttt.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.arttttt.alwaysnotified.data.database.dao.ProfilesDao
-import com.arttttt.alwaysnotified.data.database.migrations.Migration_1_2
-import com.arttttt.alwaysnotified.data.database.model.ActivityDbModel
-import com.arttttt.alwaysnotified.data.database.model.ProfileDbModel
+import com.arttttt.database.dao.ProfilesDao
+import com.arttttt.database.migrations.Migration_1_2
+import com.arttttt.database.model.ActivityDbModel
+import com.arttttt.database.model.ProfileDbModel
 
 @Database(
     version = 2,

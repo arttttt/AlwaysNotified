@@ -1,9 +1,9 @@
 package com.arttttt.alwaysnotified.data.repository
 
-import com.arttttt.alwaysnotified.data.database.dao.ProfilesDao
-import com.arttttt.alwaysnotified.data.database.model.ActivityDbModel
-import com.arttttt.alwaysnotified.data.database.model.ProfileDbModel
-import com.arttttt.alwaysnotified.data.database.model.ProfileWithActivities
+import com.arttttt.database.dao.ProfilesDao
+import com.arttttt.database.model.ActivityDbModel
+import com.arttttt.database.model.ProfileDbModel
+import com.arttttt.database.model.ProfileWithActivities
 import com.arttttt.alwaysnotified.Profile
 import com.arttttt.alwaysnotified.SelectedActivity
 import com.arttttt.profiles.api.ProfilesRepository

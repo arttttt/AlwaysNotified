@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import com.arttttt.alwaysnotified.data.database.dao.ProfilesDao
+import com.arttttt.database.dao.ProfilesDao
 import com.arttttt.alwaysnotified.ActivityInfo
 import com.arttttt.alwaysnotified.AppInfo
 import com.arttttt.alwaysnotified.Profile
