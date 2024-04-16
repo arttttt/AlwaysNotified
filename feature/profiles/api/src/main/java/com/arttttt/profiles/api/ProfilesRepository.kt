@@ -13,5 +13,5 @@ interface ProfilesRepository {
 
     suspend fun removeProfileByUUID(uuid: String)
 
-    suspend fun isProfileExist(title: String): Boolean
+    suspend fun doesProfileExist(title: String): Boolean
 }

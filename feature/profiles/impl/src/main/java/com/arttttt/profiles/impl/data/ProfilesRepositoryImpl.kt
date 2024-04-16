@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.data.repository
+package com.arttttt.profiles.impl.data
 
 import com.arttttt.database.dao.ProfilesDao
 import com.arttttt.database.model.ActivityDbModel
@@ -9,7 +9,7 @@ import com.arttttt.alwaysnotified.SelectedActivity
 import com.arttttt.profiles.api.ProfilesRepository
 import java.util.UUID
 
-class ProfilesRepositoryImpl(
+internal class ProfilesRepositoryImpl(
     private val profilesDao: ProfilesDao,
 ) : ProfilesRepository {
 
@@ -53,7 +53,7 @@ class ProfilesRepositoryImpl(
         profilesDao.removeProfileByUUID(uuid)
     }
 
-    override suspend fun isProfileExist(title: String): Boolean {
+    override suspend fun doesProfileExist(title: String): Boolean {
         return profilesDao.doesProfileExist(title)
     }
 }

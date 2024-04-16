@@ -117,6 +117,8 @@ dependencies {
 
     implementation(libs.flowext)
 
+    implementation(libs.room.runtime)
+
     implementation(libs.accompanist.drawablepainter)
 
     implementation(platform(libs.firebase.bom))

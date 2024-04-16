@@ -47,7 +47,7 @@ internal class AddProfileComponentImpl(
         if (title.isEmpty()) return true
 
         return withContext(Dispatchers.IO) {
-            !profilesRepository.isProfileExist(title)
+            !profilesRepository.doesProfileExist(title)
         }
     }
 }

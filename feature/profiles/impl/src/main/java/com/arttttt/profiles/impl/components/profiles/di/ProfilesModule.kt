@@ -1,12 +1,14 @@
 package com.arttttt.profiles.impl.components.profiles.di
 
 import com.arttttt.profiles.api.ProfilesComponent
+import com.arttttt.profiles.api.ProfilesRepository
 import com.arttttt.profiles.impl.components.addprofile.AddProfileComponent
 import com.arttttt.profiles.impl.components.addprofile.AddProfileComponentImpl
 import com.arttttt.profiles.impl.components.profileactions.ProfileActionsComponent
 import com.arttttt.profiles.impl.components.profileactions.ProfileActionsComponentImpl
 import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponent
 import com.arttttt.profiles.impl.components.removeprofile.RemoveProfileComponentImpl
+import com.arttttt.profiles.impl.data.ProfilesRepositoryImpl
 import com.arttttt.profiles.impl.domain.store.ProfilesStoreFactory
 import org.koin.dsl.module
 
@@ -44,6 +46,12 @@ internal val profilesModule = module {
                 selectedActivitiesRepository = get(),
                 profilesRepository = get(),
             ).create()
+        }
+
+        scoped<ProfilesRepository> {
+            ProfilesRepositoryImpl(
+                profilesDao = get(),
+            )
         }
     }
 }
