@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.data.repository
+package com.arttttt.appslist.impl.data
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -9,9 +9,9 @@ import com.arttttt.alwaysnotified.ActivityInfo
 import com.arttttt.alwaysnotified.AppInfo
 import com.arttttt.alwaysnotified.Profile
 import com.arttttt.alwaysnotified.SelectedActivity
-import com.arttttt.alwaysnotified.AppsRepository
+import com.arttttt.appslist.impl.domain.repository.AppsRepository
 
-class AppsRepositoryImpl(
+internal class AppsRepositoryImpl(
     private val context: Context,
     private val profilesDao: ProfilesDao,
 ) : AppsRepository {

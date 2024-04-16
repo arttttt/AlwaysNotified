@@ -5,8 +5,6 @@ import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.arttttt.alwaysnotified.AppsLauncher
 import com.arttttt.alwaysnotified.AppsLauncherImpl
-import com.arttttt.alwaysnotified.AppsRepository
-import com.arttttt.alwaysnotified.data.repository.AppsRepositoryImpl
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProviderImpl
 import com.arttttt.appslist.api.AppsManager
 import com.arttttt.database.AppDatabase
@@ -18,13 +16,6 @@ val commonModule = module {
     single<StoreFactory> {
         LoggingStoreFactory(
             delegate = DefaultStoreFactory()
-        )
-    }
-
-    single<AppsRepository> {
-        AppsRepositoryImpl(
-            context = get(),
-            profilesDao = get(),
         )
     }
 

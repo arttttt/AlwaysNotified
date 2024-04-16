@@ -2,7 +2,7 @@ package com.arttttt.appslist.impl.domain.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.arttttt.alwaysnotified.AppsRepository
+import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import kotlinx.coroutines.Dispatchers
 
 internal class AppsStoreFactory(
