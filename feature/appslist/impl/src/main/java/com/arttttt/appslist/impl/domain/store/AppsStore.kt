@@ -5,7 +5,7 @@ import com.arttttt.alwaysnotified.AppInfo
 import com.arttttt.alwaysnotified.Profile
 import com.arttttt.alwaysnotified.SelectedActivity
 
-interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> {
+internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> {
 
     data class State(
         val isInProgress: Boolean,

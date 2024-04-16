@@ -2,7 +2,7 @@ package com.arttttt.appslist.impl.domain.store
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 
-object AppsStoreReducer : Reducer<AppsStore.State, AppsStore.Message> {
+internal object AppsStoreReducer : Reducer<AppsStore.State, AppsStore.Message> {
 
     override fun AppsStore.State.reduce(msg: AppsStore.Message): AppsStore.State {
         return when (msg) {

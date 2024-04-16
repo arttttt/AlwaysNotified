@@ -8,8 +8,7 @@ import com.arttttt.alwaysnotified.AppsLauncherImpl
 import com.arttttt.alwaysnotified.AppsRepository
 import com.arttttt.alwaysnotified.data.repository.AppsRepositoryImpl
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProviderImpl
-import com.arttttt.appslist.impl.domain.store.AppsStore
-import com.arttttt.appslist.impl.domain.store.AppsStoreFactory
+import com.arttttt.appslist.api.AppsManager
 import com.arttttt.database.AppDatabase
 import com.arttttt.localization.ResourcesProvider
 import com.arttttt.profiles.api.SelectedActivitiesRepository
@@ -29,17 +28,10 @@ val commonModule = module {
         )
     }
 
-    single<AppsStore> {
-        AppsStoreFactory(
-            storeFactory = get(),
-            appsRepository = get(),
-        ).create()
-    }
-
     single<AppsLauncher> {
         AppsLauncherImpl(
             context = get(),
-            appsStore = get(),
+            appsManager = get(),
         )
     }
 
@@ -61,8 +53,7 @@ val commonModule = module {
 
     factory {
         SelectedActivitiesRepository {
-            get<AppsStore>()
-                .state
+            get<AppsManager>()
                 .selectedActivities
                 ?.values
                 ?.toList()

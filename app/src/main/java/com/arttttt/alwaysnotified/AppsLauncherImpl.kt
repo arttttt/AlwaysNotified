@@ -3,20 +3,14 @@ package com.arttttt.alwaysnotified
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.arkivanov.mvikotlin.extensions.coroutines.states
-import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.alwaysnotified.utils.extensions.intent
+import com.arttttt.appslist.api.AppsManager
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
-/**
- * todo: introduce interface
- */
 class AppsLauncherImpl(
     private val context: Context,
-    private val appsStore: AppsStore,
+    private val appsManager: AppsManager,
 ) : AppsLauncher {
 
     override fun startAppStartupService() {
@@ -26,12 +20,12 @@ class AppsLauncherImpl(
     }
 
     override suspend fun launchApps() {
-        ensureReady()
+        appsManager.ensureReady()
 
         val payload = getActivitiesPayload(
-            applications = appsStore.state.applications?.values?.toList() ?: emptyList(),
-            selectedActivities = appsStore.state.selectedActivities ?: emptyMap(),
-            isAppSelected = { pkg -> appsStore.state.selectedActivities?.contains(pkg) == true },
+            applications = appsManager.applications?.values?.toList() ?: emptyList(),
+            selectedActivities = appsManager.selectedActivities ?: emptyMap(),
+            isAppSelected = { pkg -> appsManager.selectedActivities?.contains(pkg) == true },
         )
 
         if (payload.isEmpty()) return
@@ -42,12 +36,12 @@ class AppsLauncherImpl(
     }
 
     override suspend fun getLaunchIntent(): Intent? {
-        ensureReady()
+        appsManager.ensureReady()
 
         val payload = getActivitiesPayload(
-            applications = appsStore.state.applications?.values?.toList() ?: emptyList(),
-            selectedActivities = appsStore.state.selectedActivities ?: emptyMap(),
-            isAppSelected = { pkg -> appsStore.state.selectedActivities?.contains(pkg) == true },
+            applications = appsManager.applications?.values?.toList() ?: emptyList(),
+            selectedActivities = appsManager.selectedActivities ?: emptyMap(),
+            isAppSelected = { pkg -> appsManager.selectedActivities?.contains(pkg) == true },
         )
 
         if (payload.isEmpty()) return null
@@ -120,12 +114,5 @@ class AppsLauncherImpl(
                 }
             )
         }
-    }
-
-    private suspend fun ensureReady() {
-        appsStore
-            .states
-            .filter { state -> !state.isInProgress && state.applications != null }
-            .first()
     }
 }

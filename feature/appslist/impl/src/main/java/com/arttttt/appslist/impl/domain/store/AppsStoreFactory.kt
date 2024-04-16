@@ -5,7 +5,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arttttt.alwaysnotified.AppsRepository
 import kotlinx.coroutines.Dispatchers
 
-class AppsStoreFactory(
+internal class AppsStoreFactory(
     private val storeFactory: StoreFactory,
     private val appsRepository: AppsRepository,
 ) {

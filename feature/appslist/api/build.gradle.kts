@@ -35,4 +35,5 @@ android {
 
 dependencies {
     implementation(project(":core:arch"))
+    implementation(project(":core:alwaysnotified"))
 }

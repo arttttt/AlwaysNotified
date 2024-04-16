@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AppsStoreExecutor(
+internal class AppsStoreExecutor(
     dispatcher: CoroutineDispatcher,
     private val appsRepository: AppsRepository,
 ) : CoroutineExecutor<AppsStore.Intent, AppsStore.Action, AppsStore.State, AppsStore.Message, AppsStore.Label>(
