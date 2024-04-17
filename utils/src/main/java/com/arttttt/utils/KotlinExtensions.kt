@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified.utils
+package com.arttttt.utils
 
 import kotlinx.coroutines.CancellationException
 

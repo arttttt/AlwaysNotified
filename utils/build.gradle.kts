@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.arttttt.permissions.impl"
+    namespace = "com.arttttt.utils"
     compileSdk = 34
 
     defaultConfig {
@@ -15,14 +15,6 @@ android {
         release {
             isMinifyEnabled = false
         }
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     compileOptions {
@@ -42,11 +34,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:alwaysnotified"))
-    implementation(project(":core:arch"))
-    implementation(project(":core:lazylist"))
-    implementation(project(":localization"))
-    implementation(project(":uikit"))
-    implementation(project(":utils"))
-    implementation(project(":feature:permissions:api"))
+    implementation(libs.kotlinx.coroutines.core)
 }

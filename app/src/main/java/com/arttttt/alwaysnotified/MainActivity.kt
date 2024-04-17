@@ -13,7 +13,7 @@ import com.arkivanov.decompose.defaultComponentContext
 import com.arttttt.alwaysnotified.components.root.RootComponent
 import com.arttttt.alwaysnotified.components.root.RootComponentImpl
 import com.arttttt.alwaysnotified.ui.root.RootContent
-import com.arttttt.alwaysnotified.utils.unsafeCastTo
+import com.arttttt.utils.unsafeCastTo
 import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.rememberHapticFeedback

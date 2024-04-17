@@ -70,8 +70,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":uikit"))
-    implementation(project(":localization"))
     implementation(project(":core:arch"))
     implementation(project(":core:alwaysnotified"))
     implementation(project(":core:database"))
@@ -86,6 +84,9 @@ dependencies {
     implementation(project(":feature:appslist:impl"))
     implementation(project(":feature:permissions:api"))
     implementation(project(":feature:permissions:impl"))
+    implementation(project(":localization"))
+    implementation(project(":uikit"))
+    implementation(project(":utils"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)

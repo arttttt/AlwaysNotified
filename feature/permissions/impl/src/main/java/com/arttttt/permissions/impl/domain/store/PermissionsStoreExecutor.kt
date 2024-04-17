@@ -1,7 +1,7 @@
 package com.arttttt.permissions.impl.domain.store
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.arttttt.alwaysnotified.utils.exceptCancellationException
+import com.arttttt.utils.exceptCancellationException
 import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 import com.arttttt.permissions.impl.utils.PermissionsRequester
