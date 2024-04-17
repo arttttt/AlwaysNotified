@@ -1,16 +1,9 @@
 package com.arttttt.alwaysnotified
 
-import android.app.Notification
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import androidx.core.app.NotificationChannelCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 class BootReceiver : BroadcastReceiver(), KoinComponent {
 
@@ -22,10 +15,10 @@ class BootReceiver : BroadcastReceiver(), KoinComponent {
         private const val NOTIFICATION_ID = 1
     }
 
-    private val appsLauncher: AppsLauncher by inject()
+    //private val appsLauncher: AppsLauncher by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.e(
+        /*Log.e(
             "TEST",
             """
                 trying to start all the apps
@@ -35,7 +28,7 @@ class BootReceiver : BroadcastReceiver(), KoinComponent {
 
         if (intent.action != Intent.ACTION_BOOT_COMPLETED) return
 
-        appsLauncher.startAppStartupService()
+        appsLauncher.startAppStartupService()*/
 
         /*createNotificationChannel(context)
 
@@ -61,7 +54,7 @@ class BootReceiver : BroadcastReceiver(), KoinComponent {
             )*/
     }
 
-    private fun createNotification(
+    /*private fun createNotification(
         context: Context,
         payload: Intent?
     ): Notification {
@@ -97,5 +90,5 @@ class BootReceiver : BroadcastReceiver(), KoinComponent {
         NotificationManagerCompat
             .from(context.applicationContext)
             .createNotificationChannel(channel)
-    }
+    }*/
 }
