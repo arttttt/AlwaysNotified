@@ -16,10 +16,10 @@ This app allows you to bypass the 5 auto launch apps limit on ColorOS phones
 # TODO
 
 * ~~Profiles~~
+* ~~Search~~
+* ~~Modularization~~
 * Settings
-* Search
 * Icon and themes
 * Instruction
 * Selected apps indication
-* Modularization
 * CI
