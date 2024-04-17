@@ -1,7 +1,7 @@
 package com.arttttt.profiles.impl.domain.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.arttttt.alwaysnotified.Profile
+import com.arttttt.profiles.api.Profile
 
 internal interface ProfilesStore : Store<ProfilesStore.Intent, ProfilesStore.State, ProfilesStore.Label> {
 

@@ -1,6 +1,5 @@
 package com.arttttt.profiles.api
 
-import com.arttttt.alwaysnotified.Profile
 import com.arttttt.alwaysnotified.SelectedActivity
 
 interface ProfilesRepository {

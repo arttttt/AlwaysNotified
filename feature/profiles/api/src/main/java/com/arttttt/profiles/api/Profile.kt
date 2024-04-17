@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified
+package com.arttttt.profiles.api
 
 data class Profile(
     val uuid: String,

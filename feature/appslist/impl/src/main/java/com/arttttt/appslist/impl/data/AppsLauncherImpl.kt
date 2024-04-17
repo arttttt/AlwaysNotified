@@ -4,8 +4,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import com.arkivanov.mvikotlin.extensions.coroutines.states
-import com.arttttt.alwaysnotified.ActivityInfo
-import com.arttttt.alwaysnotified.AppInfo
+import com.arttttt.appslist.impl.domain.entity.ActivityInfo
+import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.alwaysnotified.SelectedActivity
 import com.arttttt.appslist.api.AppsLauncherIntentHelper
@@ -83,7 +83,8 @@ internal class AppsLauncherImpl(
 
                         intentHelper.putExtra(
                             intent = this,
-                            activityInfo = activityInfo,
+                            title = activityInfo.name.substringAfterLast("."),
+                            pkg = activityInfo.pkg,
                             selectedActivities = selectedActivities,
                         )
                     }

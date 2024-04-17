@@ -2,7 +2,6 @@ package com.arttttt.profiles.api
 
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
-import com.arttttt.alwaysnotified.Profile
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.core.arch.context.AppComponentContext

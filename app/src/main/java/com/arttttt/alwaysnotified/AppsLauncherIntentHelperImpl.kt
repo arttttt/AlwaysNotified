@@ -9,17 +9,18 @@ class AppsLauncherIntentHelperImpl : AppsLauncherIntentHelper {
 
     override fun putExtra(
         intent: Intent,
-        activityInfo: ActivityInfo,
+        pkg: String,
+        title: String,
         selectedActivities: Map<String, SelectedActivity>,
     ) {
         intent.putExtra(
             HolderActivity.TARGET_TITLE,
-            activityInfo.name.substringAfterLast(".")
+            title
         )
 
         intent.putExtra(
             HolderActivity.MANUAL_MODE,
-            selectedActivities[activityInfo.pkg]?.manualMode
+            selectedActivities[pkg]?.manualMode
         )
     }
 

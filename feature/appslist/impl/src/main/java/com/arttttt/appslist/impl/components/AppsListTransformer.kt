@@ -4,8 +4,8 @@ import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.alwaysnotified.SelectedActivity
 import com.arttttt.lazylist.ListItem
-import com.arttttt.alwaysnotified.ActivityInfo
-import com.arttttt.alwaysnotified.AppInfo
+import com.arttttt.appslist.impl.domain.entity.ActivityInfo
+import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.appslist.impl.ui.lazylist.models.ActivityListItem
 import com.arttttt.appslist.impl.ui.lazylist.models.AppListItem

@@ -1,8 +1,8 @@
 package com.arttttt.appslist.impl.domain.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.arttttt.alwaysnotified.AppInfo
-import com.arttttt.alwaysnotified.Profile
+import com.arttttt.appslist.impl.domain.entity.AppInfo
+import com.arttttt.profiles.api.Profile
 import com.arttttt.alwaysnotified.SelectedActivity
 
 internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> {

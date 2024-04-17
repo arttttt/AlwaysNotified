@@ -1,9 +1,9 @@
-package com.arttttt.alwaysnotified
+package com.arttttt.appslist.impl.domain.entity
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ActivityInfo(
+internal data class ActivityInfo(
     val title: String,
     val name: String,
     val pkg: String,
