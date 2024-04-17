@@ -24,7 +24,7 @@ class ProtectorActivity : ComponentActivity() {
         setTaskDescription(
             ActivityManager.TaskDescription
                 .Builder()
-                .setLabel(getString(R.string.do_not_close))
+                .setLabel(getString(com.arttttt.localization.R.string.do_not_close))
                 .build()
         )
 

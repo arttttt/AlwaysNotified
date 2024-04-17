@@ -3,6 +3,7 @@ package com.arttttt.alwaysnotified.utils.resources
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import com.arttttt.localization.ResourcesProvider
 
 class ResourcesProviderImpl(
     private val context: Context

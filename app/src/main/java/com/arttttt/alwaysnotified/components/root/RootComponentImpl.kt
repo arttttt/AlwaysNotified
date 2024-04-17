@@ -8,17 +8,14 @@ import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arttttt.alwaysnotified.arch.shared.DecomposeComponent
-import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
-import com.arttttt.alwaysnotified.arch.shared.context.wrapComponentContext
-import com.arttttt.alwaysnotified.arch.shared.stackComponentEvents
-import com.arttttt.alwaysnotified.components.appslist.AppListComponent
-import com.arttttt.alwaysnotified.components.appslist.AppsListComponentImpl
-import com.arttttt.alwaysnotified.components.appslist.AppsListTransformer
-import com.arttttt.alwaysnotified.components.permissions.PermissionsComponent
-import com.arttttt.alwaysnotified.components.permissions.PermissionsComponentImpl
+import com.arttttt.core.arch.context.AppComponentContext
+import com.arttttt.appslist.api.AppsListComponent
+import com.arttttt.permissions.api.PermissionsComponent
 import com.arttttt.alwaysnotified.components.settings.SettingsComponentImpl
-import com.arttttt.alwaysnotified.utils.extensions.koinScope
+import com.arttttt.core.arch.koinScope
+import com.arttttt.core.arch.DecomposeComponent
+import com.arttttt.core.arch.context.wrapComponentContext
+import com.arttttt.core.arch.stackComponentEvents
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -46,21 +43,25 @@ class RootComponentImpl(
     }
 
     private val coroutineScope = coroutineScope()
-    private val scope = koinScope(
+    private val koinScope = koinScope(
         scopeID = getScopeId(),
         qualifier = qualifier<RootComponent>(),
     )
 
-    private val navigation = StackNavigation<Config>()
+    private val appsListComponentFactory: AppsListComponent.Factory by koinScope.inject()
 
-    private val permissionsComponent: PermissionsComponent = PermissionsComponentImpl(
-        componentContext = wrapComponentContext(
-            context = childContext(
-                key = PermissionsComponent::class.java.name,
-            ),
-            parentScopeID = scope.id,
+    private val permissionsComponent = koinScope
+        .get<PermissionsComponent.Factory>()
+        .create(
+            context = wrapComponentContext(
+                context = childContext(
+                    key = PermissionsComponent::class.java.name,
+                ),
+                parentScopeID = koinScope.id,
+            )
         )
-    )
+
+    private val navigation = StackNavigation<Config>()
 
     override val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         serializer = Config.serializer(),
@@ -81,8 +82,8 @@ class RootComponentImpl(
             .launchIn(coroutineScope)
 
         stack
-            .stackComponentEvents<AppListComponent.Event>()
-            .filterIsInstance<AppListComponent.Event.OpenSettings>()
+            .stackComponentEvents<AppsListComponent.Event>()
+            .filterIsInstance<AppsListComponent.Event.OpenSettings>()
             .onEach {
                 navigation.push(Config.Settings)
             }
@@ -95,15 +96,12 @@ class RootComponentImpl(
     ): DecomposeComponent {
         val wrappedContext = wrapComponentContext(
             context = context,
-            parentScopeID = scope.id,
+            parentScopeID = koinScope.id,
         )
 
         return when (config) {
-            is Config.AppsList -> AppsListComponentImpl(
-                componentContext = wrappedContext,
-                transformer = AppsListTransformer(
-                    resourcesProvider = scope.get(),
-                ),
+            is Config.AppsList -> appsListComponentFactory.create(
+                context = wrappedContext,
             )
             is Config.Permissions -> permissionsComponent
             is Config.Settings -> SettingsComponentImpl(

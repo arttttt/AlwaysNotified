@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
 }
@@ -33,10 +32,6 @@ android {
 
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
 
             resValue("string", "app_name", "@string/app_name_release")
             signingConfig = signingConfigs.getByName("debug")
@@ -75,6 +70,24 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:arch"))
+    implementation(project(":core:alwaysnotified"))
+    implementation(project(":core:database"))
+    implementation(project(":core:lazylist"))
+    implementation(project(":feature:profiles:api"))
+    implementation(project(":feature:profiles:impl"))
+    implementation(project(":feature:appssearch:api"))
+    implementation(project(":feature:appssearch:impl"))
+    implementation(project(":feature:topbar:api"))
+    implementation(project(":feature:topbar:impl"))
+    implementation(project(":feature:appslist:api"))
+    implementation(project(":feature:appslist:impl"))
+    implementation(project(":feature:permissions:api"))
+    implementation(project(":feature:permissions:impl"))
+    implementation(project(":localization"))
+    implementation(project(":uikit"))
+    implementation(project(":utils"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -88,14 +101,6 @@ dependencies {
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)
-
-    implementation(libs.decompose)
-    implementation(libs.decompose.compose)
-    implementation(libs.essenty.lifecycle.lib)
-    implementation(libs.essenty.lifecycle.coroutines)
-    implementation(libs.essenty.backHandler)
-    implementation(libs.essenty.instanceKeeper)
-    implementation(libs.essenty.stateKeeper)
 
     implementation(libs.kotlin.collections)
 
@@ -114,8 +119,6 @@ dependencies {
     implementation(libs.flowext)
 
     implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 
     implementation(libs.accompanist.drawablepainter)
 

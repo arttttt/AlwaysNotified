@@ -1,11 +1,11 @@
 package com.arttttt.alwaysnotified.components.settings
 
-import com.arttttt.alwaysnotified.arch.shared.context.AppComponentContext
+import com.arttttt.core.arch.context.AppComponentContext
 
 /**
  * todo: implement business logic and UI
  */
 class SettingsComponentImpl(
-    componentContext: AppComponentContext,
+    componentContext: com.arttttt.core.arch.context.AppComponentContext,
 ) : SettingsComponent,
-    AppComponentContext by componentContext
+    com.arttttt.core.arch.context.AppComponentContext by componentContext
