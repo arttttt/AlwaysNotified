@@ -6,7 +6,7 @@ import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
-import com.arttttt.alwaysnotified.AppsLauncher
+import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.topbar.api.TopBarComponent
 import com.arttttt.appslist.api.AppsListComponent

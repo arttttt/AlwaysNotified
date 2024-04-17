@@ -1,31 +1,33 @@
-package com.arttttt.alwaysnotified
+package com.arttttt.appslist.impl.data
 
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.arttttt.alwaysnotified.utils.extensions.intent
-import com.arttttt.appslist.api.AppsManager
+import com.arkivanov.mvikotlin.extensions.coroutines.states
+import com.arttttt.alwaysnotified.ActivityInfo
+import com.arttttt.alwaysnotified.AppInfo
+import com.arttttt.appslist.impl.domain.AppsLauncher
+import com.arttttt.alwaysnotified.SelectedActivity
+import com.arttttt.appslist.api.AppsLauncherIntentHelper
+import com.arttttt.appslist.impl.domain.store.AppsStore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
-class AppsLauncherImpl(
+internal class AppsLauncherImpl(
     private val context: Context,
-    private val appsManager: AppsManager,
+    private val appsStore: AppsStore,
+    private val intentHelper: AppsLauncherIntentHelper,
 ) : AppsLauncher {
 
-    override fun startAppStartupService() {
-        context.startService(
-            context.intent<AppStartupService>()
-        )
-    }
-
     override suspend fun launchApps() {
-        appsManager.ensureReady()
+        ensureReady()
 
         val payload = getActivitiesPayload(
-            applications = appsManager.applications?.values?.toList() ?: emptyList(),
-            selectedActivities = appsManager.selectedActivities ?: emptyMap(),
-            isAppSelected = { pkg -> appsManager.selectedActivities?.contains(pkg) == true },
+            applications = appsStore.state.applications?.values?.toList() ?: emptyList(),
+            selectedActivities = appsStore.state.selectedActivities ?: emptyMap(),
+            isAppSelected = { pkg -> appsStore.state.selectedActivities?.contains(pkg) == true },
         )
 
         if (payload.isEmpty()) return
@@ -35,34 +37,11 @@ class AppsLauncherImpl(
         )
     }
 
-    override suspend fun getLaunchIntent(): Intent? {
-        appsManager.ensureReady()
-
-        val payload = getActivitiesPayload(
-            applications = appsManager.applications?.values?.toList() ?: emptyList(),
-            selectedActivities = appsManager.selectedActivities ?: emptyMap(),
-            isAppSelected = { pkg -> appsManager.selectedActivities?.contains(pkg) == true },
-        )
-
-        if (payload.isEmpty()) return null
-
-        return context.getHolderIntent(payload)
-    }
-
-    private fun Context.getHolderIntent(payload: ArrayList<Intent>): Intent {
-        return intent<HolderActivity> {
-            setClassName(
-                packageName,
-                HolderActivity::class.java.name
-            )
-
-            putExtra(
-                HolderActivity.APPS_TO_START,
-                payload,
-            )
-
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NEW_DOCUMENT
-        }
+    private suspend fun ensureReady() {
+        appsStore
+            .states
+            .filter { state -> !state.isInProgress && state.applications != null }
+            .first()
     }
 
     @Suppress("ReplaceGetOrSet")
@@ -102,17 +81,21 @@ class AppsLauncherImpl(
 
                         flags = 0
 
-                        putExtra(
-                            HolderActivity.TARGET_TITLE,
-                            activityInfo.name.substringAfterLast(".")
-                        )
-                        putExtra(
-                            HolderActivity.MANUAL_MODE,
-                            selectedActivities[activityInfo.pkg]?.manualMode
+                        intentHelper.putExtra(
+                            intent = this,
+                            activityInfo = activityInfo,
+                            selectedActivities = selectedActivities,
                         )
                     }
                 }
             )
         }
+    }
+
+    private fun Context.getHolderIntent(payload: ArrayList<Intent>): Intent {
+        return intentHelper.createHolderIntent(
+            context = this,
+            payload = payload,
+        )
     }
 }
