@@ -8,7 +8,7 @@ import com.arttttt.database.dao.ProfilesDao
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.profiles.api.Profile
-import com.arttttt.alwaysnotified.SelectedActivity
+import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 
 internal class AppsRepositoryImpl(

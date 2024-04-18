@@ -2,7 +2,7 @@ package com.arttttt.appslist.api
 
 import android.content.Context
 import android.content.Intent
-import com.arttttt.alwaysnotified.SelectedActivity
+import com.arttttt.appslist.SelectedActivity
 
 interface AppsLauncherIntentHelper {
 

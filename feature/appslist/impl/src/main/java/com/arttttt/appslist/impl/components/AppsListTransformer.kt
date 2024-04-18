@@ -2,7 +2,7 @@ package com.arttttt.appslist.impl.components
 
 import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.profiles.api.ProfilesComponent
-import com.arttttt.alwaysnotified.SelectedActivity
+import com.arttttt.appslist.SelectedActivity
 import com.arttttt.lazylist.ListItem
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo

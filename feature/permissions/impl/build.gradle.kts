@@ -42,7 +42,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:alwaysnotified"))
+    implementation(project(":core:appslist"))
     implementation(project(":core:arch"))
     implementation(project(":core:lazylist"))
     implementation(project(":localization"))

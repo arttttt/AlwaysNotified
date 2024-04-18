@@ -71,7 +71,7 @@ android {
 
 dependencies {
     implementation(project(":core:arch"))
-    implementation(project(":core:alwaysnotified"))
+    implementation(project(":core:appslist"))
     implementation(project(":core:database"))
     implementation(project(":core:lazylist"))
     implementation(project(":feature:profiles:api"))

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.arttttt.alwaysnotified"
+    namespace = "com.arttttt.appslist"
     compileSdk = 34
 
     defaultConfig {

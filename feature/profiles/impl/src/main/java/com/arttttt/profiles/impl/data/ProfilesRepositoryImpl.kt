@@ -5,7 +5,7 @@ import com.arttttt.database.model.ActivityDbModel
 import com.arttttt.database.model.ProfileDbModel
 import com.arttttt.database.model.ProfileWithActivities
 import com.arttttt.profiles.api.Profile
-import com.arttttt.alwaysnotified.SelectedActivity
+import com.arttttt.appslist.SelectedActivity
 import com.arttttt.profiles.api.ProfilesRepository
 import java.util.UUID
 

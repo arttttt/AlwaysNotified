@@ -2,7 +2,7 @@ package com.arttttt.appslist.impl.domain.repository
 
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.profiles.api.Profile
-import com.arttttt.alwaysnotified.SelectedActivity
+import com.arttttt.appslist.SelectedActivity
 
 internal interface AppsRepository {
 

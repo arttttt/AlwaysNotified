@@ -1,4 +1,4 @@
-package com.arttttt.alwaysnotified
+package com.arttttt.appslist
 
 data class SelectedActivity(
     val pkg: String,

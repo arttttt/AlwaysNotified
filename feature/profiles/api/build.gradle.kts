@@ -35,6 +35,6 @@ android {
 
 dependencies {
     implementation(project(":core:arch"))
-    implementation(project(":core:alwaysnotified"))
+    implementation(project(":core:appslist"))
     implementation(project(":core:lazylist"))
 }

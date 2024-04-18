@@ -3,6 +3,7 @@ package com.arttttt.alwaysnotified
 import android.content.Context
 import android.content.Intent
 import com.arttttt.alwaysnotified.utils.extensions.intent
+import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.api.AppsLauncherIntentHelper
 
 class AppsLauncherIntentHelperImpl : AppsLauncherIntentHelper {
