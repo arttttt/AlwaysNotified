@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.ui.lazylist.delegates
+package com.arttttt.appslist.impl.ui.appslist.lazylist.delegates
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.arttttt.appslist.impl.ui.lazylist.models.AppListItem
-import com.arttttt.appslist.impl.ui.lazylist.models.fromClippableItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.fromClippableItem
 import com.arttttt.lazylist.dsl.lazyListDelegate
 import com.arttttt.uikit.theme.AppTheme
 import com.google.accompanist.drawablepainter.rememberDrawablePainter

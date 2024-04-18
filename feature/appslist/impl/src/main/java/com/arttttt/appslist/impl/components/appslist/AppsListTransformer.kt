@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.components
+package com.arttttt.appslist.impl.components.appslist
 
 import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.profiles.api.ProfilesComponent
@@ -7,10 +7,10 @@ import com.arttttt.lazylist.ListItem
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
-import com.arttttt.appslist.impl.ui.lazylist.models.ActivityListItem
-import com.arttttt.appslist.impl.ui.lazylist.models.AppListItem
-import com.arttttt.appslist.impl.ui.lazylist.models.DividerListItem
-import com.arttttt.appslist.impl.ui.lazylist.models.ProgressListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ActivityListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.DividerListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ProgressListItem
 import com.arttttt.core.arch.Transformer
 import com.arttttt.localization.ResourcesProvider
 import kotlinx.collections.immutable.toPersistentList
@@ -55,7 +55,7 @@ internal class AppsListTransformer(
                     ),
                 )
 
-                if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
+                /*if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
                     val selectedActivity = appsStoreState.getSelectedActivityForPkg(app.pkg)
 
                     app.activities.mapIndexedTo(acc) { activityIndex, activity ->
@@ -64,7 +64,7 @@ internal class AppsListTransformer(
                             clipBottom = index == filteredApps.entries.size - 1 && activityIndex == app.activities.size - 1,
                         )
                     }
-                }
+                }*/
 
                 if (index < filteredApps.size - 1) {
                     acc += DividerListItem()

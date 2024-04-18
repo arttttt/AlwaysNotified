@@ -1,7 +1,9 @@
-package com.arttttt.appslist.impl.components.di
+package com.arttttt.appslist.impl.components.appslist.di
 
 import com.arttttt.appslist.api.AppsListComponent
-import com.arttttt.appslist.impl.components.AppsListTransformer
+import com.arttttt.appslist.impl.components.app.AppComponent
+import com.arttttt.appslist.impl.components.app.AppComponentImpl
+import com.arttttt.appslist.impl.components.appslist.AppsListTransformer
 import com.arttttt.appslist.impl.data.AppsLauncherImpl
 import com.arttttt.appslist.impl.data.AppsRepositoryImpl
 import com.arttttt.appslist.impl.domain.AppsLauncher
@@ -52,6 +54,10 @@ internal val appsListModule = module {
                     ?.toList()
                     ?: emptyList()
             }
+        }
+
+        scoped {
+            AppComponent.Factory(::AppComponentImpl)
         }
     }
 }

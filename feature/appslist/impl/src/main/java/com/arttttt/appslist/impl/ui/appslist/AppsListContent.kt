@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.ui
+package com.arttttt.appslist.impl.ui.appslist
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -22,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,12 +41,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.appslist.impl.components.InternalAppsListComponent
-import com.arttttt.appslist.impl.ui.lazylist.delegates.ActivityListDelegate
-import com.arttttt.appslist.impl.ui.lazylist.delegates.AppListDelegate
-import com.arttttt.appslist.impl.ui.lazylist.delegates.DividerListDelegate
-import com.arttttt.appslist.impl.ui.lazylist.delegates.ProgressListDelegate
+import com.arttttt.appslist.impl.components.appslist.InternalAppsListComponent
+import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.ActivityListDelegate
+import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.AppListDelegate
+import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.DividerListDelegate
+import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.ProgressListDelegate
 import com.arttttt.core.arch.content.ComponentContent
+import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.lazylist.ListItem
 import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
 import com.arttttt.uikit.LocalCorrectHapticFeedback
@@ -62,7 +64,8 @@ internal class AppsListContent(
 
     @Composable
     override fun Content(modifier: Modifier) {
-        val state by component.uiState.subscribeAsState()
+        val state by component.uiState.collectAsState()
+        val slot by component.slot.subscribeAsState()
 
         Column(
             modifier = Modifier
@@ -82,6 +85,12 @@ internal class AppsListContent(
                 onUpdateProfileClicked = component::updateProfile,
                 onManualModeChanged = component::onManualModeChanged,
             )
+        }
+
+        slot.child?.instance?.let { instance ->
+            when (instance) {
+                is ComponentContentOwner -> instance.content.Content(modifier = Modifier)
+            }
         }
     }
 
