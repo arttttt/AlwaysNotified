@@ -1,18 +1,17 @@
 package com.arttttt.appslist.impl.components.appslist
 
-import com.arttttt.appssearch.api.AppsSearchComponent
-import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.appslist.SelectedActivity
-import com.arttttt.lazylist.ListItem
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.DividerListItem
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ProgressListItem
+import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.core.arch.Transformer
+import com.arttttt.lazylist.ListItem
 import com.arttttt.localization.ResourcesProvider
+import com.arttttt.profiles.api.ProfilesComponent
 import kotlinx.collections.immutable.toPersistentList
 
 internal class AppsListTransformer(
@@ -121,21 +120,6 @@ internal class AppsListTransformer(
             isManualModeAvailable = isManualModeAvailable,
             clipBottom = clipBottom,
             icon = resourcesProvider.getDrawable(this.pkg),
-        )
-    }
-
-    private fun ActivityInfo.toListItem(
-        isSelected: Boolean,
-        clipBottom: Boolean,
-    ): ListItem {
-        return ActivityListItem(
-            pkg = this.pkg,
-            title = this.title,
-            name = this.name,
-            isSelected = isSelected,
-            key = "${this.pkg}_${this.name}",
-            clipTop = false,
-            clipBottom = clipBottom,
         )
     }
 

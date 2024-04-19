@@ -1,6 +1,5 @@
 package com.arttttt.appslist.impl.ui.appslist.lazylist.delegates
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ActivityListItem
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.fromClippableItem
 import com.arttttt.lazylist.dsl.lazyListDelegate
 import com.arttttt.uikit.theme.AppTheme
 
@@ -23,14 +21,11 @@ internal fun ActivityListDelegate(
     Row(
         modifier = Modifier
             .fillParentMaxWidth()
-            .fromClippableItem(item)
-            .background(AppTheme.colors.tertiary)
             .clickable {
                 onClick.invoke(item.pkg, item.name)
             }
             .padding(
-                start = 32.dp,
-                end = 16.dp,
+                horizontal = 16.dp,
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {

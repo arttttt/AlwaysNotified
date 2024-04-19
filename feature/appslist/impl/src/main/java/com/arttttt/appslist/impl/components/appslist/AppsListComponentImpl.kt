@@ -14,6 +14,8 @@ import com.arttttt.appslist.api.AppsListComponent
 import com.arttttt.appslist.impl.components.app.AppComponent
 import com.arttttt.appslist.impl.components.appslist.di.appsListModule
 import com.arttttt.appslist.impl.domain.AppsLauncher
+import com.arttttt.appslist.impl.domain.entity.ActivityInfo
+import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.appslist.impl.ui.appslist.AppsListContent
 import com.arttttt.core.arch.DecomposeComponent
@@ -53,7 +55,9 @@ internal class AppsListComponentImpl(
     sealed interface DialogConfig {
 
         @Serializable
-        data object App : DialogConfig
+        data class App(
+            val app: AppInfo,
+        ) : DialogConfig
     }
 
     private val koinScope = koinScope(
@@ -151,7 +155,11 @@ internal class AppsListComponentImpl(
             )
         )*/
 
-        slotNavigation.activate(DialogConfig.App)
+        slotNavigation.activate(
+            DialogConfig.App(
+                app = appsStore.state.applications!!.getValue(pkg)
+            )
+        )
     }
 
     override fun onActivityClicked(pkg: String, name: String) {
@@ -191,6 +199,7 @@ internal class AppsListComponentImpl(
         return when (config) {
             is DialogConfig.App -> appComponentFactory.create(
                 context = wrappedContext,
+                app = config.app,
             )
         }
     }
