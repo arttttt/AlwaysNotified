@@ -7,9 +7,12 @@ import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.ui.app.AppContent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.context.AppComponentContext
+import com.arttttt.core.arch.dialog.DismissEvent
 import com.arttttt.core.arch.dialog.DismissEventConsumer
 import com.arttttt.core.arch.dialog.DismissEventDelegate
 import com.arttttt.core.arch.dialog.DismissEventProducer
+import com.arttttt.core.arch.events.producer.EventsProducerDelegate
+import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import com.arttttt.core.arch.koinScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,9 +29,10 @@ internal class AppComponentImpl(
     context: AppComponentContext,
     app: AppInfo,
     selectedActivity: SelectedActivity?,
-    dismissEventDelegate: DismissEventDelegate = DismissEventDelegate(),
+    private val dismissEventDelegate: DismissEventDelegate = DismissEventDelegate(),
 ) : AppComponent,
     AppComponentContext by context,
+    EventsProducerDelegate<AppComponent.Event> by EventsProducerDelegateImpl(),
     DismissEventConsumer by dismissEventDelegate,
     DismissEventProducer by dismissEventDelegate {
 
@@ -69,7 +73,7 @@ internal class AppComponentImpl(
                         SelectedActivity(
                             pkg = state.app.pkg,
                             name = name,
-                            manualMode = false,
+                            manualMode = state.selectedActivity?.manualMode ?: false,
                         )
                     },
             )
@@ -84,5 +88,15 @@ internal class AppComponentImpl(
                 ),
             )
         }
+    }
+
+    override fun onDismiss(event: DismissEvent) {
+        dispatch(
+            AppComponent.Event.EditingFinished(
+                pkg = states.value.app.pkg,
+                selectedActivity = states.value.selectedActivity,
+            )
+        )
+        dismissEventDelegate.onDismiss(event)
     }
 }

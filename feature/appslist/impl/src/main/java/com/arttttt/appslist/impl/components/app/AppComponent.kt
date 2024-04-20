@@ -8,11 +8,13 @@ import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.dialog.DismissEventConsumer
 import com.arttttt.core.arch.dialog.DismissEventProducer
+import com.arttttt.core.arch.events.producer.EventsProducer
 import com.arttttt.lazylist.ListItem
 import kotlinx.coroutines.flow.StateFlow
 
 internal interface AppComponent : DecomposeComponent,
     ComponentContentOwner,
+    EventsProducer<AppComponent.Event>,
     DismissEventConsumer,
     DismissEventProducer {
 
@@ -23,6 +25,14 @@ internal interface AppComponent : DecomposeComponent,
             app: AppInfo,
             selectedActivity: SelectedActivity?,
         ): AppComponent
+    }
+
+    sealed interface Event {
+
+        data class EditingFinished(
+            val pkg: String,
+            val selectedActivity: SelectedActivity?
+        ) : Event
     }
 
     data class State(

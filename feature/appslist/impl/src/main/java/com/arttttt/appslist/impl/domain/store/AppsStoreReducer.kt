@@ -9,9 +9,6 @@ internal object AppsStoreReducer : Reducer<AppsStore.State, AppsStore.Message> {
             is AppsStore.Message.ApplicationsLoaded -> copy(
                 applications = msg.applications,
             )
-            is AppsStore.Message.SelectedAppsChanged -> copy(
-                selectedApps = msg.selectedApps
-            )
             is AppsStore.Message.SelectedActivitiesChanged -> copy(
                 selectedActivities = msg.selectedActivities
             )

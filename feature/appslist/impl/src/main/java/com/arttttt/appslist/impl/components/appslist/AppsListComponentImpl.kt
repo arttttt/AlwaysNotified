@@ -25,6 +25,7 @@ import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.core.arch.events.producer.EventsProducerDelegate
 import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import com.arttttt.core.arch.koinScope
+import com.arttttt.core.arch.slotComponentEvents
 import com.arttttt.core.arch.slotDismissEvents
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.topbar.api.TopBarComponent
@@ -141,6 +142,17 @@ internal class AppsListComponentImpl(
             .slotDismissEvents()
             .onEach { slotNavigation.dismiss() }
             .launchIn(coroutineScope)
+
+        slot
+            .slotComponentEvents<AppComponent.Event>()
+            .filterIsInstance<AppComponent.Event.EditingFinished>()
+            .onEach { event ->
+                handeAppEditingFinished(
+                    pkg = event.pkg,
+                    selectedActivity = event.selectedActivity,
+                )
+            }
+            .launchIn(coroutineScope)
     }
 
     override fun startApps() {
@@ -150,12 +162,6 @@ internal class AppsListComponentImpl(
     }
 
     override fun onAppClicked(pkg: String) {
-        /*appsStore.accept(
-            AppsStore.Intent.SelectApp(
-                pkg = pkg,
-            )
-        )*/
-
         slotNavigation.activate(
             DialogConfig.App(
                 app = appsStore.state.applications!!.getValue(pkg),
@@ -172,10 +178,14 @@ internal class AppsListComponentImpl(
         topBarComponent.profilesComponent.consume(ProfilesComponent.Events.Input.UpdateCurrentProfile)
     }
 
-    fun onManualModeChanged(pkg: String) {
+    private fun handeAppEditingFinished(
+        pkg: String,
+        selectedActivity: SelectedActivity?,
+    ) {
         appsStore.accept(
-            AppsStore.Intent.ChangeManualMode(
+            AppsStore.Intent.SetSelectedActivity(
                 pkg = pkg,
+                selectedActivity = selectedActivity,
             )
         )
     }

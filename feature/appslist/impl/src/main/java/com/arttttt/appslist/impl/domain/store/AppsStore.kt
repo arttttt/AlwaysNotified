@@ -10,7 +10,6 @@ internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStor
     data class State(
         val isInProgress: Boolean,
         val applications: Map<String, AppInfo>?,
-        val selectedApps: Set<String>?,
         val selectedActivities: Map<String, SelectedActivity>?,
     )
 
@@ -21,13 +20,9 @@ internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStor
 
     sealed class Intent {
 
-        data class SelectApp(
-            val pkg: String
-        ) : Intent()
-
-        data class SelectActivity(
+        data class SetSelectedActivity(
             val pkg: String,
-            val name: String,
+            val selectedActivity: SelectedActivity?,
         ) : Intent()
 
         data class SelectAppsForProfile(
@@ -43,10 +38,6 @@ internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStor
 
         data class ApplicationsLoaded(
             val applications: Map<String, AppInfo>
-        ) : Message()
-
-        data class SelectedAppsChanged(
-            val selectedApps: Set<String>,
         ) : Message()
 
         data class SelectedActivitiesChanged(

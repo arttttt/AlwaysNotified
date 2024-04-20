@@ -45,8 +45,7 @@ internal class AppsListTransformer(
             ) { index, acc, (_, app) ->
                 acc += app.toListItem(
                     clipTop = index == 0,
-                    clipBottom = appsStoreState.clipBottom(
-                        app = app,
+                    clipBottom = clipBottom(
                         index = index,
                         filteredApps = filteredApps,
                     ),
@@ -68,12 +67,11 @@ internal class AppsListTransformer(
         return selectedActivities?.get(pkg)
     }
 
-    private fun AppsStore.State.clipBottom(
-        app: AppInfo,
+    private fun clipBottom(
         index: Int,
         filteredApps: Map<String, AppInfo>,
     ): Boolean {
-        return index == filteredApps.entries.size - 1 && (selectedApps == null || !selectedApps.contains(app.pkg))
+        return index == filteredApps.entries.size - 1
     }
 
     private fun AppsSearchComponent.State.needShowApp(app: AppInfo) : Boolean {

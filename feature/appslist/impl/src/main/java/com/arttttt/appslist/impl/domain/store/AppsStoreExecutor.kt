@@ -25,10 +25,39 @@ internal class AppsStoreExecutor(
 
     override fun executeIntent(intent: AppsStore.Intent) {
         when (intent) {
-            is AppsStore.Intent.SelectApp -> selectApp(intent.pkg)
-            is AppsStore.Intent.SelectActivity -> selectActivity(intent.pkg, intent.name)
             is AppsStore.Intent.SelectAppsForProfile -> selectAppsForProfile(intent.profile)
             is AppsStore.Intent.ChangeManualMode -> changeManualMode(intent.pkg)
+            is AppsStore.Intent.SetSelectedActivity -> setSelectedActivity(
+                pkg = intent.pkg,
+                selectedActivity = intent.selectedActivity,
+            )
+        }
+    }
+
+    private fun setSelectedActivity(
+        pkg: String,
+        selectedActivity: SelectedActivity?,
+    ) {
+        scope.launch {
+            withContext(Dispatchers.IO) {
+                state()
+                    .selectedActivities
+                    .let { activities ->
+                        val mutableActivities = activities?.toMutableMap() ?: mutableMapOf()
+
+                        if (selectedActivity == null) {
+                            mutableActivities.remove(pkg)
+                        } else {
+                            mutableActivities[pkg] = selectedActivity
+                        }
+
+                        mutableActivities.toMap()
+                    }
+            }
+                .let(AppsStore.Message::SelectedActivitiesChanged)
+                .let(::dispatch)
+
+            publish(AppsStore.Label.ActivitiesChanged)
         }
     }
 
@@ -56,60 +85,6 @@ internal class AppsStoreExecutor(
             )
 
             dispatch(AppsStore.Message.ProgressFinished)
-        }
-    }
-
-    private fun selectApp(
-        pkg: String,
-    ) {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                val selectedApps = state()
-                    .selectedApps
-                    ?.toMutableSet()
-                    ?: mutableSetOf()
-
-                if (!selectedApps.remove(pkg)) {
-                    selectedApps.add(pkg)
-                }
-
-                selectedApps.toSet()
-            }
-                .let(AppsStore.Message::SelectedAppsChanged)
-                .let(::dispatch)
-        }
-    }
-
-    private fun selectActivity(
-        pkg: String,
-        name: String,
-    ) {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                state()
-                    .selectedActivities
-                    .let { activities ->
-                        val mutableActivities = activities?.toMutableMap() ?: mutableMapOf()
-
-                        val app = activities?.get(pkg)
-
-                        if (app?.name?.contentEquals(name, true) == true) {
-                            mutableActivities.remove(pkg)
-                        } else {
-                            mutableActivities[pkg] = SelectedActivity(
-                                pkg = pkg,
-                                name = name,
-                                manualMode = false,
-                            )
-                        }
-
-                        mutableActivities.toMap()
-                    }
-            }
-                .let(AppsStore.Message::SelectedActivitiesChanged)
-                .let(::dispatch)
-
-            publish(AppsStore.Label.ActivitiesChanged)
         }
     }
 
