@@ -44,6 +44,8 @@ internal class AppsListTransformer(
                 initial = mutableListOf()
             ) { index, acc, (_, app) ->
                 acc += app.toListItem(
+                    isManualModeEnabled = appsStoreState.isManualModeEnabledForApp(app),
+                    selectedActivityTitle = appsStoreState.getSelectedActivityTitle(app.pkg),
                     clipTop = index == 0,
                     clipBottom = clipBottom(
                         index = index,
@@ -59,12 +61,20 @@ internal class AppsListTransformer(
             }
     }
 
-    private fun ActivityInfo.isSelected(selectedActivity: SelectedActivity?): Boolean {
-        return name.contentEquals(selectedActivity?.name, true)
+    private fun AppsStore.State.isManualModeEnabledForApp(app: AppInfo): Boolean {
+        return selectedActivities?.get(app.pkg)?.manualMode ?: false
     }
 
-    private fun AppsStore.State.getSelectedActivityForPkg(pkg: String): SelectedActivity? {
-        return selectedActivities?.get(pkg)
+    private fun AppsStore.State.getSelectedActivityTitle(pkg: String): String? {
+        val selectedActivity = selectedActivities?.get(pkg) ?: return null
+
+        return applications
+            ?.get(pkg)
+            ?.activities
+            ?.find { activity ->
+                activity.name == selectedActivity.name
+            }
+            ?.title
     }
 
     private fun clipBottom(
@@ -84,12 +94,16 @@ internal class AppsListTransformer(
     }
 
     private fun AppInfo.toListItem(
+        isManualModeEnabled: Boolean,
+        selectedActivityTitle: String?,
         clipTop: Boolean,
         clipBottom: Boolean,
     ): ListItem {
         return AppListItem(
             pkg = this.pkg,
             title = this.title,
+            isManualModeEnabled = isManualModeEnabled,
+            selectedActivityTitle = selectedActivityTitle,
             clipTop = clipTop,
             clipBottom = clipBottom,
             icon = resourcesProvider.getDrawable(this.pkg),

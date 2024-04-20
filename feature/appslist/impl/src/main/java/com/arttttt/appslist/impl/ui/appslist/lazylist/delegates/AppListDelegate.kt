@@ -1,10 +1,13 @@
 package com.arttttt.appslist.impl.ui.appslist.lazylist.delegates
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,7 +28,7 @@ internal fun AppListDelegate(
     onClick: (String) -> Unit,
 ) = lazyListDelegate<AppListItem> {
 
-    Row(
+    Column(
         modifier = Modifier
             .fillParentMaxWidth()
             .fromClippableItem(item)
@@ -36,27 +39,46 @@ internal fun AppListDelegate(
             .padding(
                 horizontal = 16.dp,
                 vertical = 8.dp,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
+            )
+            .animateContentSize()
     ) {
-        if (item.icon != null) {
-            Image(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape),
-                painter = rememberDrawablePainter(item.icon),
-                contentDescription = null,
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (item.icon != null) {
+                Image(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape),
+                    painter = rememberDrawablePainter(item.icon),
+                    contentDescription = null,
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+
+            Text(
+                modifier = Modifier.weight(1f),
+                text = item.title,
+                fontSize = 18.sp,
             )
 
             Spacer(modifier = Modifier.width(16.dp))
         }
 
-        Text(
-            modifier = Modifier.weight(1f),
-            text = item.title,
-            fontSize = 18.sp,
-        )
+        if (item.selectedActivityTitle != null) {
+            Text(
+                text = "Selected activity: ${item.selectedActivityTitle}",
+                fontSize = 12.sp,
+            )
+        }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        if (item.isManualModeEnabled) {
+            Text(
+                text = "Manual mode enabled",
+                fontSize = 12.sp,
+            )
+        }
     }
 }
