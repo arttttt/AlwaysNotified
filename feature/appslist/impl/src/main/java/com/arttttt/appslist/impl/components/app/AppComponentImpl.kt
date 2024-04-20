@@ -52,6 +52,7 @@ internal class AppComponentImpl(
         AppComponent.State(
             app = app,
             selectedActivity = selectedActivity,
+            isDirty = false,
         )
     )
 
@@ -76,6 +77,7 @@ internal class AppComponentImpl(
                             manualMode = state.selectedActivity?.manualMode ?: false,
                         )
                     },
+                isDirty = true,
             )
         }
     }
@@ -86,17 +88,21 @@ internal class AppComponentImpl(
                 selectedActivity = state.selectedActivity?.copy(
                     manualMode = !state.selectedActivity.manualMode,
                 ),
+                isDirty = true,
             )
         }
     }
 
     override fun onDismiss(event: DismissEvent) {
-        dispatch(
-            AppComponent.Event.EditingFinished(
-                pkg = states.value.app.pkg,
-                selectedActivity = states.value.selectedActivity,
+        if (states.value.isDirty) {
+            dispatch(
+                AppComponent.Event.EditingFinished(
+                    pkg = states.value.app.pkg,
+                    selectedActivity = states.value.selectedActivity,
+                )
             )
-        )
+        }
+
         dismissEventDelegate.onDismiss(event)
     }
 }

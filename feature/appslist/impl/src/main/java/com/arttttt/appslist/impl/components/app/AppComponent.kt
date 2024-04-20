@@ -38,6 +38,7 @@ internal interface AppComponent : DecomposeComponent,
     data class State(
         val app: AppInfo,
         val selectedActivity: SelectedActivity?,
+        val isDirty: Boolean,
     )
 
     data class UIState(
