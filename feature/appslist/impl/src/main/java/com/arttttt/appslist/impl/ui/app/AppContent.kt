@@ -1,30 +1,44 @@
 package com.arttttt.appslist.impl.ui.app
 
-import android.util.Log
+import android.graphics.drawable.Drawable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arttttt.appslist.impl.components.app.AppComponent
-import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.ActivityListDelegate
+import com.arttttt.appslist.impl.ui.app.lazylist.delegates.ActivityListDelegate
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.dialog.DismissEvent
 import com.arttttt.lazylist.ListItem
 import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.collections.immutable.persistentListOf
 
 internal class AppContent(
@@ -50,15 +64,58 @@ internal class AppContent(
                 bottomEnd = 0.dp,
             ),
         ) {
-            SheetContent(
-                items = uiState.items,
-                onActivityClicked = component::onActivityClicked,
+            Column(
+                modifier = modifier
+            ) {
+                AppTitle(
+                    title = uiState.title,
+                    icon = uiState.icon,
+                )
+
+                ActivitiesList(
+                    items = uiState.items,
+                    onActivityClicked = component::onActivityClicked,
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun AppTitle(
+        title: String,
+        icon: Drawable?,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            if (icon != null) {
+                Image(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape),
+                    painter = rememberDrawablePainter(icon),
+                    contentDescription = null,
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+
+            Text(
+                text = title,
+                fontSize = 18.sp,
             )
         }
     }
 
     @Composable
-    private fun SheetContent(
+    private fun ActivitiesList(
         items: List<ListItem>,
         onActivityClicked: (String) -> Unit,
     ) {

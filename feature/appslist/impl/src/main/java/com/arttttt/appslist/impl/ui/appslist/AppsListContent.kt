@@ -39,10 +39,8 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arttttt.appslist.impl.components.appslist.InternalAppsListComponent
-import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.ActivityListDelegate
 import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.AppListDelegate
 import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.DividerListDelegate
 import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.ProgressListDelegate
@@ -50,7 +48,6 @@ import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.lazylist.ListItem
 import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
-import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

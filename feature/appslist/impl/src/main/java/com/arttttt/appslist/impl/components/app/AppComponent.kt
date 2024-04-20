@@ -1,5 +1,6 @@
 package com.arttttt.appslist.impl.components.app
 
+import android.graphics.drawable.Drawable
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.core.arch.DecomposeComponent
@@ -30,6 +31,8 @@ internal interface AppComponent : DecomposeComponent,
     )
 
     data class UIState(
+        val title: String,
+        val icon: Drawable?,
         val items: List<ListItem>
     )
 
