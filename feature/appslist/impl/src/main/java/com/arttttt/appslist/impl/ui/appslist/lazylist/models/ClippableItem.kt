@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.ui.lazylist.models
+package com.arttttt.appslist.impl.ui.appslist.lazylist.models
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier

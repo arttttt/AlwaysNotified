@@ -1,9 +1,12 @@
-package com.arttttt.appslist.impl.components
+package com.arttttt.appslist.impl.components.appslist
 
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
+import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.lazylist.ListItem
 import com.arttttt.topbar.api.TopBarComponent
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.flow.StateFlow
 
 internal interface InternalAppsListComponent {
 
@@ -13,19 +16,17 @@ internal interface InternalAppsListComponent {
         val isSaveProfileButtonVisible: Boolean,
     )
 
-    val uiState: Value<UiState>
+    val slot: Value<ChildSlot<*, DecomposeComponent>>
+
+    val uiState: StateFlow<UiState>
 
     val topBarComponent: TopBarComponent
 
     fun onAppClicked(pkg: String)
-
-    fun onActivityClicked(pkg: String, name: String)
 
     fun startApps()
 
     fun openSettings()
 
     fun updateProfile()
-
-    fun onManualModeChanged(pkg: String)
 }

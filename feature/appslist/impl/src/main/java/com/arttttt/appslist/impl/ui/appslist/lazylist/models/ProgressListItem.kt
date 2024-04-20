@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.ui.lazylist.models
+package com.arttttt.appslist.impl.ui.appslist.lazylist.models
 
 import com.arttttt.lazylist.ListItem
 

@@ -1,6 +1,5 @@
-package com.arttttt.appslist.impl.ui.lazylist.delegates
+package com.arttttt.appslist.impl.ui.app.lazylist.delegates
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,25 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.arttttt.appslist.impl.ui.lazylist.models.ActivityListItem
-import com.arttttt.appslist.impl.ui.lazylist.models.fromClippableItem
+import com.arttttt.appslist.impl.ui.app.lazylist.models.ActivityListItem
 import com.arttttt.lazylist.dsl.lazyListDelegate
 import com.arttttt.uikit.theme.AppTheme
 
 internal fun ActivityListDelegate(
-    onClick: (String, String) -> Unit,
+    onClick: (String) -> Unit,
 ) = lazyListDelegate<ActivityListItem> {
     Row(
         modifier = Modifier
             .fillParentMaxWidth()
-            .fromClippableItem(item)
-            .background(AppTheme.colors.tertiary)
             .clickable {
-                onClick.invoke(item.pkg, item.name)
+                onClick.invoke(item.name)
             }
             .padding(
-                start = 32.dp,
-                end = 16.dp,
+                horizontal = 16.dp,
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -46,7 +41,7 @@ internal fun ActivityListDelegate(
             checked = item.isSelected,
             colors = AppTheme.widgets.switchColors,
             onCheckedChange = {
-                onClick.invoke(item.pkg, item.name)
+                onClick.invoke(item.name)
             },
         )
     }

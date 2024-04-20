@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.ui
+package com.arttttt.appslist.impl.ui.appslist
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -22,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,17 +39,15 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.appslist.impl.components.InternalAppsListComponent
-import com.arttttt.appslist.impl.ui.lazylist.delegates.ActivityListDelegate
-import com.arttttt.appslist.impl.ui.lazylist.delegates.AppListDelegate
-import com.arttttt.appslist.impl.ui.lazylist.delegates.DividerListDelegate
-import com.arttttt.appslist.impl.ui.lazylist.delegates.ProgressListDelegate
+import com.arttttt.appslist.impl.components.appslist.InternalAppsListComponent
+import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.AppListDelegate
+import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.DividerListDelegate
+import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.ProgressListDelegate
 import com.arttttt.core.arch.content.ComponentContent
+import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.lazylist.ListItem
 import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
-import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -62,7 +61,8 @@ internal class AppsListContent(
 
     @Composable
     override fun Content(modifier: Modifier) {
-        val state by component.uiState.subscribeAsState()
+        val state by component.uiState.collectAsState()
+        val slot by component.slot.subscribeAsState()
 
         Column(
             modifier = Modifier
@@ -77,11 +77,15 @@ internal class AppsListContent(
                 isStartButtonVisible = state.isStartButtonVisible,
                 isUpdateProfileButtonVisible = state.isSaveProfileButtonVisible,
                 onAppClicked = component::onAppClicked,
-                onActivityClicked = component::onActivityClicked,
                 onStartAppsClicked = component::startApps,
                 onUpdateProfileClicked = component::updateProfile,
-                onManualModeChanged = component::onManualModeChanged,
             )
+        }
+
+        slot.child?.instance?.let { instance ->
+            when (instance) {
+                is ComponentContentOwner -> instance.content.Content(modifier = Modifier)
+            }
         }
     }
 
@@ -91,10 +95,8 @@ internal class AppsListContent(
         isUpdateProfileButtonVisible: Boolean,
         isStartButtonVisible: Boolean,
         onAppClicked: (String) -> Unit,
-        onActivityClicked: (String, String) -> Unit,
         onStartAppsClicked: () -> Unit,
         onUpdateProfileClicked: () -> Unit,
-        onManualModeChanged: (String) -> Unit,
     ) {
         var parentCoordinates: LayoutCoordinates? by remember {
             mutableStateOf(null)
@@ -138,8 +140,6 @@ internal class AppsListContent(
                     ),
                 apps = apps,
                 onAppClicked = onAppClicked,
-                onActivityClicked = onActivityClicked,
-                onManualModeChanged = onManualModeChanged,
             )
 
             AnimatedVisibility(
@@ -168,22 +168,11 @@ internal class AppsListContent(
         modifier: Modifier,
         apps: ImmutableList<ListItem>,
         onAppClicked: (String) -> Unit,
-        onActivityClicked: (String, String) -> Unit,
-        onManualModeChanged: (String) -> Unit
     ) {
-        val hapticFeedback = LocalCorrectHapticFeedback.current
-
         val lazyListDelegateManager = rememberLazyListDelegateManager(
             delegates = persistentListOf(
                 AppListDelegate(
                     onClick = onAppClicked,
-                    onManualModeChanged = onManualModeChanged,
-                ),
-                ActivityListDelegate(
-                    onClick = { pkg, name ->
-                        hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
-                        onActivityClicked.invoke(pkg, name)
-                    },
                 ),
                 DividerListDelegate(),
                 ProgressListDelegate(),

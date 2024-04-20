@@ -1,18 +1,17 @@
-package com.arttttt.appslist.impl.components
+package com.arttttt.appslist.impl.components.appslist
 
-import com.arttttt.appssearch.api.AppsSearchComponent
-import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.appslist.SelectedActivity
-import com.arttttt.lazylist.ListItem
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
-import com.arttttt.appslist.impl.ui.lazylist.models.ActivityListItem
-import com.arttttt.appslist.impl.ui.lazylist.models.AppListItem
-import com.arttttt.appslist.impl.ui.lazylist.models.DividerListItem
-import com.arttttt.appslist.impl.ui.lazylist.models.ProgressListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.DividerListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ProgressListItem
+import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.core.arch.Transformer
+import com.arttttt.lazylist.ListItem
 import com.arttttt.localization.ResourcesProvider
+import com.arttttt.profiles.api.ProfilesComponent
 import kotlinx.collections.immutable.toPersistentList
 
 internal class AppsListTransformer(
@@ -45,26 +44,14 @@ internal class AppsListTransformer(
                 initial = mutableListOf()
             ) { index, acc, (_, app) ->
                 acc += app.toListItem(
+                    isManualModeEnabled = appsStoreState.isManualModeEnabledForApp(app),
+                    selectedActivityTitle = appsStoreState.getSelectedActivityTitle(app.pkg),
                     clipTop = index == 0,
-                    manualMode = appsStoreState.isManualModeForApp(app),
-                    isManualModeAvailable = appsStoreState.isManualModeForAppAvailable(app),
-                    clipBottom = appsStoreState.clipBottom(
-                        app = app,
+                    clipBottom = clipBottom(
                         index = index,
                         filteredApps = filteredApps,
                     ),
                 )
-
-                if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
-                    val selectedActivity = appsStoreState.getSelectedActivityForPkg(app.pkg)
-
-                    app.activities.mapIndexedTo(acc) { activityIndex, activity ->
-                        activity.toListItem(
-                            isSelected = activity.isSelected(selectedActivity),
-                            clipBottom = index == filteredApps.entries.size - 1 && activityIndex == app.activities.size - 1,
-                        )
-                    }
-                }
 
                 if (index < filteredApps.size - 1) {
                     acc += DividerListItem()
@@ -74,28 +61,27 @@ internal class AppsListTransformer(
             }
     }
 
-    private fun ActivityInfo.isSelected(selectedActivity: SelectedActivity?): Boolean {
-        return name.contentEquals(selectedActivity?.name, true)
+    private fun AppsStore.State.isManualModeEnabledForApp(app: AppInfo): Boolean {
+        return selectedActivities?.get(app.pkg)?.manualMode ?: false
     }
 
-    private fun AppsStore.State.getSelectedActivityForPkg(pkg: String): SelectedActivity? {
-        return selectedActivities?.get(pkg)
+    private fun AppsStore.State.getSelectedActivityTitle(pkg: String): String? {
+        val selectedActivity = selectedActivities?.get(pkg) ?: return null
+
+        return applications
+            ?.get(pkg)
+            ?.activities
+            ?.find { activity ->
+                activity.name == selectedActivity.name
+            }
+            ?.title
     }
 
-    private fun AppsStore.State.clipBottom(
-        app: AppInfo,
+    private fun clipBottom(
         index: Int,
         filteredApps: Map<String, AppInfo>,
     ): Boolean {
-        return index == filteredApps.entries.size - 1 && (selectedApps == null || !selectedApps.contains(app.pkg))
-    }
-
-    private fun AppsStore.State.isManualModeForAppAvailable(app: AppInfo): Boolean {
-        return selectedActivities?.get(app.pkg) != null
-    }
-
-    private fun AppsStore.State.isManualModeForApp(app: AppInfo): Boolean {
-        return selectedActivities?.get(app.pkg)?.manualMode == true
+        return index == filteredApps.entries.size - 1
     }
 
     private fun AppsSearchComponent.State.needShowApp(app: AppInfo) : Boolean {
@@ -108,34 +94,19 @@ internal class AppsListTransformer(
     }
 
     private fun AppInfo.toListItem(
+        isManualModeEnabled: Boolean,
+        selectedActivityTitle: String?,
         clipTop: Boolean,
-        manualMode: Boolean,
-        isManualModeAvailable: Boolean,
         clipBottom: Boolean,
     ): ListItem {
         return AppListItem(
             pkg = this.pkg,
             title = this.title,
+            isManualModeEnabled = isManualModeEnabled,
+            selectedActivityTitle = selectedActivityTitle,
             clipTop = clipTop,
-            manualMode = manualMode,
-            isManualModeAvailable = isManualModeAvailable,
             clipBottom = clipBottom,
             icon = resourcesProvider.getDrawable(this.pkg),
-        )
-    }
-
-    private fun ActivityInfo.toListItem(
-        isSelected: Boolean,
-        clipBottom: Boolean,
-    ): ListItem {
-        return ActivityListItem(
-            pkg = this.pkg,
-            title = this.title,
-            name = this.name,
-            isSelected = isSelected,
-            key = "${this.pkg}_${this.name}",
-            clipTop = false,
-            clipBottom = clipBottom,
         )
     }
 

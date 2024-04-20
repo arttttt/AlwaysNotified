@@ -18,7 +18,6 @@ internal class AppsStoreFactory(
                 name = AppsStore::class.qualifiedName,
                 initialState = AppsStore.State(
                     applications = null,
-                    selectedApps = null,
                     selectedActivities = null,
                     isInProgress = false
                 ),
