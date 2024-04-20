@@ -13,7 +13,7 @@ internal class AppTransformer : Transformer<AppComponent.State, AppComponent.UIS
         return AppComponent.UIState(
             items = state.app.activities.map { activityInfo ->
                 activityInfo.toListItem(
-                    isSelected = state.selectedActivity?.name?.equals(activityInfo.name) == true,
+                    isSelected = state.selectedActivity?.name == activityInfo.name,
                 )
             }
         )

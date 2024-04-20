@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 internal class AppComponentImpl(
     context: AppComponentContext,
@@ -48,5 +49,18 @@ internal class AppComponentImpl(
         )
 
     override fun onActivityClicked(name: String) {
+        states.update { state ->
+            state.copy(
+                selectedActivity = name
+                    .takeIf { state.selectedActivity?.name != name }
+                    ?.let { name ->
+                        SelectedActivity(
+                            pkg = state.app.pkg,
+                            name = name,
+                            manualMode = false,
+                        )
+                    },
+            )
+        }
     }
 }
