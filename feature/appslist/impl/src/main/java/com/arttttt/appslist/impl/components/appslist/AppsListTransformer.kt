@@ -45,25 +45,12 @@ internal class AppsListTransformer(
             ) { index, acc, (_, app) ->
                 acc += app.toListItem(
                     clipTop = index == 0,
-                    manualMode = appsStoreState.isManualModeForApp(app),
-                    isManualModeAvailable = appsStoreState.isManualModeForAppAvailable(app),
                     clipBottom = appsStoreState.clipBottom(
                         app = app,
                         index = index,
                         filteredApps = filteredApps,
                     ),
                 )
-
-                /*if (appsStoreState.selectedApps?.contains(app.pkg) == true) {
-                    val selectedActivity = appsStoreState.getSelectedActivityForPkg(app.pkg)
-
-                    app.activities.mapIndexedTo(acc) { activityIndex, activity ->
-                        activity.toListItem(
-                            isSelected = activity.isSelected(selectedActivity),
-                            clipBottom = index == filteredApps.entries.size - 1 && activityIndex == app.activities.size - 1,
-                        )
-                    }
-                }*/
 
                 if (index < filteredApps.size - 1) {
                     acc += DividerListItem()
@@ -89,14 +76,6 @@ internal class AppsListTransformer(
         return index == filteredApps.entries.size - 1 && (selectedApps == null || !selectedApps.contains(app.pkg))
     }
 
-    private fun AppsStore.State.isManualModeForAppAvailable(app: AppInfo): Boolean {
-        return selectedActivities?.get(app.pkg) != null
-    }
-
-    private fun AppsStore.State.isManualModeForApp(app: AppInfo): Boolean {
-        return selectedActivities?.get(app.pkg)?.manualMode == true
-    }
-
     private fun AppsSearchComponent.State.needShowApp(app: AppInfo) : Boolean {
         return filter
             .takeIf { filter -> filter.isNotEmpty() }
@@ -108,16 +87,12 @@ internal class AppsListTransformer(
 
     private fun AppInfo.toListItem(
         clipTop: Boolean,
-        manualMode: Boolean,
-        isManualModeAvailable: Boolean,
         clipBottom: Boolean,
     ): ListItem {
         return AppListItem(
             pkg = this.pkg,
             title = this.title,
             clipTop = clipTop,
-            manualMode = manualMode,
-            isManualModeAvailable = isManualModeAvailable,
             clipBottom = clipBottom,
             icon = resourcesProvider.getDrawable(this.pkg),
         )

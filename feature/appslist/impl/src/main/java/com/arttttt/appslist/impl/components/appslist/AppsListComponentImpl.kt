@@ -172,7 +172,7 @@ internal class AppsListComponentImpl(
         topBarComponent.profilesComponent.consume(ProfilesComponent.Events.Input.UpdateCurrentProfile)
     }
 
-    override fun onManualModeChanged(pkg: String) {
+    fun onManualModeChanged(pkg: String) {
         appsStore.accept(
             AppsStore.Intent.ChangeManualMode(
                 pkg = pkg,

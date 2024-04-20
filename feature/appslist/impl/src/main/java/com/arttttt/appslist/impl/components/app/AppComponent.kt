@@ -33,10 +33,13 @@ internal interface AppComponent : DecomposeComponent,
     data class UIState(
         val title: String,
         val icon: Drawable?,
+        val isManualModeAvailable: Boolean,
+        val manualModeEnabled: Boolean,
         val items: List<ListItem>
     )
 
     val uiStates: StateFlow<UIState>
 
     fun onActivityClicked(name: String)
+    fun onManualModeChanged()
 }

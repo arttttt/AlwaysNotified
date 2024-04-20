@@ -79,7 +79,6 @@ internal class AppsListContent(
                 onAppClicked = component::onAppClicked,
                 onStartAppsClicked = component::startApps,
                 onUpdateProfileClicked = component::updateProfile,
-                onManualModeChanged = component::onManualModeChanged,
             )
         }
 
@@ -98,7 +97,6 @@ internal class AppsListContent(
         onAppClicked: (String) -> Unit,
         onStartAppsClicked: () -> Unit,
         onUpdateProfileClicked: () -> Unit,
-        onManualModeChanged: (String) -> Unit,
     ) {
         var parentCoordinates: LayoutCoordinates? by remember {
             mutableStateOf(null)
@@ -142,7 +140,6 @@ internal class AppsListContent(
                     ),
                 apps = apps,
                 onAppClicked = onAppClicked,
-                onManualModeChanged = onManualModeChanged,
             )
 
             AnimatedVisibility(
@@ -171,13 +168,11 @@ internal class AppsListContent(
         modifier: Modifier,
         apps: ImmutableList<ListItem>,
         onAppClicked: (String) -> Unit,
-        onManualModeChanged: (String) -> Unit
     ) {
         val lazyListDelegateManager = rememberLazyListDelegateManager(
             delegates = persistentListOf(
                 AppListDelegate(
                     onClick = onAppClicked,
-                    onManualModeChanged = onManualModeChanged,
                 ),
                 DividerListDelegate(),
                 ProgressListDelegate(),

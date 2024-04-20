@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +23,6 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 internal fun AppListDelegate(
     onClick: (String) -> Unit,
-    onManualModeChanged: (String) -> Unit,
 ) = lazyListDelegate<AppListItem> {
 
     Row(
@@ -60,21 +58,5 @@ internal fun AppListDelegate(
         )
 
         Spacer(modifier = Modifier.width(16.dp))
-
-        if (item.isManualModeAvailable) {
-            Text(
-                modifier = Modifier.weight(1f),
-                text = "Manual mode",
-                fontSize = 18.sp,
-            )
-
-            Switch(
-                checked = item.manualMode,
-                onCheckedChange = {
-                    onManualModeChanged.invoke(item.pkg)
-                },
-                colors = AppTheme.widgets.switchColors,
-            )
-        }
     }
 }

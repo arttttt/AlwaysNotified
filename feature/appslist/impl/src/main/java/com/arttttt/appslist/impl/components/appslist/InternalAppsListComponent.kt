@@ -29,6 +29,4 @@ internal interface InternalAppsListComponent {
     fun openSettings()
 
     fun updateProfile()
-
-    fun onManualModeChanged(pkg: String)
 }

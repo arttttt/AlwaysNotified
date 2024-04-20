@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -73,6 +72,16 @@ internal class AppComponentImpl(
                             manualMode = false,
                         )
                     },
+            )
+        }
+    }
+
+    override fun onManualModeChanged() {
+        states.update { state ->
+            state.copy(
+                selectedActivity = state.selectedActivity?.copy(
+                    manualMode = !state.selectedActivity.manualMode,
+                ),
             )
         }
     }

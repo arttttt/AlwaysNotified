@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -72,6 +73,13 @@ internal class AppContent(
                     icon = uiState.icon,
                 )
 
+                if (uiState.isManualModeAvailable) {
+                    ManualMode(
+                        manualModeEnabled = uiState.manualModeEnabled,
+                        onManualModeChanged = component::onManualModeChanged,
+                    )
+                }
+
                 ActivitiesList(
                     items = uiState.items,
                     onActivityClicked = component::onActivityClicked,
@@ -115,6 +123,38 @@ internal class AppContent(
     }
 
     @Composable
+    private fun ManualMode(
+        manualModeEnabled: Boolean,
+        onManualModeChanged: () -> Unit,
+    ) {
+        val hapticFeedback = LocalCorrectHapticFeedback.current
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 16.dp,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "Manual mode",
+                fontSize = 18.sp,
+            )
+
+            Switch(
+                checked = manualModeEnabled,
+                onCheckedChange = {
+                    hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
+                    onManualModeChanged()
+                },
+                colors = AppTheme.widgets.switchColors,
+            )
+        }
+    }
+
+    @Composable
     private fun ActivitiesList(
         items: List<ListItem>,
         onActivityClicked: (String) -> Unit,
@@ -138,7 +178,9 @@ internal class AppContent(
                 .navigationBarsPadding()
                 .fillMaxWidth(),
             contentPadding = remember {
-                PaddingValues(vertical = 8.dp)
+                PaddingValues(
+                    bottom = 8.dp,
+                )
             }
         ) {
             items(
