@@ -16,13 +16,13 @@ import com.arttttt.lazylist.dsl.lazyListDelegate
 import com.arttttt.uikit.theme.AppTheme
 
 internal fun ActivityListDelegate(
-    onClick: (String, String) -> Unit,
+    onClick: (String) -> Unit,
 ) = lazyListDelegate<ActivityListItem> {
     Row(
         modifier = Modifier
             .fillParentMaxWidth()
             .clickable {
-                onClick.invoke(item.pkg, item.name)
+                onClick.invoke(item.name)
             }
             .padding(
                 horizontal = 16.dp,
@@ -41,7 +41,7 @@ internal fun ActivityListDelegate(
             checked = item.isSelected,
             colors = AppTheme.widgets.switchColors,
             onCheckedChange = {
-                onClick.invoke(item.pkg, item.name)
+                onClick.invoke(item.name)
             },
         )
     }

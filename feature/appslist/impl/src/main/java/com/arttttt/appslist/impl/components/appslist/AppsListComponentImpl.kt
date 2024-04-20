@@ -10,11 +10,11 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
+import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.api.AppsListComponent
 import com.arttttt.appslist.impl.components.app.AppComponent
 import com.arttttt.appslist.impl.components.appslist.di.appsListModule
 import com.arttttt.appslist.impl.domain.AppsLauncher
-import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.appslist.impl.ui.appslist.AppsListContent
@@ -57,6 +57,7 @@ internal class AppsListComponentImpl(
         @Serializable
         data class App(
             val app: AppInfo,
+            val selectedActivity: SelectedActivity?,
         ) : DialogConfig
     }
 
@@ -157,16 +158,8 @@ internal class AppsListComponentImpl(
 
         slotNavigation.activate(
             DialogConfig.App(
-                app = appsStore.state.applications!!.getValue(pkg)
-            )
-        )
-    }
-
-    override fun onActivityClicked(pkg: String, name: String) {
-        appsStore.accept(
-            AppsStore.Intent.SelectActivity(
-                pkg = pkg,
-                name = name,
+                app = appsStore.state.applications!!.getValue(pkg),
+                selectedActivity = appsStore.state.selectedActivities?.get(pkg),
             )
         )
     }
@@ -200,6 +193,7 @@ internal class AppsListComponentImpl(
             is DialogConfig.App -> appComponentFactory.create(
                 context = wrappedContext,
                 app = config.app,
+                selectedActivity = config.selectedActivity,
             )
         }
     }

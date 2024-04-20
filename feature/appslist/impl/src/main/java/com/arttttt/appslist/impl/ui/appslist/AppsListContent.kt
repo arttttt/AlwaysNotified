@@ -80,7 +80,6 @@ internal class AppsListContent(
                 isStartButtonVisible = state.isStartButtonVisible,
                 isUpdateProfileButtonVisible = state.isSaveProfileButtonVisible,
                 onAppClicked = component::onAppClicked,
-                onActivityClicked = component::onActivityClicked,
                 onStartAppsClicked = component::startApps,
                 onUpdateProfileClicked = component::updateProfile,
                 onManualModeChanged = component::onManualModeChanged,
@@ -100,7 +99,6 @@ internal class AppsListContent(
         isUpdateProfileButtonVisible: Boolean,
         isStartButtonVisible: Boolean,
         onAppClicked: (String) -> Unit,
-        onActivityClicked: (String, String) -> Unit,
         onStartAppsClicked: () -> Unit,
         onUpdateProfileClicked: () -> Unit,
         onManualModeChanged: (String) -> Unit,
@@ -147,7 +145,6 @@ internal class AppsListContent(
                     ),
                 apps = apps,
                 onAppClicked = onAppClicked,
-                onActivityClicked = onActivityClicked,
                 onManualModeChanged = onManualModeChanged,
             )
 
@@ -177,22 +174,13 @@ internal class AppsListContent(
         modifier: Modifier,
         apps: ImmutableList<ListItem>,
         onAppClicked: (String) -> Unit,
-        onActivityClicked: (String, String) -> Unit,
         onManualModeChanged: (String) -> Unit
     ) {
-        val hapticFeedback = LocalCorrectHapticFeedback.current
-
         val lazyListDelegateManager = rememberLazyListDelegateManager(
             delegates = persistentListOf(
                 AppListDelegate(
                     onClick = onAppClicked,
                     onManualModeChanged = onManualModeChanged,
-                ),
-                ActivityListDelegate(
-                    onClick = { pkg, name ->
-                        hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
-                        onActivityClicked.invoke(pkg, name)
-                    },
                 ),
                 DividerListDelegate(),
                 ProgressListDelegate(),

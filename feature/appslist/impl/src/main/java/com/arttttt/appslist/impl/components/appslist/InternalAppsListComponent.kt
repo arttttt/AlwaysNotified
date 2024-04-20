@@ -24,8 +24,6 @@ internal interface InternalAppsListComponent {
 
     fun onAppClicked(pkg: String)
 
-    fun onActivityClicked(pkg: String, name: String)
-
     fun startApps()
 
     fun openSettings()

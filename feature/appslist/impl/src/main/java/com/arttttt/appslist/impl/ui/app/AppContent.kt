@@ -1,5 +1,6 @@
 package com.arttttt.appslist.impl.ui.app
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import com.arttttt.appslist.impl.components.app.AppComponent
 import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.ActivityListDelegate
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.dialog.DismissEvent
+import com.arttttt.lazylist.ListItem
 import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
@@ -48,38 +50,49 @@ internal class AppContent(
                 bottomEnd = 0.dp,
             ),
         ) {
-            val hapticFeedback = LocalCorrectHapticFeedback.current
-
-            val lazyListDelegateManager = rememberLazyListDelegateManager(
-                delegates = persistentListOf(
-                    ActivityListDelegate(
-                        onClick = { pkg, name ->
-                            hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
-                            //onActivityClicked.invoke(pkg, name)
-                        },
-                    ),
-                ),
+            SheetContent(
+                items = uiState.items,
+                onActivityClicked = component::onActivityClicked,
             )
+        }
+    }
+
+    @Composable
+    private fun SheetContent(
+        items: List<ListItem>,
+        onActivityClicked: (String) -> Unit,
+    ) {
+        val hapticFeedback = LocalCorrectHapticFeedback.current
+
+        val lazyListDelegateManager = rememberLazyListDelegateManager(
+            delegates = persistentListOf(
+                ActivityListDelegate(
+                    onClick = { name ->
+                        hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
+                        onActivityClicked(name)
+                    },
+                ),
+            ),
+        )
 
 
-            LazyColumn(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .fillMaxWidth(),
-                contentPadding = remember {
-                    PaddingValues(vertical = 8.dp)
-                }
-            ) {
-                items(
-                    items = uiState.items,
-                    key = lazyListDelegateManager::getKey,
-                    contentType = lazyListDelegateManager::getContentType
-                ) { item ->
-                    lazyListDelegateManager.Content(
-                        item = item,
-                        modifier = Modifier,
-                    )
-                }
+        LazyColumn(
+            modifier = Modifier
+                .navigationBarsPadding()
+                .fillMaxWidth(),
+            contentPadding = remember {
+                PaddingValues(vertical = 8.dp)
+            }
+        ) {
+            items(
+                items = items,
+                key = lazyListDelegateManager::getKey,
+                contentType = lazyListDelegateManager::getContentType
+            ) { item ->
+                lazyListDelegateManager.Content(
+                    item = item,
+                    modifier = Modifier,
+                )
             }
         }
     }

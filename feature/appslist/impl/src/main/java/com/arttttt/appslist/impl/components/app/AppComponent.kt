@@ -1,5 +1,6 @@
 package com.arttttt.appslist.impl.components.app
 
+import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.content.ComponentContentOwner
@@ -19,12 +20,20 @@ internal interface AppComponent : DecomposeComponent,
         fun create(
             context: AppComponentContext,
             app: AppInfo,
+            selectedActivity: SelectedActivity?,
         ): AppComponent
     }
+
+    data class State(
+        val app: AppInfo,
+        val selectedActivity: SelectedActivity?,
+    )
 
     data class UIState(
         val items: List<ListItem>
     )
 
     val uiStates: StateFlow<UIState>
+
+    fun onActivityClicked(name: String)
 }

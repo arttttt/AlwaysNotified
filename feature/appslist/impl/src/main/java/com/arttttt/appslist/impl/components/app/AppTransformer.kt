@@ -1,18 +1,19 @@
 package com.arttttt.appslist.impl.components.app
 
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
-import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ActivityListItem
 import com.arttttt.core.arch.Transformer
 import com.arttttt.lazylist.ListItem
 
-internal class AppTransformer : Transformer<AppInfo, AppComponent.UIState> {
+internal class AppTransformer : Transformer<AppComponent.State, AppComponent.UIState> {
 
-    override fun invoke(app: AppInfo): AppComponent.UIState {
+    override fun invoke(
+        state: AppComponent.State,
+    ): AppComponent.UIState {
         return AppComponent.UIState(
-            items = app.activities.map { activityInfo ->
+            items = state.app.activities.map { activityInfo ->
                 activityInfo.toListItem(
-                    isSelected = false,
+                    isSelected = state.selectedActivity?.name?.equals(activityInfo.name) == true,
                 )
             }
         )
