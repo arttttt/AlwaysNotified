@@ -22,11 +22,6 @@ room = "2.6.1"
 googleServices = "4.4.1"
 firebaseCrashlytics = "2.9.9"
 timber = "5.0.1"
-junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-appcompat = "1.6.1"
-material = "1.11.0"
 
 [libraries]
 accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanistDrawablepainter" }
