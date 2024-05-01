@@ -1,32 +1,27 @@
 [versions]
 accompanistDrawablepainter = "0.32.0"
-agp = "8.3.2"
-datastorePreferences = "1.0.0"
-firebaseBom = "32.8.0"
+agp = "8.4.0"
+datastorePreferences = "1.1.0"
+firebaseBom = "32.8.1"
 flowext = "0.7.4"
 kotlin = "1.9.23"
-core-ktx = "1.12.0"
+core-ktx = "1.13.0"
 kotlinxCoroutines = "1.8.0"
 kotlinxSerializationJson = "1.6.3"
 lifecycle-runtime-ktx = "2.7.0"
-activity-compose = "1.8.2"
-compose-bom = "2024.04.00"
+activity-compose = "1.9.0"
+compose-bom = "2024.04.01"
 compose-compiler = "1.5.11"
 koin-core = "3.5.3"
 ksp = "1.9.23-1.0.20"
-decompose = "3.0.0-beta01"
-essenty = "2.0.0-beta01"
+decompose = "3.0.0"
+essenty = "2.0.0"
 immutableCollections = "0.3.7"
-mviKotlin = "4.0.0-beta01"
+mviKotlin = "4.0.0"
 room = "2.6.1"
 googleServices = "4.4.1"
 firebaseCrashlytics = "2.9.9"
 timber = "5.0.1"
-junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-appcompat = "1.6.1"
-material = "1.11.0"
 
 [libraries]
 accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanistDrawablepainter" }
@@ -67,11 +62,6 @@ mviKotlin-coroutines = { group = "com.arkivanov.mvikotlin", name = "mvikotlin-ex
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

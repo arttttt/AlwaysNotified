@@ -152,7 +152,7 @@ class HolderActivity : ComponentActivity() {
         } else {
             val isErrorOccurred = kotlin
                 .runCatching {
-                    startPayloadLauncher.launch(appToLaunch)
+                    startPayloadLauncher.launch(appToLaunch!!)
 
                     false
                 }

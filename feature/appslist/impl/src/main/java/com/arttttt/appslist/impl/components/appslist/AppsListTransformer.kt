@@ -36,7 +36,12 @@ internal class AppsListTransformer(
 
         val filteredApps = appsStoreState
             .applications!!
-            .filter { (_, app) -> appsSearchState.needShowApp(app) }
+            .filter { (_, app) ->
+                appsSearchState.needShowApp(
+                    app = app,
+                    selectedApps = appsStoreState.selectedActivities?.keys ?: emptySet(),
+                )
+            }
 
         return filteredApps
             .entries
@@ -84,13 +89,17 @@ internal class AppsListTransformer(
         return index == filteredApps.entries.size - 1
     }
 
-    private fun AppsSearchComponent.State.needShowApp(app: AppInfo) : Boolean {
-        return filter
-            .takeIf { filter -> filter.isNotEmpty() }
-            ?.let { filter ->
-                app.title.startsWith(filter, true)
-            }
-            ?: true
+    private fun AppsSearchComponent.State.needShowApp(
+        app: AppInfo,
+        selectedApps: Set<String>,
+    ) : Boolean {
+        val isAppSelected = if (selectedAppsOnly) {
+            selectedApps.contains(app.pkg)
+        } else {
+            true
+        }
+
+        return isAppSelected && (filter?.let { filter -> app.title.startsWith(filter, true) } ?: true)
     }
 
     private fun AppInfo.toListItem(

@@ -12,17 +12,10 @@ interface AppsSearchComponent : DecomposeComponent, ComponentContentOwner {
         fun create(context: AppComponentContext): AppsSearchComponent
     }
 
-    data class UiState(
-        val text: String
-    )
-
     data class State(
-        val filter: String
+        val filter: String?,
+        val selectedAppsOnly: Boolean,
     )
-
-    val uiState: StateFlow<UiState>
 
     val states: StateFlow<State>
-
-    fun onTextChanged(text: String)
 }

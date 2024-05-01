@@ -15,13 +15,15 @@ import kotlinx.coroutines.flow.update
 internal class AppsSearchComponentImpl(
     context: AppComponentContext,
 ) : AppsSearchComponent,
+    InternalAppsSearchComponent,
     AppComponentContext by context {
 
     private val coroutinesScope = coroutineScope()
 
     private val _states = MutableStateFlow(
         AppsSearchComponent.State(
-            filter = "",
+            filter = null,
+            selectedAppsOnly = false,
         )
     )
 
@@ -29,24 +31,34 @@ internal class AppsSearchComponentImpl(
 
     override val states: StateFlow<AppsSearchComponent.State> = _states
 
-    override val uiState: StateFlow<AppsSearchComponent.UiState> = _states
+    override val uiState: StateFlow<InternalAppsSearchComponent.UiState> = _states
         .map { state ->
-            AppsSearchComponent.UiState(
-                text = state.filter,
+            InternalAppsSearchComponent.UiState(
+                text = state.filter ?: "",
+                selectedAppsOnly = state.selectedAppsOnly,
             )
         }
         .stateIn(
             coroutinesScope,
             SharingStarted.WhileSubscribed(5000),
-            AppsSearchComponent.UiState(
+            InternalAppsSearchComponent.UiState(
                 text = "",
+                selectedAppsOnly = false,
             ),
         )
 
     override fun onTextChanged(text: String) {
         _states.update { state ->
             state.copy(
-                filter = text,
+                filter = text.takeIf { it.isNotEmpty() },
+            )
+        }
+    }
+
+    override fun onSelectedAppsOnlyToggled() {
+        _states.update { state ->
+            state.copy(
+                selectedAppsOnly = !state.selectedAppsOnly,
             )
         }
     }

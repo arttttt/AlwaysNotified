@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 internal interface ExpandableTopBarAction {
 
     @Composable
-    fun Content()
+    fun ExpandedContent()
 }

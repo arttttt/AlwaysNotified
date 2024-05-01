@@ -12,6 +12,9 @@ import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.core.arch.koinScope
 import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.topbar.api.TopBarComponent
+import com.arttttt.topbar.impl.components.actions.AppsSearchTopBarAction
+import com.arttttt.topbar.impl.components.actions.ProfilesTopBarAction
+import com.arttttt.topbar.impl.components.actions.SettingsTopBarAction
 import com.arttttt.topbar.impl.ui.TopBarContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.core.component.getScopeId
@@ -56,13 +59,13 @@ internal class TopBarComponentImpl(
         initialValue = InternalTopBarComponent.UiState(
             expandedAction = null,
             actions = listOf(
-                TopBarAction.Profiles(
+                ProfilesTopBarAction(
                     component = profilesComponent
                 ),
-                TopBarAction.AppsSearch(
+                AppsSearchTopBarAction(
                     component = appsSearchComponent,
                 ),
-                TopBarAction.Settings,
+                SettingsTopBarAction,
             ),
         )
     )
@@ -72,7 +75,7 @@ internal class TopBarComponentImpl(
     override fun actionClicked(action: TopBarAction) {
         when {
             action is ExpandableTopBarAction -> toggleExpand(action)
-            action is TopBarAction.Settings -> {
+            action is SettingsTopBarAction -> {
                 commands.tryEmit(InternalTopBarComponent.Command.ShowMessage("Not implemented yet"))
             }
             else -> { /** TODO */ }
