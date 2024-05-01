@@ -27,7 +27,7 @@ data class AppsSearchTopBarAction(
         val state by component.states.collectAsState()
 
         Box {
-            if (state.filter != null || state.selectedAppsOnly) {
+            if (state.needShowBadge) {
                 Badge(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -52,4 +52,9 @@ data class AppsSearchTopBarAction(
             modifier = Modifier,
         )
     }
+
+    private val AppsSearchComponent.State.needShowBadge: Boolean
+        get() {
+            return filter != null || selectedAppsOnly
+        }
 }
