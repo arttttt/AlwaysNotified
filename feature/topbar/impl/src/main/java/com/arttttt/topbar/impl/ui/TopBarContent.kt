@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Badge
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,16 +57,11 @@ internal class TopBarContent(
             },
             actions = {
                 state.actions.forEach { action ->
-                    IconButton(
+                    action.Icon(
                         onClick = {
                             component.actionClicked(action)
                         }
-                    ) {
-                        Icon(
-                            imageVector = action.icon,
-                            contentDescription = null
-                        )
-                    }
+                    )
                 }
             }
         )
@@ -120,7 +112,7 @@ internal class TopBarContent(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    uiState.expandedAction.Content()
+                    uiState.expandedAction.ExpandedContent()
                 }
             }
         }

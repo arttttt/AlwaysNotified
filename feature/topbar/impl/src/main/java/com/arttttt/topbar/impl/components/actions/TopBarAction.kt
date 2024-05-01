@@ -1,8 +1,11 @@
 package com.arttttt.topbar.impl.components.actions
 
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.runtime.Composable
 
 internal sealed interface TopBarAction {
 
-    val icon: ImageVector
+    @Composable
+    fun Icon(
+        onClick: () -> Unit,
+    )
 }
