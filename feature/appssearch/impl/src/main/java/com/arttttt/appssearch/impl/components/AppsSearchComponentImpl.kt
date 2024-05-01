@@ -22,7 +22,7 @@ internal class AppsSearchComponentImpl(
 
     private val _states = MutableStateFlow(
         AppsSearchComponent.State(
-            filter = "",
+            filter = null,
         )
     )
 
@@ -33,7 +33,7 @@ internal class AppsSearchComponentImpl(
     override val uiState: StateFlow<InternalAppsSearchComponent.UiState> = _states
         .map { state ->
             InternalAppsSearchComponent.UiState(
-                text = state.filter,
+                text = state.filter ?: "",
             )
         }
         .stateIn(
@@ -47,7 +47,7 @@ internal class AppsSearchComponentImpl(
     override fun onTextChanged(text: String) {
         _states.update { state ->
             state.copy(
-                filter = text,
+                filter = text.takeIf { it.isNotEmpty() },
             )
         }
     }

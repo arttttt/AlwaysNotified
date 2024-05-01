@@ -13,7 +13,7 @@ interface AppsSearchComponent : DecomposeComponent, ComponentContentOwner {
     }
 
     data class State(
-        val filter: String
+        val filter: String?
     )
 
     val states: StateFlow<State>

@@ -85,12 +85,9 @@ internal class AppsListTransformer(
     }
 
     private fun AppsSearchComponent.State.needShowApp(app: AppInfo) : Boolean {
-        return filter
-            .takeIf { filter -> filter.isNotEmpty() }
-            ?.let { filter ->
-                app.title.startsWith(filter, true)
-            }
-            ?: true
+        return filter?.let { filter ->
+            app.title.startsWith(filter, true)
+        } ?: true
     }
 
     private fun AppInfo.toListItem(
