@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.update
 internal class AppsSearchComponentImpl(
     context: AppComponentContext,
 ) : AppsSearchComponent,
+    InternalAppsSearchComponent,
     AppComponentContext by context {
 
     private val coroutinesScope = coroutineScope()
@@ -29,16 +30,16 @@ internal class AppsSearchComponentImpl(
 
     override val states: StateFlow<AppsSearchComponent.State> = _states
 
-    override val uiState: StateFlow<AppsSearchComponent.UiState> = _states
+    override val uiState: StateFlow<InternalAppsSearchComponent.UiState> = _states
         .map { state ->
-            AppsSearchComponent.UiState(
+            InternalAppsSearchComponent.UiState(
                 text = state.filter,
             )
         }
         .stateIn(
             coroutinesScope,
             SharingStarted.WhileSubscribed(5000),
-            AppsSearchComponent.UiState(
+            InternalAppsSearchComponent.UiState(
                 text = "",
             ),
         )

@@ -30,13 +30,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arttttt.appssearch.api.AppsSearchComponent
+import com.arttttt.appssearch.impl.components.InternalAppsSearchComponent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.uikit.theme.AppTheme
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 internal class AppsSearchComponentContentImpl(
-    private val component: AppsSearchComponent,
+    private val component: InternalAppsSearchComponent,
 ) : ComponentContent {
 
     @OptIn(ExperimentalFoundationApi::class)
