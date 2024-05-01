@@ -23,6 +23,7 @@ internal class AppsSearchComponentImpl(
     private val _states = MutableStateFlow(
         AppsSearchComponent.State(
             filter = null,
+            selectedAppsOnly = false,
         )
     )
 
@@ -34,6 +35,7 @@ internal class AppsSearchComponentImpl(
         .map { state ->
             InternalAppsSearchComponent.UiState(
                 text = state.filter ?: "",
+                selectedAppsOnly = state.selectedAppsOnly,
             )
         }
         .stateIn(
@@ -41,6 +43,7 @@ internal class AppsSearchComponentImpl(
             SharingStarted.WhileSubscribed(5000),
             InternalAppsSearchComponent.UiState(
                 text = "",
+                selectedAppsOnly = false,
             ),
         )
 
@@ -48,6 +51,14 @@ internal class AppsSearchComponentImpl(
         _states.update { state ->
             state.copy(
                 filter = text.takeIf { it.isNotEmpty() },
+            )
+        }
+    }
+
+    override fun onSelectedAppsOnlyToggled() {
+        _states.update { state ->
+            state.copy(
+                selectedAppsOnly = !state.selectedAppsOnly,
             )
         }
     }

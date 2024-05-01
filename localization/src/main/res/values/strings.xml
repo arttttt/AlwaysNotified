@@ -22,5 +22,6 @@
     <string name="apps_list">Apps list</string>
 
     <string name="search_hint">search</string>
+    <string name="selected_apps">selected apps</string>
 
 </resources>

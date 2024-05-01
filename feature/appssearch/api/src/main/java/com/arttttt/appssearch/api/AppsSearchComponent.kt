@@ -13,7 +13,8 @@ interface AppsSearchComponent : DecomposeComponent, ComponentContentOwner {
     }
 
     data class State(
-        val filter: String?
+        val filter: String?,
+        val selectedAppsOnly: Boolean,
     )
 
     val states: StateFlow<State>
