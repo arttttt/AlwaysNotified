@@ -27,7 +27,7 @@ data class AppsSearchTopBarAction(
         val state by component.states.collectAsState()
 
         Box {
-            if (state.filter != null) {
+            if (state.filter != null || state.selectedAppsOnly) {
                 Badge(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
