@@ -18,12 +18,14 @@ internal class AppsListTransformer(
     private val resourcesProvider: ResourcesProvider,
 ) : Transformer<Triple<AppsStore.State, ProfilesComponent.State, AppsSearchComponent.State>, InternalAppsListComponent.UiState> {
 
-    override fun invoke(states: Triple<AppsStore.State, ProfilesComponent.State, AppsSearchComponent.State>): InternalAppsListComponent.UiState {
+    override fun invoke(
+        states: Triple<AppsStore.State, ProfilesComponent.State, AppsSearchComponent.State>,
+    ): InternalAppsListComponent.UiState {
         val (appsStoreState, profilesState, appsSearchState) = states
 
         return InternalAppsListComponent.UiState(
             apps = createItems(appsStoreState, appsSearchState).toPersistentList(),
-            isStartButtonVisible = appsStoreState.selectedActivities?.isNotEmpty() ?: false,
+            isStartButtonVisible = appsStoreState.isStartButtonVisible,
             isSaveProfileButtonVisible = profilesState.isCurrentProfileDirty,
         )
     }
@@ -127,5 +129,10 @@ internal class AppsListTransformer(
     private val AppsStore.State.isAppsEmpty: Boolean
         get() {
             return applications?.isEmpty() ?: true
+        }
+
+    private val AppsStore.State.isStartButtonVisible: Boolean
+        get() {
+            return !applications.isNullOrEmpty() && !selectedActivities.isNullOrEmpty()
         }
 }
