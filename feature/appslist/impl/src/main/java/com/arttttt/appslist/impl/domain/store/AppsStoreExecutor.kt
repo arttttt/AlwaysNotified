@@ -3,7 +3,6 @@ package com.arttttt.appslist.impl.domain.store
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
-import com.arttttt.profiles.api.Profile
 import com.arttttt.appslist.SelectedActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -20,12 +19,12 @@ internal class AppsStoreExecutor(
     override fun executeAction(action: AppsStore.Action) {
         when (action) {
             is AppsStore.Action.GetInstalledApplications -> getInstalledApplications()
+            is AppsStore.Action.GetSelectedActivities -> getSelectedActivities()
         }
     }
 
     override fun executeIntent(intent: AppsStore.Intent) {
         when (intent) {
-            is AppsStore.Intent.SelectAppsForProfile -> selectAppsForProfile(intent.profile)
             is AppsStore.Intent.ChangeManualMode -> changeManualMode(intent.pkg)
             is AppsStore.Intent.SetSelectedActivity -> setSelectedActivity(
                 pkg = intent.pkg,
@@ -88,11 +87,9 @@ internal class AppsStoreExecutor(
         }
     }
 
-    private fun selectAppsForProfile(profile: Profile) {
+    private fun getSelectedActivities() {
         scope.launch {
-            val selectedActivities = appsRepository.getAppsForProfile(
-                profile = profile,
-            )
+            val selectedActivities = appsRepository.getSelectedApps()
 
             selectedActivities
                 .associateBy { activity ->

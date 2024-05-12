@@ -1,7 +1,5 @@
 package com.arttttt.appslist.impl.components.appslist
 
-import com.arttttt.appslist.SelectedActivity
-import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
@@ -11,22 +9,20 @@ import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.core.arch.Transformer
 import com.arttttt.lazylist.ListItem
 import com.arttttt.localization.ResourcesProvider
-import com.arttttt.profiles.api.ProfilesComponent
 import kotlinx.collections.immutable.toPersistentList
 
 internal class AppsListTransformer(
     private val resourcesProvider: ResourcesProvider,
-) : Transformer<Triple<AppsStore.State, ProfilesComponent.State, AppsSearchComponent.State>, InternalAppsListComponent.UiState> {
+) : Transformer<Pair<AppsStore.State, AppsSearchComponent.State>, InternalAppsListComponent.UiState> {
 
     override fun invoke(
-        states: Triple<AppsStore.State, ProfilesComponent.State, AppsSearchComponent.State>,
+        states: Pair<AppsStore.State, AppsSearchComponent.State>,
     ): InternalAppsListComponent.UiState {
-        val (appsStoreState, profilesState, appsSearchState) = states
+        val (appsStoreState, appsSearchState) = states
 
         return InternalAppsListComponent.UiState(
             apps = createItems(appsStoreState, appsSearchState).toPersistentList(),
             isStartButtonVisible = appsStoreState.isStartButtonVisible,
-            isSaveProfileButtonVisible = profilesState.isCurrentProfileDirty,
         )
     }
 

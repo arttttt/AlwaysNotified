@@ -1,9 +1,8 @@
 package com.arttttt.appslist.impl.domain.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.arttttt.appslist.impl.domain.entity.AppInfo
-import com.arttttt.profiles.api.Profile
 import com.arttttt.appslist.SelectedActivity
+import com.arttttt.appslist.impl.domain.entity.AppInfo
 
 internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> {
 
@@ -16,6 +15,7 @@ internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStor
     sealed class Action {
 
         data object GetInstalledApplications : Action()
+        data object GetSelectedActivities : Action()
     }
 
     sealed class Intent {
@@ -23,10 +23,6 @@ internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStor
         data class SetSelectedActivity(
             val pkg: String,
             val selectedActivity: SelectedActivity?,
-        ) : Intent()
-
-        data class SelectAppsForProfile(
-            val profile: Profile
         ) : Intent()
 
         data class ChangeManualMode(

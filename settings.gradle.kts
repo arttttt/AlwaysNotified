@@ -16,8 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "Always Notified"
 include(":app")
 include(":core:arch")
-include(":feature:profiles:api")
-include(":feature:profiles:impl")
 include(":uikit")
 include(":localization")
 include(":core:lazylist")

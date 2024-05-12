@@ -70,8 +70,6 @@ dependencies {
     implementation(project(":core:appslist"))
     implementation(project(":core:database"))
     implementation(project(":core:lazylist"))
-    implementation(project(":feature:profiles:api"))
-    implementation(project(":feature:profiles:impl"))
     implementation(project(":feature:appssearch:api"))
     implementation(project(":feature:appssearch:impl"))
     implementation(project(":feature:topbar:api"))

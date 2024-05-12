@@ -44,7 +44,6 @@ dependencies {
     implementation(project(":core:lazylist"))
     implementation(project(":feature:appslist:api"))
     implementation(project(":feature:topbar:api"))
-    implementation(project(":feature:profiles:api"))
     implementation(project(":feature:appssearch:api"))
 
     implementation(libs.accompanist.drawablepainter)

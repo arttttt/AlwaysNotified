@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import com.arttttt.database.dao.ProfilesDao
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
-import com.arttttt.profiles.api.Profile
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 
@@ -60,11 +59,9 @@ internal class AppsRepositoryImpl(
             }
     }
 
-    override suspend fun getAppsForProfile(profile: Profile): List<SelectedActivity> {
+    override suspend fun getSelectedApps(): List<SelectedActivity> {
         return profilesDao
-            .getSelectedActivitiesForUuid(
-                uuid = profile.uuid
-            )
+            .getSelectedActivities()
             .map { activity ->
                 SelectedActivity(
                     pkg = activity.pkg,

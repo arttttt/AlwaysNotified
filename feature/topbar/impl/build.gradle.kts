@@ -40,5 +40,4 @@ dependencies {
     implementation(project(":core:arch"))
     implementation(project(":feature:topbar:api"))
     implementation(project(":feature:appssearch:api"))
-    implementation(project(":feature:profiles:api"))
 }

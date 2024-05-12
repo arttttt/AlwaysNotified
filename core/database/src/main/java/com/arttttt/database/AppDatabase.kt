@@ -7,13 +7,11 @@ import androidx.room.RoomDatabase
 import com.arttttt.database.dao.ProfilesDao
 import com.arttttt.database.migrations.Migration_1_2
 import com.arttttt.database.model.ActivityDbModel
-import com.arttttt.database.model.ProfileDbModel
 
 @Database(
     version = 2,
     entities = [
         ActivityDbModel::class,
-        ProfileDbModel::class,
     ],
     exportSchema = false,
 )
@@ -33,8 +31,8 @@ abstract class AppDatabase : RoomDatabase() {
                 .addMigrations(
                     Migration_1_2,
                 )
-                .fallbackToDestructiveMigration()
-                .fallbackToDestructiveMigrationOnDowngrade()
+                //.fallbackToDestructiveMigration()
+                //.fallbackToDestructiveMigrationOnDowngrade()
                 .build()
         }
     }

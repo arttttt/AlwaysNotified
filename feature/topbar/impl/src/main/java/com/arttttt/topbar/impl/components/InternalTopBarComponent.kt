@@ -1,8 +1,6 @@
 package com.arttttt.topbar.impl.components
 
 import com.arkivanov.decompose.value.Value
-import com.arttttt.appssearch.api.AppsSearchComponent
-import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.topbar.impl.components.actions.ExpandableTopBarAction
 import com.arttttt.topbar.impl.components.actions.TopBarAction
 import kotlinx.coroutines.flow.Flow
