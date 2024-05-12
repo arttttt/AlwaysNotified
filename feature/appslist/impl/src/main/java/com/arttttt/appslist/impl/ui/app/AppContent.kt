@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -74,12 +75,11 @@ internal class AppContent(
                     icon = uiState.icon,
                 )
 
-                if (uiState.isManualModeAvailable) {
-                    ManualMode(
-                        manualModeEnabled = uiState.manualModeEnabled,
-                        onManualModeChanged = component::onManualModeChanged,
-                    )
-                }
+                ManualMode(
+                    manualModeAvailable = uiState.isManualModeAvailable,
+                    manualModeEnabled = uiState.manualModeEnabled,
+                    onManualModeChanged = component::onManualModeChanged,
+                )
 
                 ActivitiesList(
                     items = uiState.items,
@@ -125,6 +125,7 @@ internal class AppContent(
 
     @Composable
     private fun ManualMode(
+        manualModeAvailable: Boolean,
         manualModeEnabled: Boolean,
         onManualModeChanged: () -> Unit,
     ) {
@@ -133,7 +134,9 @@ internal class AppContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
+                .clickable(
+                    enabled = manualModeAvailable,
+                ) {
                     hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
                     onManualModeChanged()
                 }
@@ -146,9 +149,17 @@ internal class AppContent(
                 modifier = Modifier.weight(1f),
                 text = "Manual mode",
                 fontSize = 18.sp,
+                color = if (manualModeAvailable) {
+                    LocalContentColor.current
+                } else {
+                    LocalContentColor.current.copy(
+                        alpha = 0.38f,
+                    )
+                }
             )
 
             Switch(
+                enabled = manualModeAvailable,
                 checked = manualModeEnabled,
                 onCheckedChange = {
                     hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
