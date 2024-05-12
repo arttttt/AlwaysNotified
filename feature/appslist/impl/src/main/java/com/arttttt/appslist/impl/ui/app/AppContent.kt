@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ModalBottomSheet
@@ -68,7 +69,7 @@ internal class AppContent(
             ),
         ) {
             Column(
-                modifier = modifier
+                modifier = modifier.navigationBarsPadding()
             ) {
                 AppTitle(
                     title = uiState.title,
@@ -85,6 +86,20 @@ internal class AppContent(
                     items = uiState.items,
                     onActivityClicked = component::onActivityClicked,
                 )
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp,
+                        ),
+                    colors = AppTheme.widgets.buttonColors,
+                    enabled = uiState.isLaunchButtonEnabled,
+                    onClick = component::onLaunchClicked,
+                ) {
+                    Text("Launch Activity")
+                }
             }
         }
     }

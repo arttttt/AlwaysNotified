@@ -37,6 +37,32 @@ internal class AppsLauncherImpl(
         )
     }
 
+    override fun launchApp(activity: SelectedActivity) {
+        val payload = ArrayList(
+            listOf(
+                Intent().apply {
+                    component = ComponentName(
+                        activity.pkg,
+                        activity.name,
+                    )
+
+                    flags = 0
+
+                    intentHelper.putExtra(
+                        intent = this,
+                        title = activity.name.substringAfterLast("."),
+                        pkg = activity.pkg,
+                        selectedActivities = mapOf(activity.pkg to activity),
+                    )
+                }
+            )
+        )
+
+        context.startActivity(
+            context.getHolderIntent(payload)
+        )
+    }
+
     private suspend fun ensureReady() {
         appsStore
             .states

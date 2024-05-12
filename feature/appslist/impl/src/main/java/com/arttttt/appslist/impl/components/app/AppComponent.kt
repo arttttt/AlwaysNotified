@@ -46,11 +46,13 @@ internal interface AppComponent : DecomposeComponent,
         val icon: Drawable?,
         val isManualModeAvailable: Boolean,
         val manualModeEnabled: Boolean,
-        val items: List<ListItem>
+        val items: List<ListItem>,
+        val isLaunchButtonEnabled: Boolean,
     )
 
     val uiStates: StateFlow<UIState>
 
     fun onActivityClicked(name: String)
     fun onManualModeChanged()
+    fun onLaunchClicked()
 }

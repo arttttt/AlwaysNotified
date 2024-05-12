@@ -34,6 +34,13 @@ object Widgets {
     val buttonColors: ButtonColors
         @Composable
         get() = ButtonDefaults.buttonColors(
-            containerColor = AppTheme.colors.primary
+            containerColor = AppTheme.colors.primary,
+            disabledContainerColor = AppTheme.colors.primary.copy(
+                alpha = 0.38f,
+            ),
+            contentColor = AppTheme.colors.textAndIcons,
+            disabledContentColor = AppTheme.colors.textAndIcons.copy(
+                alpha = 0.38f,
+            ),
         )
 }
