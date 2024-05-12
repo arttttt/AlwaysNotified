@@ -57,7 +57,7 @@ internal class AppContent(
                 component.onDismiss(DismissEvent)
             },
             sheetState = rememberModalBottomSheetState(
-                skipPartiallyExpanded = false,
+                skipPartiallyExpanded = true,
             ),
             windowInsets = remember { WindowInsets(0, 0, 0 , 0) },
             containerColor = AppTheme.colors.secondary,
