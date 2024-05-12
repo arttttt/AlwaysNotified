@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.jetbrains.compose.compiler)
 }
 
 android {
@@ -54,12 +55,7 @@ android {
     }
 
     buildFeatures {
-        compose = true
         buildConfig = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     packaging {

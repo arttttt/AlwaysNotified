@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.jetbrains.compose.compiler)
 }
 
 android {
@@ -15,14 +16,6 @@ android {
         release {
             isMinifyEnabled = false
         }
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     compileOptions {
