@@ -129,6 +129,6 @@ internal class AppsListTransformer(
 
     private val AppsStore.State.isStartButtonVisible: Boolean
         get() {
-            return !applications.isNullOrEmpty() && !selectedActivities.isNullOrEmpty()
+            return !isInProgress && !applications.isNullOrEmpty() && !selectedActivities.isNullOrEmpty()
         }
 }
