@@ -25,7 +25,6 @@ internal class AppsStoreExecutor(
 
     override fun executeIntent(intent: AppsStore.Intent) {
         when (intent) {
-            is AppsStore.Intent.ChangeManualMode -> changeManualMode(intent.pkg)
             is AppsStore.Intent.SetSelectedActivity -> setSelectedActivity(
                 pkg = intent.pkg,
                 selectedActivity = intent.selectedActivity,

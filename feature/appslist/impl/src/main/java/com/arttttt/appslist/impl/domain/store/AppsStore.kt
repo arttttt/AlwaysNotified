@@ -24,10 +24,6 @@ internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStor
             val pkg: String,
             val selectedActivity: SelectedActivity?,
         ) : Intent()
-
-        data class ChangeManualMode(
-            val pkg: String,
-        ) : Intent()
     }
 
     sealed class Message {
