@@ -108,31 +108,4 @@ internal class AppsStoreExecutor(
                 .let(::dispatch)
         }
     }
-
-    private fun changeManualMode(pkg: String) {
-        val selectedActivities = state().selectedActivities ?: return
-        val selectedActivity = selectedActivities[pkg] ?: return
-
-        scope.launch {
-            dispatch(
-                AppsStore.Message.SelectedActivitiesChanged(
-                    selectedActivities = withContext(Dispatchers.IO) {
-                        selectedActivities
-                            .toMutableMap()
-                            .apply {
-                                put(
-                                    pkg,
-                                    selectedActivity.copy(
-                                        manualMode = !selectedActivity.manualMode,
-                                    )
-                                )
-                            }
-                            .toMap()
-                    }
-                )
-            )
-
-            publish(AppsStore.Label.ActivitiesChanged)
-        }
-    }
 }
