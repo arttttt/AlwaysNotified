@@ -83,6 +83,7 @@ internal class AppContent(
                 )
 
                 ActivitiesList(
+                    modifier = Modifier.weight(1f),
                     items = uiState.items,
                     onActivityClicked = component::onActivityClicked,
                 )
@@ -187,6 +188,7 @@ internal class AppContent(
 
     @Composable
     private fun ActivitiesList(
+        modifier: Modifier,
         items: List<ListItem>,
         onActivityClicked: (String) -> Unit,
     ) {
@@ -205,7 +207,7 @@ internal class AppContent(
 
 
         LazyColumn(
-            modifier = Modifier
+            modifier = modifier
                 .navigationBarsPadding()
                 .fillMaxWidth(),
             contentPadding = remember {
