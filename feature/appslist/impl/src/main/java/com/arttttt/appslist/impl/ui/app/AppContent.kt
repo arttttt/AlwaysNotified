@@ -83,7 +83,10 @@ internal class AppContent(
                 )
 
                 ActivitiesList(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(
+                        weight = 1f,
+                        fill = false,
+                    ),
                     items = uiState.items,
                     onActivityClicked = component::onActivityClicked,
                 )
