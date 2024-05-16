@@ -65,7 +65,6 @@ internal class AppsRepositoryImpl(
             .getSelectedActivities()
             .map { activity ->
                 SelectedActivity(
-                    uuid = activity.uuid,
                     pkg = activity.pkg,
                     name = activity.activity,
                     manualMode = activity.manualMode,
@@ -76,7 +75,6 @@ internal class AppsRepositoryImpl(
     override suspend fun saveActivity(activity: SelectedActivity) {
         profilesDao.insertActivities(
             ActivityDbModel(
-                uuid = activity.uuid,
                 pkg = activity.pkg,
                 activity = activity.name,
                 manualMode = activity.manualMode,
@@ -86,7 +84,7 @@ internal class AppsRepositoryImpl(
 
     override suspend fun removeActivity(activity: SelectedActivity) {
         profilesDao.removeActivity(
-            uuid = activity.uuid,
+            pkg = activity.pkg,
         )
     }
 

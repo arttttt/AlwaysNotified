@@ -104,7 +104,6 @@ internal class AppsStoreExecutor(
             }
             .mapValues { (pkg, value) ->
                 SelectedActivity(
-                    uuid = "${value.pkg}/${value.name}",
                     pkg = pkg,
                     name = value.name,
                     manualMode = value.manualMode,

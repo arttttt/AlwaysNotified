@@ -6,11 +6,10 @@ import androidx.room.Entity
 @Entity(
     tableName = "activities_table",
     primaryKeys = [
-        "uuid",
+        "pkg",
     ],
 )
 data class ActivityDbModel(
-    val uuid: String,
     val pkg: String,
     val activity: String,
     @ColumnInfo("manual_mode") val manualMode: Boolean,

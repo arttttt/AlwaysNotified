@@ -14,8 +14,8 @@ abstract class ProfilesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertActivities(vararg activities: ActivityDbModel)
 
-    @Query("delete from activities_table where uuid = :uuid")
-    abstract suspend fun removeActivity(uuid: String)
+    @Query("delete from activities_table where pkg = :pkg")
+    abstract suspend fun removeActivity(pkg: String)
 
     @Query("select * from activities_table")
     abstract suspend fun getSelectedActivities(): List<ActivityDbModel>
@@ -24,7 +24,7 @@ abstract class ProfilesDao {
     open fun removeActivities(activities: List<ActivityDbModel>) {
         runBlocking {
             activities.forEach { activity ->
-                removeActivity(activity.uuid)
+                removeActivity(activity.pkg)
             }
         }
     }
