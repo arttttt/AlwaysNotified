@@ -15,7 +15,6 @@ internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStor
     sealed class Action {
 
         data object GetInstalledApplications : Action()
-        data object GetSelectedActivities : Action()
     }
 
     sealed class Intent {

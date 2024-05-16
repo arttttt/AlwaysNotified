@@ -6,6 +6,7 @@ import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.appslist.SelectedActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -18,8 +19,7 @@ internal class AppsStoreExecutor(
 
     override fun executeAction(action: AppsStore.Action) {
         when (action) {
-            is AppsStore.Action.GetInstalledApplications -> getInstalledApplications()
-            is AppsStore.Action.GetSelectedActivities -> getSelectedActivities()
+            is AppsStore.Action.GetInstalledApplications -> loadApps()
         }
     }
 
@@ -61,51 +61,56 @@ internal class AppsStoreExecutor(
         }
     }
 
-    private fun getInstalledApplications() {
+    private fun loadApps() {
         scope.launch {
             dispatch(AppsStore.Message.ProgressStarted)
 
-            dispatch(
-                AppsStore.Message.ApplicationsLoaded(
-                    applications = withContext(Dispatchers.IO) {
-                        appsRepository
-                            .getInstalledApplications()
-                            .map { info ->
-                                info.copy(
-                                    activities = info
-                                        .activities
-                                        .sortedBy(ActivityInfo::title)
-                                        .toSet()
-                                )
-                            }
-                            .sortedBy { info -> info.title }
-                            .associateBy { info -> info.pkg }
-                    },
-                )
+            joinAll(
+                launch { getInstalledApplications() },
+                launch { getSelectedActivities() },
             )
 
             dispatch(AppsStore.Message.ProgressFinished)
         }
     }
 
-    private fun getSelectedActivities() {
-        scope.launch {
-            val selectedActivities = appsRepository.getSelectedApps()
+    private suspend fun getInstalledApplications() {
+        dispatch(
+            AppsStore.Message.ApplicationsLoaded(
+                applications = withContext(Dispatchers.IO) {
+                    appsRepository
+                        .getInstalledApplications()
+                        .map { info ->
+                            info.copy(
+                                activities = info
+                                    .activities
+                                    .sortedBy(ActivityInfo::title)
+                                    .toSet()
+                            )
+                        }
+                        .sortedBy { info -> info.title }
+                        .associateBy { info -> info.pkg }
+                },
+            )
+        )
+    }
 
-            selectedActivities
-                .associateBy { activity ->
-                    activity.pkg
-                }
-                .mapValues { (pkg, value) ->
-                    SelectedActivity(
-                        uuid = "${value.pkg}/${value.name}",
-                        pkg = pkg,
-                        name = value.name,
-                        manualMode = value.manualMode,
-                    )
-                }
-                .let(AppsStore.Message::SelectedActivitiesChanged)
-                .let(::dispatch)
-        }
+    private suspend fun getSelectedActivities() {
+        val selectedActivities = appsRepository.getSelectedApps()
+
+        selectedActivities
+            .associateBy { activity ->
+                activity.pkg
+            }
+            .mapValues { (pkg, value) ->
+                SelectedActivity(
+                    uuid = "${value.pkg}/${value.name}",
+                    pkg = pkg,
+                    name = value.name,
+                    manualMode = value.manualMode,
+                )
+            }
+            .let(AppsStore.Message::SelectedActivitiesChanged)
+            .let(::dispatch)
     }
 }
