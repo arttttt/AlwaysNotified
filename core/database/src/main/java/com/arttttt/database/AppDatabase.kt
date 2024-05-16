@@ -35,8 +35,8 @@ abstract class AppDatabase : RoomDatabase() {
                     Migration_2_3,
                     Migration_3_4,
                 )
-                //.fallbackToDestructiveMigration()
-                //.fallbackToDestructiveMigrationOnDowngrade()
+                .fallbackToDestructiveMigration()
+                .fallbackToDestructiveMigrationOnDowngrade()
                 .build()
         }
     }
