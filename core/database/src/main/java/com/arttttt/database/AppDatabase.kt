@@ -6,10 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.arttttt.database.dao.ProfilesDao
 import com.arttttt.database.migrations.Migration_1_2
+import com.arttttt.database.migrations.Migration_2_3
 import com.arttttt.database.model.ActivityDbModel
 
 @Database(
-    version = 2,
+    version = 3,
     entities = [
         ActivityDbModel::class,
     ],
@@ -30,9 +31,10 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                 .addMigrations(
                     Migration_1_2,
+                    Migration_2_3,
                 )
-                //.fallbackToDestructiveMigration()
-                //.fallbackToDestructiveMigrationOnDowngrade()
+                .fallbackToDestructiveMigration()
+                .fallbackToDestructiveMigrationOnDowngrade()
                 .build()
         }
     }
