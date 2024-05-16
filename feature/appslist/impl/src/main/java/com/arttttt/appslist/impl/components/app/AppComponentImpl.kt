@@ -75,6 +75,7 @@ internal class AppComponentImpl(
                     .takeIf { state.selectedActivity?.name != name }
                     ?.let { name ->
                         SelectedActivity(
+                            uuid = "${state.app.pkg}/$name",
                             pkg = state.app.pkg,
                             name = name,
                             manualMode = state.selectedActivity?.manualMode ?: false,

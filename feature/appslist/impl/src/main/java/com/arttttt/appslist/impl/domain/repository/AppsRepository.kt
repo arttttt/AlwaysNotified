@@ -8,4 +8,8 @@ internal interface AppsRepository {
     suspend fun getInstalledApplications(): List<AppInfo>
 
     suspend fun getSelectedApps(): List<SelectedActivity>
+
+    suspend fun saveActivity(activity: SelectedActivity)
+
+    suspend fun removeActivity(activity: SelectedActivity)
 }

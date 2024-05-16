@@ -44,9 +44,11 @@ internal class AppsStoreExecutor(
                         val mutableActivities = activities?.toMutableMap() ?: mutableMapOf()
 
                         if (selectedActivity == null) {
+                            appsRepository.removeActivity(mutableActivities.getValue(pkg))
                             mutableActivities.remove(pkg)
                         } else {
                             mutableActivities[pkg] = selectedActivity
+                            appsRepository.saveActivity(selectedActivity)
                         }
 
                         mutableActivities.toMap()
@@ -96,6 +98,7 @@ internal class AppsStoreExecutor(
                 }
                 .mapValues { (pkg, value) ->
                     SelectedActivity(
+                        uuid = "${value.pkg}/${value.name}",
                         pkg = pkg,
                         name = value.name,
                         manualMode = value.manualMode,

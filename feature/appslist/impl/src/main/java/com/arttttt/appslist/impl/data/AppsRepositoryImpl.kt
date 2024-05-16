@@ -9,6 +9,7 @@ import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
+import com.arttttt.database.model.ActivityDbModel
 
 internal class AppsRepositoryImpl(
     private val context: Context,
@@ -64,11 +65,29 @@ internal class AppsRepositoryImpl(
             .getSelectedActivities()
             .map { activity ->
                 SelectedActivity(
+                    uuid = activity.uuid,
                     pkg = activity.pkg,
                     name = activity.activity,
                     manualMode = activity.manualMode,
                 )
             }
+    }
+
+    override suspend fun saveActivity(activity: SelectedActivity) {
+        profilesDao.insertActivities(
+            ActivityDbModel(
+                uuid = activity.uuid,
+                pkg = activity.pkg,
+                activity = activity.name,
+                manualMode = activity.manualMode,
+            )
+        )
+    }
+
+    override suspend fun removeActivity(activity: SelectedActivity) {
+        profilesDao.removeActivity(
+            uuid = activity.uuid,
+        )
     }
 
     private val PackageInfo.isSystemPackage: Boolean
