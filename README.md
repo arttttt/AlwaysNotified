@@ -12,14 +12,3 @@ This app allows you to bypass the 5 auto launch apps limit on ColorOS phones
 * [Jetpack Compose](https://developer.android.com/jetpack/compose)
 * [DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)
 * [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
-
-# TODO
-
-* ~~Profiles~~
-* ~~Search~~
-* ~~Modularization~~
-* Settings
-* Icon and themes
-* Instruction
-* Selected apps indication
-* CI
