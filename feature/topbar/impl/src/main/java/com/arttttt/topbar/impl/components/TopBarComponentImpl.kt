@@ -3,18 +3,16 @@ package com.arttttt.topbar.impl.components
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import com.arttttt.topbar.impl.components.actions.ExpandableTopBarAction
-import com.arttttt.topbar.impl.components.actions.TopBarAction
 import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.core.arch.koinScope
-import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.topbar.api.TopBarComponent
 import com.arttttt.topbar.impl.components.actions.AppsSearchTopBarAction
-import com.arttttt.topbar.impl.components.actions.ProfilesTopBarAction
+import com.arttttt.topbar.impl.components.actions.ExpandableTopBarAction
 import com.arttttt.topbar.impl.components.actions.SettingsTopBarAction
+import com.arttttt.topbar.impl.components.actions.TopBarAction
 import com.arttttt.topbar.impl.ui.TopBarContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.core.component.getScopeId
@@ -33,17 +31,6 @@ internal class TopBarComponentImpl(
         qualifier = qualifier<TopBarComponent>(),
     )
 
-    override val profilesComponent = koinScope
-        .get<ProfilesComponent.Factory>()
-        .create(
-            context = wrapComponentContext(
-                context = childContext(
-                    key = "profiles",
-                ),
-                parentScopeID = koinScope.id,
-            ),
-        )
-
     override val appsSearchComponent = koinScope
         .get<AppsSearchComponent.Factory>()
         .create(
@@ -59,9 +46,6 @@ internal class TopBarComponentImpl(
         initialValue = InternalTopBarComponent.UiState(
             expandedAction = null,
             actions = listOf(
-                ProfilesTopBarAction(
-                    component = profilesComponent
-                ),
                 AppsSearchTopBarAction(
                     component = appsSearchComponent,
                 ),

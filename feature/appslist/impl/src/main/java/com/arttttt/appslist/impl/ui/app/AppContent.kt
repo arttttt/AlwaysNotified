@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -57,7 +59,7 @@ internal class AppContent(
                 component.onDismiss(DismissEvent)
             },
             sheetState = rememberModalBottomSheetState(
-                skipPartiallyExpanded = false,
+                skipPartiallyExpanded = true,
             ),
             windowInsets = remember { WindowInsets(0, 0, 0 , 0) },
             containerColor = AppTheme.colors.secondary,
@@ -67,24 +69,41 @@ internal class AppContent(
             ),
         ) {
             Column(
-                modifier = modifier
+                modifier = modifier.navigationBarsPadding()
             ) {
                 AppTitle(
                     title = uiState.title,
                     icon = uiState.icon,
                 )
 
-                if (uiState.isManualModeAvailable) {
-                    ManualMode(
-                        manualModeEnabled = uiState.manualModeEnabled,
-                        onManualModeChanged = component::onManualModeChanged,
-                    )
-                }
+                ManualMode(
+                    manualModeAvailable = uiState.isManualModeAvailable,
+                    manualModeEnabled = uiState.manualModeEnabled,
+                    onManualModeChanged = component::onManualModeChanged,
+                )
 
                 ActivitiesList(
+                    modifier = Modifier.weight(
+                        weight = 1f,
+                        fill = false,
+                    ),
                     items = uiState.items,
                     onActivityClicked = component::onActivityClicked,
                 )
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp,
+                        ),
+                    colors = AppTheme.widgets.buttonColors,
+                    enabled = uiState.isLaunchButtonEnabled,
+                    onClick = component::onLaunchClicked,
+                ) {
+                    Text("Launch Activity")
+                }
             }
         }
     }
@@ -125,6 +144,7 @@ internal class AppContent(
 
     @Composable
     private fun ManualMode(
+        manualModeAvailable: Boolean,
         manualModeEnabled: Boolean,
         onManualModeChanged: () -> Unit,
     ) {
@@ -133,7 +153,9 @@ internal class AppContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
+                .clickable(
+                    enabled = manualModeAvailable,
+                ) {
                     hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
                     onManualModeChanged()
                 }
@@ -146,9 +168,17 @@ internal class AppContent(
                 modifier = Modifier.weight(1f),
                 text = "Manual mode",
                 fontSize = 18.sp,
+                color = if (manualModeAvailable) {
+                    LocalContentColor.current
+                } else {
+                    LocalContentColor.current.copy(
+                        alpha = 0.38f,
+                    )
+                }
             )
 
             Switch(
+                enabled = manualModeAvailable,
                 checked = manualModeEnabled,
                 onCheckedChange = {
                     hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
@@ -161,6 +191,7 @@ internal class AppContent(
 
     @Composable
     private fun ActivitiesList(
+        modifier: Modifier,
         items: List<ListItem>,
         onActivityClicked: (String) -> Unit,
     ) {
@@ -179,7 +210,7 @@ internal class AppContent(
 
 
         LazyColumn(
-            modifier = Modifier
+            modifier = modifier
                 .navigationBarsPadding()
                 .fillMaxWidth(),
             contentPadding = remember {

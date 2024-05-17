@@ -13,7 +13,6 @@ internal interface InternalAppsListComponent {
     data class UiState(
         val apps: ImmutableList<ListItem>,
         val isStartButtonVisible: Boolean,
-        val isSaveProfileButtonVisible: Boolean,
     )
 
     val slot: Value<ChildSlot<*, DecomposeComponent>>
@@ -27,6 +26,4 @@ internal interface InternalAppsListComponent {
     fun startApps()
 
     fun openSettings()
-
-    fun updateProfile()
 }

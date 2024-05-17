@@ -7,11 +7,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -75,10 +73,8 @@ internal class AppsListContent(
             AppsListContainer(
                 apps = state.apps,
                 isStartButtonVisible = state.isStartButtonVisible,
-                isUpdateProfileButtonVisible = state.isSaveProfileButtonVisible,
                 onAppClicked = component::onAppClicked,
                 onStartAppsClicked = component::startApps,
-                onUpdateProfileClicked = component::updateProfile,
             )
         }
 
@@ -92,17 +88,14 @@ internal class AppsListContent(
     @Composable
     private fun AppsListContainer(
         apps: ImmutableList<ListItem>,
-        isUpdateProfileButtonVisible: Boolean,
         isStartButtonVisible: Boolean,
         onAppClicked: (String) -> Unit,
         onStartAppsClicked: () -> Unit,
-        onUpdateProfileClicked: () -> Unit,
     ) {
         var parentCoordinates: LayoutCoordinates? by remember {
             mutableStateOf(null)
         }
 
-        val currentIsUpdateProfileButtonVisible by rememberUpdatedState(isUpdateProfileButtonVisible)
         val currentIsStartButtonVisible by rememberUpdatedState(isStartButtonVisible)
 
         Box(
@@ -113,7 +106,7 @@ internal class AppsListContent(
                 }
         ) {
             val transitionState = remember {
-                MutableTransitionState(isStartButtonVisible || isUpdateProfileButtonVisible)
+                MutableTransitionState(isStartButtonVisible)
             }
 
             val nestedScrollConnection = remember {
@@ -122,7 +115,7 @@ internal class AppsListContent(
                         available: Offset,
                         source: NestedScrollSource,
                     ): Offset {
-                        if ((currentIsUpdateProfileButtonVisible || currentIsStartButtonVisible) && available.y != 0f) {
+                        if (currentIsStartButtonVisible && available.y != 0f) {
                             transitionState.targetState = available.y > 0
                         }
 
@@ -150,15 +143,13 @@ internal class AppsListContent(
             ) {
                 ActionsRow(
                     modifier = Modifier,
-                    isSaveProfileButtonVisible = isUpdateProfileButtonVisible,
                     isStartAppsButtonVisible = isStartButtonVisible,
                     onStartAppsClicked = onStartAppsClicked,
-                    onUpdateProfileClicked = onUpdateProfileClicked,
                 )
             }
 
-            LaunchedEffect(isStartButtonVisible, isUpdateProfileButtonVisible) {
-                transitionState.targetState = isStartButtonVisible || isUpdateProfileButtonVisible
+            LaunchedEffect(isStartButtonVisible) {
+                transitionState.targetState = isStartButtonVisible
             }
         }
     }
@@ -201,12 +192,10 @@ internal class AppsListContent(
     @Composable
     private fun ActionsRow(
         modifier: Modifier,
-        isSaveProfileButtonVisible: Boolean,
         isStartAppsButtonVisible: Boolean,
         onStartAppsClicked: () -> Unit,
-        onUpdateProfileClicked: () -> Unit,
     ) {
-        Row(
+        Box(
             modifier = modifier
                 .fillMaxWidth()
                 .clip(
@@ -220,21 +209,10 @@ internal class AppsListContent(
                     horizontal = 16.dp,
                     vertical = 16.dp,
                 ),
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
         ) {
-            if (isSaveProfileButtonVisible) {
-                Button(
-                    modifier = Modifier.weight(1f),
-                    onClick = onUpdateProfileClicked,
-                    colors = AppTheme.widgets.buttonColors,
-                ) {
-                    Text(text = stringResource(com.arttttt.localization.R.string.update_profile))
-                }
-            }
-
             if (isStartAppsButtonVisible) {
                 Button(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.fillMaxWidth(1f),
                     onClick = onStartAppsClicked,
                     colors = AppTheme.widgets.buttonColors,
                 ) {

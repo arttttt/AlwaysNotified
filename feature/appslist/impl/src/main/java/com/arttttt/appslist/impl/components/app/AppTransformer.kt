@@ -18,11 +18,12 @@ internal class AppTransformer(
             icon = resourcesProvider.getDrawable(state.app.pkg),
             isManualModeAvailable = state.isManualModeForAppAvailable(),
             manualModeEnabled = state.isManualModeEnabled(),
+            isLaunchButtonEnabled = state.selectedActivity != null,
             items = state.app.activities.map { activityInfo ->
                 activityInfo.toListItem(
                     isSelected = state.selectedActivity?.name == activityInfo.name,
                 )
-            }
+            },
         )
     }
 

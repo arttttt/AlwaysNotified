@@ -3,10 +3,10 @@ package com.arttttt.appslist.impl.domain.store
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
-import com.arttttt.profiles.api.Profile
 import com.arttttt.appslist.SelectedActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -19,14 +19,12 @@ internal class AppsStoreExecutor(
 
     override fun executeAction(action: AppsStore.Action) {
         when (action) {
-            is AppsStore.Action.GetInstalledApplications -> getInstalledApplications()
+            is AppsStore.Action.GetInstalledApplications -> loadApps()
         }
     }
 
     override fun executeIntent(intent: AppsStore.Intent) {
         when (intent) {
-            is AppsStore.Intent.SelectAppsForProfile -> selectAppsForProfile(intent.profile)
-            is AppsStore.Intent.ChangeManualMode -> changeManualMode(intent.pkg)
             is AppsStore.Intent.SetSelectedActivity -> setSelectedActivity(
                 pkg = intent.pkg,
                 selectedActivity = intent.selectedActivity,
@@ -46,9 +44,13 @@ internal class AppsStoreExecutor(
                         val mutableActivities = activities?.toMutableMap() ?: mutableMapOf()
 
                         if (selectedActivity == null) {
+                            if (mutableActivities.contains(pkg)) {
+                                appsRepository.removeActivity(mutableActivities.getValue(pkg))
+                            }
                             mutableActivities.remove(pkg)
                         } else {
                             mutableActivities[pkg] = selectedActivity
+                            appsRepository.saveActivity(selectedActivity)
                         }
 
                         mutableActivities.toMap()
@@ -61,79 +63,55 @@ internal class AppsStoreExecutor(
         }
     }
 
-    private fun getInstalledApplications() {
+    private fun loadApps() {
         scope.launch {
             dispatch(AppsStore.Message.ProgressStarted)
 
-            dispatch(
-                AppsStore.Message.ApplicationsLoaded(
-                    applications = withContext(Dispatchers.IO) {
-                        appsRepository
-                            .getInstalledApplications()
-                            .map { info ->
-                                info.copy(
-                                    activities = info
-                                        .activities
-                                        .sortedBy(ActivityInfo::title)
-                                        .toSet()
-                                )
-                            }
-                            .sortedBy { info -> info.title }
-                            .associateBy { info -> info.pkg }
-                    },
-                )
+            joinAll(
+                launch { getInstalledApplications() },
+                launch { getSelectedActivities() },
             )
 
             dispatch(AppsStore.Message.ProgressFinished)
         }
     }
 
-    private fun selectAppsForProfile(profile: Profile) {
-        scope.launch {
-            val selectedActivities = appsRepository.getAppsForProfile(
-                profile = profile,
+    private suspend fun getInstalledApplications() {
+        dispatch(
+            AppsStore.Message.ApplicationsLoaded(
+                applications = withContext(Dispatchers.IO) {
+                    appsRepository
+                        .getInstalledApplications()
+                        .map { info ->
+                            info.copy(
+                                activities = info
+                                    .activities
+                                    .sortedBy(ActivityInfo::title)
+                                    .toSet()
+                            )
+                        }
+                        .sortedBy { info -> info.title }
+                        .associateBy { info -> info.pkg }
+                },
             )
-
-            selectedActivities
-                .associateBy { activity ->
-                    activity.pkg
-                }
-                .mapValues { (pkg, value) ->
-                    SelectedActivity(
-                        pkg = pkg,
-                        name = value.name,
-                        manualMode = value.manualMode,
-                    )
-                }
-                .let(AppsStore.Message::SelectedActivitiesChanged)
-                .let(::dispatch)
-        }
+        )
     }
 
-    private fun changeManualMode(pkg: String) {
-        val selectedActivities = state().selectedActivities ?: return
-        val selectedActivity = selectedActivities[pkg] ?: return
+    private suspend fun getSelectedActivities() {
+        val selectedActivities = appsRepository.getSelectedApps()
 
-        scope.launch {
-            dispatch(
-                AppsStore.Message.SelectedActivitiesChanged(
-                    selectedActivities = withContext(Dispatchers.IO) {
-                        selectedActivities
-                            .toMutableMap()
-                            .apply {
-                                put(
-                                    pkg,
-                                    selectedActivity.copy(
-                                        manualMode = !selectedActivity.manualMode,
-                                    )
-                                )
-                            }
-                            .toMap()
-                    }
+        selectedActivities
+            .associateBy { activity ->
+                activity.pkg
+            }
+            .mapValues { (pkg, value) ->
+                SelectedActivity(
+                    pkg = pkg,
+                    name = value.name,
+                    manualMode = value.manualMode,
                 )
-            )
-
-            publish(AppsStore.Label.ActivitiesChanged)
-        }
+            }
+            .let(AppsStore.Message::SelectedActivitiesChanged)
+            .let(::dispatch)
     }
 }

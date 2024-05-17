@@ -8,16 +8,10 @@
     <string name="color">Color</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
-    <string name="add_profile">Add profile</string>
 
-    <string name="update_profile">update profile</string>
     <string name="start_apps">start apps</string>
 
     <string name="permissions">Permissions</string>
-
-    <string name="profile_exists_error">profile already exists</string>
-    <string name="profile_empty_title_error">title can not be empty</string>
-    <string name="can_not_save_profile">Can\'t save profile</string>
 
     <string name="apps_list">Apps list</string>
 

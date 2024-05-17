@@ -8,7 +8,6 @@ import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.api.AppsListComponent
@@ -27,14 +26,11 @@ import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.slotComponentEvents
 import com.arttttt.core.arch.slotDismissEvents
-import com.arttttt.profiles.api.ProfilesComponent
 import com.arttttt.topbar.api.TopBarComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -93,9 +89,8 @@ internal class AppsListComponentImpl(
 
     override val uiState = combine(
         appsStore.states,
-        topBarComponent.profilesComponent.states,
         topBarComponent.appsSearchComponent.states,
-        ::Triple,
+        ::Pair,
     )
         .map(transformer)
         .flowOn(Dispatchers.IO)
@@ -103,9 +98,8 @@ internal class AppsListComponentImpl(
             scope = coroutineScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = transformer.invoke(
-                Triple(
+                Pair(
                     appsStore.state,
-                    topBarComponent.profilesComponent.states.value,
                     topBarComponent.appsSearchComponent.states.value,
                 )
             )
@@ -119,25 +113,6 @@ internal class AppsListComponentImpl(
     )
 
     init {
-        topBarComponent
-            .profilesComponent
-            .states
-            .map { state -> state.currentProfile }
-            .filterNotNull()
-            .distinctUntilChanged()
-            .map(AppsStore.Intent::SelectAppsForProfile)
-            .onEach(appsStore::accept)
-            .launchIn(coroutineScope)
-
-        appsStore
-            .labels
-            .filterIsInstance<AppsStore.Label.ActivitiesChanged>()
-            .map {
-                ProfilesComponent.Events.Input.MarkCurrentProfileAsDirty
-            }
-            .onEach(topBarComponent.profilesComponent::consume)
-            .launchIn(coroutineScope)
-
         slot
             .slotDismissEvents()
             .onEach { slotNavigation.dismiss() }
@@ -172,10 +147,6 @@ internal class AppsListComponentImpl(
 
     override fun openSettings() {
         dispatch(AppsListComponent.Event.OpenSettings)
-    }
-
-    override fun updateProfile() {
-        topBarComponent.profilesComponent.consume(ProfilesComponent.Events.Input.UpdateCurrentProfile)
     }
 
     private fun handeAppEditingFinished(

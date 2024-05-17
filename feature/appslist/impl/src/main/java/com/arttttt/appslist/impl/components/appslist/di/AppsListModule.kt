@@ -10,7 +10,6 @@ import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.appslist.impl.domain.store.AppsStoreFactory
-import com.arttttt.profiles.api.SelectedActivitiesRepository
 import org.koin.dsl.module
 
 internal val appsListModule = module {
@@ -41,19 +40,6 @@ internal val appsListModule = module {
                 appsStore = get(),
                 intentHelper = get(),
             )
-        }
-
-        scoped {
-            val appsStore = get<AppsStore>()
-
-            SelectedActivitiesRepository {
-                appsStore
-                    .state
-                    .selectedActivities
-                    ?.values
-                    ?.toList()
-                    ?: emptyList()
-            }
         }
 
         scoped {

@@ -3,6 +3,7 @@ package com.arttttt.appslist.impl.components.app
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.components.app.di.appModule
+import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.ui.app.AppContent
 import com.arttttt.core.arch.content.ComponentContent
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.koin.core.component.getScopeId
 import org.koin.core.qualifier.qualifier
 
@@ -42,9 +44,10 @@ internal class AppComponentImpl(
         qualifier = qualifier<AppComponent>()
     )
 
-    private val coroutinesScope = coroutineScope()
+    private val coroutineScope = coroutineScope()
 
     private val transformer: AppTransformer = koinScope.get()
+    private val appsLauncher: AppsLauncher by koinScope.inject()
 
     override val content: ComponentContent = AppContent(this)
 
@@ -60,7 +63,7 @@ internal class AppComponentImpl(
         .map(transformer)
         .flowOn(Dispatchers.IO)
         .stateIn(
-            scope = coroutinesScope,
+            scope = coroutineScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = transformer(states.value),
         )
@@ -104,5 +107,11 @@ internal class AppComponentImpl(
         }
 
         dismissEventDelegate.onDismiss(event)
+    }
+
+    override fun onLaunchClicked() {
+        appsLauncher.launchApp(
+            activity = states.value.selectedActivity ?: return
+        )
     }
 }

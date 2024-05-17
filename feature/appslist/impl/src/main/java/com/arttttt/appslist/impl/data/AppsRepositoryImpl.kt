@@ -7,9 +7,9 @@ import android.content.pm.PackageManager
 import com.arttttt.database.dao.ProfilesDao
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
-import com.arttttt.profiles.api.Profile
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
+import com.arttttt.database.model.ActivityDbModel
 
 internal class AppsRepositoryImpl(
     private val context: Context,
@@ -60,11 +60,9 @@ internal class AppsRepositoryImpl(
             }
     }
 
-    override suspend fun getAppsForProfile(profile: Profile): List<SelectedActivity> {
+    override suspend fun getSelectedApps(): List<SelectedActivity> {
         return profilesDao
-            .getSelectedActivitiesForUuid(
-                uuid = profile.uuid
-            )
+            .getSelectedActivities()
             .map { activity ->
                 SelectedActivity(
                     pkg = activity.pkg,
@@ -72,6 +70,22 @@ internal class AppsRepositoryImpl(
                     manualMode = activity.manualMode,
                 )
             }
+    }
+
+    override suspend fun saveActivity(activity: SelectedActivity) {
+        profilesDao.insertActivities(
+            ActivityDbModel(
+                pkg = activity.pkg,
+                activity = activity.name,
+                manualMode = activity.manualMode,
+            )
+        )
+    }
+
+    override suspend fun removeActivity(activity: SelectedActivity) {
+        profilesDao.removeActivity(
+            pkg = activity.pkg,
+        )
     }
 
     private val PackageInfo.isSystemPackage: Boolean
