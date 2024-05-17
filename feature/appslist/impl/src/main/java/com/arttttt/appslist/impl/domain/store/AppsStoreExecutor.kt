@@ -44,7 +44,9 @@ internal class AppsStoreExecutor(
                         val mutableActivities = activities?.toMutableMap() ?: mutableMapOf()
 
                         if (selectedActivity == null) {
-                            appsRepository.removeActivity(mutableActivities.getValue(pkg))
+                            if (mutableActivities.contains(pkg)) {
+                                appsRepository.removeActivity(mutableActivities.getValue(pkg))
+                            }
                             mutableActivities.remove(pkg)
                         } else {
                             mutableActivities[pkg] = selectedActivity
