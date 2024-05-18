@@ -7,10 +7,26 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 object Migration_2_3 : Migration(2, 3) {
 
     override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("drop table if exists profiles_table")
-        db.execSQL("ALTER TABLE activities_table RENAME TO activities_table_old;");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `activities_table` (`uuid` TEXT NOT NULL, `pkg` TEXT NOT NULL, `activity` TEXT NOT NULL, `manual_mode` INTEGER NOT NULL, PRIMARY KEY(`uuid`))")
-        db.execSQL("INSERT INTO activities_table (uuid, pkg, activity, manual_mode) SELECT pkg || '/' || activity, pkg, activity, manual_mode FROM activities_table_old")
-        db.execSQL("drop table if exists activities_table_old")
+        var cursor = db.query("SELECT uuid FROM profiles_table WHERE LOWER(title) = 'default'")
+        var defaultProfileUuid: String? = null
+        if (cursor.moveToFirst()) {
+            defaultProfileUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"))
+        }
+        cursor.close()
+
+        if (defaultProfileUuid == null) {
+            cursor = db.query("SELECT uuid FROM profiles_table LIMIT 1")
+            if (cursor.moveToFirst()) {
+                defaultProfileUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"))
+            }
+            cursor.close()
+        }
+
+        db.execSQL("ALTER TABLE activities_table RENAME TO activities_table_old;")
+        db.execSQL("CREATE TABLE IF NOT EXISTS `activities_table` (`pkg` TEXT NOT NULL, `activity` TEXT NOT NULL, `manual_mode` INTEGER NOT NULL, PRIMARY KEY(`pkg`))")
+        db.execSQL("INSERT INTO activities_table (pkg, activity, manual_mode) SELECT pkg, activity, manual_mode FROM activities_table_old WHERE profile_uuid = '$defaultProfileUuid'")
+
+        db.execSQL("DROP TABLE IF EXISTS activities_table_old")
+        db.execSQL("DROP TABLE IF EXISTS profiles_table")
     }
 }
