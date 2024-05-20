@@ -2,7 +2,7 @@
 accompanistDrawablepainter = "0.32.0"
 agp = "8.4.0"
 datastorePreferences = "1.1.1"
-firebaseBom = "32.8.1"
+firebaseBom = "33.1.0"
 flowext = "0.7.4"
 kotlin = "2.0.0-RC3"
 core-ktx = "1.13.1"
