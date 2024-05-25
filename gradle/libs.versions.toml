@@ -18,7 +18,7 @@ essenty = "2.0.0"
 immutableCollections = "0.3.7"
 mviKotlin = "4.0.0"
 room = "2.6.1"
-googleServices = "4.4.1"
+googleServices = "4.4.2"
 firebaseCrashlytics = "2.9.9"
 timber = "5.0.1"
 
