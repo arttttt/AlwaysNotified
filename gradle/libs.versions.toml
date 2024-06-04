@@ -19,7 +19,7 @@ immutableCollections = "0.3.7"
 mviKotlin = "4.0.0"
 room = "2.7.0-alpha04"
 googleServices = "4.4.2"
-firebaseCrashlytics = "3.0.1"
+firebaseCrashlytics = "3.0.2"
 timber = "5.0.1"
 
 [libraries]
