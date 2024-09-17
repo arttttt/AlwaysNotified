@@ -8,7 +8,6 @@ import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.api.AppsListComponent
 import com.arttttt.appslist.impl.components.app.AppComponent
@@ -26,6 +25,7 @@ import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.slotComponentEvents
 import com.arttttt.core.arch.slotDismissEvents
+import com.arttttt.simplemvi.utils.state
 import com.arttttt.topbar.api.TopBarComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted

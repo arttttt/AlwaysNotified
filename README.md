@@ -7,7 +7,7 @@ This app allows you to bypass the 5 auto launch apps limit on ColorOS phones
 # Core libraries used
 
 * [Decompose](https://github.com/arkivanov/Decompose)
-* [MVIKotlin](https://github.com/arkivanov/MVIKotlin)
+* [SimpleMVI](https://github.com/arttttt/SimpleMVI)
 * [Koin](https://github.com/InsertKoinIO/)
 * [Jetpack Compose](https://developer.android.com/jetpack/compose)
 * [DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)

@@ -2,9 +2,6 @@ package com.arttttt.permissions.impl.components
 
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arkivanov.mvikotlin.extensions.coroutines.labels
-import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
-import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.permissions.impl.components.di.permissionsModule
 import com.arttttt.permissions.impl.domain.entity.Permission2
@@ -48,7 +45,7 @@ internal class PermissionsComponentImpl(
     private val permissionsStore = koinScope.get<PermissionsStore>()
 
     override val state = permissionsStore
-        .stateFlow
+        .states
         .asValue()
         .map { state ->
             state.toComponentState()
@@ -58,8 +55,8 @@ internal class PermissionsComponentImpl(
 
     init {
         permissionsStore
-            .labels
-            .filterIsInstance<PermissionsStore.Label.AllPermissionsGranted>()
+            .sideEffects
+            .filterIsInstance<PermissionsStore.SideEffect.AllPermissionsGranted>()
             .take(1)
             .onEach { dispatch(PermissionsComponent.Event.AllPermissionsGranted) }
             .launchIn(coroutineScope)

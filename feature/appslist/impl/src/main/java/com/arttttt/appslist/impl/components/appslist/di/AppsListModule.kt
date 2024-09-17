@@ -9,7 +9,6 @@ import com.arttttt.appslist.impl.data.AppsRepositoryImpl
 import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.appslist.impl.domain.store.AppsStore
-import com.arttttt.appslist.impl.domain.store.AppsStoreFactory
 import org.koin.dsl.module
 
 internal val appsListModule = module {
@@ -21,10 +20,9 @@ internal val appsListModule = module {
         }
 
         scoped<AppsStore> {
-            AppsStoreFactory(
-                storeFactory = get(),
+            AppsStore(
                 appsRepository = get(),
-            ).create()
+            )
         }
 
         scoped<AppsRepository> {

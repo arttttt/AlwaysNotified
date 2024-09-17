@@ -6,7 +6,6 @@ import com.arttttt.permissions.impl.data.repository.PermissionsRepositoryImpl
 import com.arttttt.permissions.impl.domain.entity.StandardPermission
 import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 import com.arttttt.permissions.impl.domain.store.PermissionsStore
-import com.arttttt.permissions.impl.domain.store.PermissionsStoreFactory
 import com.arttttt.permissions.impl.utils.PermissionsRequester
 import com.arttttt.permissions.impl.utils.PermissionsRequesterImpl
 import com.arttttt.permissions.impl.utils.handlers.IgnoreBatteryOptimizationsPermissionHandler
@@ -33,11 +32,10 @@ internal val permissionsModule = module {
         }
 
         scoped<PermissionsStore> {
-            PermissionsStoreFactory(
-                storeFactory = get(),
+            PermissionsStore(
                 repository = get(),
                 permissionsRequester = get(),
-            ).create()
+            )
         }
     }
 }

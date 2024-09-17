@@ -3,13 +3,13 @@ package com.arttttt.appslist.impl.data
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.arkivanov.mvikotlin.extensions.coroutines.states
-import com.arttttt.appslist.impl.domain.entity.ActivityInfo
-import com.arttttt.appslist.impl.domain.entity.AppInfo
-import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.api.AppsLauncherIntentHelper
+import com.arttttt.appslist.impl.domain.AppsLauncher
+import com.arttttt.appslist.impl.domain.entity.ActivityInfo
+import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
+import com.arttttt.simplemvi.utils.state
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first

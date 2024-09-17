@@ -104,12 +104,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation(libs.mviKotlin.core)
-    implementation(libs.mviKotlin.main)
-    implementation(libs.mviKotlin.logging)
-    implementation(libs.mviKotlin.timetravel)
-    implementation(libs.mviKotlin.coroutines)
-
     implementation(libs.flowext)
 
     implementation(libs.room.runtime)

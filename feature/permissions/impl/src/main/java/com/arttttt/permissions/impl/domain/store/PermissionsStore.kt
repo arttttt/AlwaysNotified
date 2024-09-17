@@ -1,10 +1,61 @@
 package com.arttttt.permissions.impl.domain.store
 
-import com.arkivanov.mvikotlin.core.store.Store
 import com.arttttt.permissions.impl.domain.entity.Permission2
+import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
+import com.arttttt.permissions.impl.utils.PermissionsRequester
+import com.arttttt.simplemvi.actor.ActorScope
+import com.arttttt.simplemvi.store.Store
+import com.arttttt.simplemvi.utils.actorDsl
+import com.arttttt.simplemvi.utils.createStore
+import com.arttttt.utils.exceptCancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-internal interface PermissionsStore : Store<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.Label> {
+internal class PermissionsStore(
+    repository: PermissionsRepository,
+    permissionsRequester: PermissionsRequester,
+) : Store<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.SideEffect> by createStore(
+    initialState = State(
+        isInProgress = false,
+        permissions = emptyMap(),
+    ),
+    initialIntents = listOf(Intent.GetRequestedPermissions),
+    actor = actorDsl(
+        coroutineContext = Dispatchers.Main.immediate,
+    ) {
+        onIntent<Intent.GetRequestedPermissions> {
+            getAndCheckPermissions(
+                repository = repository,
+            )
+        }
+
+        onIntent<Intent.RequestPermission> { intent ->
+            requestPermission(
+                permission = intent.permission,
+                permissionsRequester = permissionsRequester,
+                repository = repository,
+            )
+        }
+
+        onIntent<Intent.CheckPermissions> {
+            getAndCheckPermissions(
+                repository = repository,
+            )
+        }
+    }
+) {
+
+    sealed interface Intent {
+
+        data object GetRequestedPermissions : Intent
+
+        data class RequestPermission(
+            val permission: KClass<out Permission2>,
+        ) : Intent
+
+        data object CheckPermissions : Intent
+    }
 
     data class State(
         val isInProgress: Boolean,
@@ -28,31 +79,61 @@ internal interface PermissionsStore : Store<PermissionsStore.Intent, Permissions
             }
     }
 
-    sealed class Action {
+    sealed interface SideEffect {
 
-        data object GetRequestedPermissions : Action()
+        data object AllPermissionsGranted : SideEffect
     }
+}
 
-    sealed class Intent {
+private fun ActorScope<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.SideEffect>.requestPermission(
+    permission: KClass<out Permission2>,
+    permissionsRequester: PermissionsRequester,
+    repository: PermissionsRepository,
+) {
+    launch {
+        kotlin
+            .runCatching {
+                val permission = state
+                    .permissions
+                    .getValue(Permission2.Status.Denied)
+                    .getValue(permission)
 
-        data class RequestPermission(
-            val permission: KClass<out Permission2>,
-        ) : Intent()
+                permissionsRequester
+                    .requestPermission(permission)
+                    .takeIf { status -> status != Permission2.Status.Denied }!!
+            }
+            .onSuccess {
+                getAndCheckPermissions(
+                    repository = repository,
+                )
 
-        data object CheckPermissions : Intent()
+                val permissions = state.permissions[Permission2.Status.Denied]
+                if (permissions.isNullOrEmpty()) {
+                    sideEffect(PermissionsStore.SideEffect.AllPermissionsGranted)
+                }
+            }
+            .exceptCancellationException()
     }
+}
 
-    sealed class Message {
+private fun ActorScope<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.SideEffect>.getAndCheckPermissions(
+    repository: PermissionsRepository,
+) {
+    runCatching {
+        val permissions = repository
+            .getRequiredPermissions()
+            .groupBy { permission ->
+                repository.checkPermission(permission)
+            }
+            .mapValues { (_, value) ->
+                value.associateBy { it::class }
+            }
 
-        data object ProgressStarted : Message()
-        data object ProgressFinished : Message()
-        data class PermissionsReceived(
-            val permissions: Map<Permission2.Status, Map<KClass<out Permission2>, Permission2>>,
-        ) : Message()
+        reduce { state ->
+            state.copy(
+                permissions = permissions,
+            )
+        }
     }
-
-    sealed class Label {
-
-        data object AllPermissionsGranted : Label()
-    }
+        .exceptCancellationException()
 }

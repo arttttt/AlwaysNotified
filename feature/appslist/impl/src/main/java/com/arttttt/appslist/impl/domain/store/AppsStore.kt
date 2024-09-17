@@ -1,10 +1,74 @@
 package com.arttttt.appslist.impl.domain.store
 
-import com.arkivanov.mvikotlin.core.store.Store
 import com.arttttt.appslist.SelectedActivity
+import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
+import com.arttttt.appslist.impl.domain.repository.AppsRepository
+import com.arttttt.simplemvi.actor.ActorScope
+import com.arttttt.simplemvi.store.Store
+import com.arttttt.simplemvi.utils.actorDsl
+import com.arttttt.simplemvi.utils.createStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStore.Label> {
+internal class AppsStore(
+    private val appsRepository: AppsRepository,
+) : Store<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect> by createStore(
+    initialState = State(
+        applications = null,
+        selectedActivities = null,
+        isInProgress = false
+    ),
+    initialIntents = listOf(
+        Intent.GetInstalledApplications,
+    ),
+    actor = actorDsl(
+        coroutineContext = Dispatchers.Main.immediate,
+    ) {
+
+        onIntent<Intent.GetInstalledApplications> {
+            launch {
+                reduce { state ->
+                    state.copy(
+                        isInProgress = true,
+                    )
+                }
+
+                joinAll(
+                    launch { getInstalledApplications(appsRepository) },
+                    launch { getSelectedActivities(appsRepository) },
+                )
+            }
+                .invokeOnCompletion {
+                    reduce { state ->
+                        state.copy(
+                            isInProgress = false,
+                        )
+                    }
+                }
+        }
+
+        onIntent<Intent.SetSelectedActivity> { intent ->
+            setSelectedActivity(
+                pkg = intent.pkg,
+                selectedActivity = intent.selectedActivity,
+                appsRepository = appsRepository,
+            )
+        }
+    }
+) {
+
+    sealed interface Intent {
+
+        data object GetInstalledApplications : Intent
+
+        data class SetSelectedActivity(
+            val pkg: String,
+            val selectedActivity: SelectedActivity?,
+        ) : Intent
+    }
 
     data class State(
         val isInProgress: Boolean,
@@ -12,35 +76,92 @@ internal interface AppsStore : Store<AppsStore.Intent, AppsStore.State, AppsStor
         val selectedActivities: Map<String, SelectedActivity>?,
     )
 
-    sealed class Action {
+    sealed interface SideEffect {
 
-        data object GetInstalledApplications : Action()
+        data object ActivitiesChanged : SideEffect
+    }
+}
+
+private suspend fun ActorScope<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect>.getInstalledApplications(
+    appsRepository: AppsRepository,
+) {
+    val applications = withContext(Dispatchers.IO) {
+        appsRepository
+            .getInstalledApplications()
+            .map { info ->
+                info.copy(
+                    activities = info
+                        .activities
+                        .sortedBy(ActivityInfo::title)
+                        .toSet()
+                )
+            }
+            .sortedBy { info -> info.title }
+            .associateBy { info -> info.pkg }
     }
 
-    sealed class Intent {
-
-        data class SetSelectedActivity(
-            val pkg: String,
-            val selectedActivity: SelectedActivity?,
-        ) : Intent()
+    reduce { state ->
+        state.copy(
+            applications = applications,
+        )
     }
+}
 
-    sealed class Message {
+private suspend fun ActorScope<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect>.getSelectedActivities(
+    appsRepository: AppsRepository,
+) {
+    val selectedActivities = appsRepository
+        .getSelectedApps()
+        .associateBy { activity ->
+            activity.pkg
+        }
+        .mapValues { (pkg, value) ->
+            SelectedActivity(
+                pkg = pkg,
+                name = value.name,
+                manualMode = value.manualMode,
+            )
+        }
 
-        data class ApplicationsLoaded(
-            val applications: Map<String, AppInfo>
-        ) : Message()
-
-        data class SelectedActivitiesChanged(
-            val selectedActivities: Map<String, SelectedActivity>,
-        ) : Message()
-
-        data object ProgressStarted : Message()
-        data object ProgressFinished : Message()
+    reduce { state ->
+        state.copy(
+            selectedActivities = selectedActivities,
+        )
     }
+}
 
-    sealed class Label {
+private fun ActorScope<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect>.setSelectedActivity(
+    pkg: String,
+    selectedActivity: SelectedActivity?,
+    appsRepository: AppsRepository,
+) {
+    launch {
+        val selectedActivities =withContext(Dispatchers.IO) {
+            state
+                .selectedActivities
+                .let { activities ->
+                    val mutableActivities = activities?.toMutableMap() ?: mutableMapOf()
 
-        data object ActivitiesChanged : Label()
+                    if (selectedActivity == null) {
+                        if (mutableActivities.contains(pkg)) {
+                            appsRepository.removeActivity(mutableActivities.getValue(pkg))
+                        }
+                        mutableActivities.remove(pkg)
+                    } else {
+                        mutableActivities[pkg] = selectedActivity
+                        appsRepository.saveActivity(selectedActivity)
+                    }
+
+                    mutableActivities.toMap()
+                }
+        }
+
+        reduce { state ->
+            state.copy(
+                selectedActivities = selectedActivities,
+            )
+        }
+
+        sideEffect(AppsStore.SideEffect.ActivitiesChanged)
     }
 }

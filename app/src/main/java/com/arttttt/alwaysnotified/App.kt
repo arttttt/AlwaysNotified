@@ -1,7 +1,6 @@
 package com.arttttt.alwaysnotified
 
 import android.app.Application
-import com.arkivanov.mvikotlin.core.utils.isAssertOnMainThreadEnabled
 import com.arttttt.alwaysnotified.di.commonModule
 import com.arttttt.alwaysnotified.utils.timber.CrashReportingTree
 import com.arttttt.appslist.impl.di.appsListFeatureModule
@@ -24,8 +23,6 @@ class App : Application() {
                 printLogToConsole = BuildConfig.DEBUG
             )
         )
-
-        isAssertOnMainThreadEnabled = false
 
         startKoin {
             androidContext(this@App)

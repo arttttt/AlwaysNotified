@@ -43,11 +43,8 @@ dependencies {
     api(libs.essenty.instanceKeeper)
     api(libs.essenty.stateKeeper)
 
-    api(libs.mviKotlin.core)
-    api(libs.mviKotlin.main)
-    api(libs.mviKotlin.logging)
-    api(libs.mviKotlin.timetravel)
-    api(libs.mviKotlin.coroutines)
+    api(libs.arttttt.simplemvi.lib)
+    api(libs.arttttt.simplemvi.logging)
 
     api(libs.kotlinx.coroutines.core)
 
