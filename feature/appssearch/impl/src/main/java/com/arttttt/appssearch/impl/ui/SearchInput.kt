@@ -8,11 +8,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.TextFieldDecorator
-import androidx.compose.foundation.text2.input.clearText
-import androidx.compose.foundation.text2.input.rememberTextFieldState
-import androidx.compose.foundation.text2.input.textAsFlow
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.TextFieldDecorator
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -23,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -34,7 +34,6 @@ import com.arttttt.uikit.theme.AppTheme
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SearchInput(
     text: String,
@@ -62,7 +61,7 @@ internal fun SearchInput(
             initialText = text,
         )
 
-        BasicTextField2(
+        BasicTextField(
             modifier = Modifier.weight(1f),
             state = textState,
             textStyle = TextStyle.Default.copy(
@@ -79,8 +78,7 @@ internal fun SearchInput(
         )
 
         LaunchedEffect(textState) {
-            textState
-                .textAsFlow()
+            snapshotFlow { textState.text }
                 .onEach { text ->
                     currentOnTextChanged(text.toString())
                 }

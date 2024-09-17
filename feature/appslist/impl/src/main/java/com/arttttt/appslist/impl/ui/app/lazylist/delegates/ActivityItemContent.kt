@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -15,12 +16,14 @@ import com.arttttt.appslist.impl.ui.app.lazylist.models.ActivityListItem
 import com.arttttt.lazylist.dsl.lazyListDelegate
 import com.arttttt.uikit.theme.AppTheme
 
-internal fun ActivityListDelegate(
+@Composable
+internal fun ActivityItemContent(
+    modifier: Modifier,
+    item: ActivityListItem,
     onClick: (String) -> Unit,
-) = lazyListDelegate<ActivityListItem> {
+) {
     Row(
-        modifier = Modifier
-            .fillParentMaxWidth()
+        modifier = modifier
             .clickable {
                 onClick.invoke(item.name)
             }

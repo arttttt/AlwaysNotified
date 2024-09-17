@@ -35,15 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arttttt.appslist.impl.components.app.AppComponent
-import com.arttttt.appslist.impl.ui.app.lazylist.delegates.ActivityListDelegate
+import com.arttttt.appslist.impl.ui.app.lazylist.delegates.ActivityItemContent
+import com.arttttt.appslist.impl.ui.app.lazylist.models.ActivityListItem
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.dialog.DismissEvent
 import com.arttttt.lazylist.ListItem
-import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
 import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import kotlinx.collections.immutable.persistentListOf
 
 internal class AppContent(
     private val component: AppComponent
@@ -61,7 +60,7 @@ internal class AppContent(
             sheetState = rememberModalBottomSheetState(
                 skipPartiallyExpanded = true,
             ),
-            windowInsets = remember { WindowInsets(0, 0, 0 , 0) },
+            contentWindowInsets = { WindowInsets(0, 0, 0 , 0) },
             containerColor = AppTheme.colors.secondary,
             shape = AppTheme.shapes.roundedCorners.medium(
                 bottomStart = 0.dp,
@@ -197,18 +196,6 @@ internal class AppContent(
     ) {
         val hapticFeedback = LocalCorrectHapticFeedback.current
 
-        val lazyListDelegateManager = rememberLazyListDelegateManager(
-            delegates = persistentListOf(
-                ActivityListDelegate(
-                    onClick = { name ->
-                        hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
-                        onActivityClicked(name)
-                    },
-                ),
-            ),
-        )
-
-
         LazyColumn(
             modifier = modifier
                 .navigationBarsPadding()
@@ -221,13 +208,19 @@ internal class AppContent(
         ) {
             items(
                 items = items,
-                key = lazyListDelegateManager::getKey,
-                contentType = lazyListDelegateManager::getContentType
+                key = { item -> item.key },
+                contentType = { item -> item::class }
             ) { item ->
-                lazyListDelegateManager.Content(
-                    item = item,
-                    modifier = Modifier,
-                )
+                when (item) {
+                    is ActivityListItem -> ActivityItemContent(
+                        modifier = Modifier.fillParentMaxWidth(),
+                        item = item,
+                        onClick = { name ->
+                            hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
+                            onActivityClicked(name)
+                        },
+                    )
+                }
             }
         }
     }
