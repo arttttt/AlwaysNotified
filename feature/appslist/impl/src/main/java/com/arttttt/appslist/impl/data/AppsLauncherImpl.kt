@@ -9,7 +9,7 @@ import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
-import com.arttttt.simplemvi.utils.state
+import com.arttttt.simplemvi.store.state
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first

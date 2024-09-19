@@ -5,9 +5,10 @@ import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.simplemvi.actor.ActorScope
+import com.arttttt.simplemvi.actor.dsl.DslActorScope
+import com.arttttt.simplemvi.actor.dsl.actorDsl
 import com.arttttt.simplemvi.store.Store
-import com.arttttt.simplemvi.utils.actorDsl
-import com.arttttt.simplemvi.utils.createStore
+import com.arttttt.simplemvi.store.createStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -30,8 +31,8 @@ internal class AppsStore(
 
         onIntent<Intent.GetInstalledApplications> {
             launch {
-                reduce { state ->
-                    state.copy(
+                reduce {
+                    copy(
                         isInProgress = true,
                     )
                 }
@@ -42,8 +43,8 @@ internal class AppsStore(
                 )
             }
                 .invokeOnCompletion {
-                    reduce { state ->
-                        state.copy(
+                    reduce {
+                        copy(
                             isInProgress = false,
                         )
                     }
@@ -100,8 +101,8 @@ private suspend fun ActorScope<AppsStore.Intent, AppsStore.State, AppsStore.Side
             .associateBy { info -> info.pkg }
     }
 
-    reduce { state ->
-        state.copy(
+    reduce {
+        copy(
             applications = applications,
         )
     }
@@ -123,14 +124,14 @@ private suspend fun ActorScope<AppsStore.Intent, AppsStore.State, AppsStore.Side
             )
         }
 
-    reduce { state ->
-        state.copy(
+    reduce {
+        copy(
             selectedActivities = selectedActivities,
         )
     }
 }
 
-private fun ActorScope<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect>.setSelectedActivity(
+private fun DslActorScope<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect>.setSelectedActivity(
     pkg: String,
     selectedActivity: SelectedActivity?,
     appsRepository: AppsRepository,
@@ -156,8 +157,8 @@ private fun ActorScope<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect>.
                 }
         }
 
-        reduce { state ->
-            state.copy(
+        reduce {
+            copy(
                 selectedActivities = selectedActivities,
             )
         }

@@ -3,10 +3,10 @@ package com.arttttt.permissions.impl.domain.store
 import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 import com.arttttt.permissions.impl.utils.PermissionsRequester
-import com.arttttt.simplemvi.actor.ActorScope
+import com.arttttt.simplemvi.actor.dsl.DslActorScope
+import com.arttttt.simplemvi.actor.dsl.actorDsl
 import com.arttttt.simplemvi.store.Store
-import com.arttttt.simplemvi.utils.actorDsl
-import com.arttttt.simplemvi.utils.createStore
+import com.arttttt.simplemvi.store.createStore
 import com.arttttt.utils.exceptCancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -85,7 +85,7 @@ internal class PermissionsStore(
     }
 }
 
-private fun ActorScope<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.SideEffect>.requestPermission(
+private fun DslActorScope<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.SideEffect>.requestPermission(
     permission: KClass<out Permission2>,
     permissionsRequester: PermissionsRequester,
     repository: PermissionsRepository,
@@ -116,7 +116,7 @@ private fun ActorScope<PermissionsStore.Intent, PermissionsStore.State, Permissi
     }
 }
 
-private fun ActorScope<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.SideEffect>.getAndCheckPermissions(
+private fun DslActorScope<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.SideEffect>.getAndCheckPermissions(
     repository: PermissionsRepository,
 ) {
     runCatching {
@@ -129,8 +129,8 @@ private fun ActorScope<PermissionsStore.Intent, PermissionsStore.State, Permissi
                 value.associateBy { it::class }
             }
 
-        reduce { state ->
-            state.copy(
+        reduce {
+            copy(
                 permissions = permissions,
             )
         }
