@@ -21,9 +21,7 @@ internal class PermissionsStore(
         permissions = emptyMap(),
     ),
     initialIntents = listOf(Intent.GetRequestedPermissions),
-    actor = actorDsl(
-        coroutineContext = Dispatchers.Main.immediate,
-    ) {
+    actor = actorDsl {
         onIntent<Intent.GetRequestedPermissions> {
             getAndCheckPermissions(
                 repository = repository,

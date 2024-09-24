@@ -25,9 +25,7 @@ internal class AppsStore(
     initialIntents = listOf(
         Intent.GetInstalledApplications,
     ),
-    actor = actorDsl(
-        coroutineContext = Dispatchers.Main.immediate,
-    ) {
+    actor = actorDsl {
 
         onIntent<Intent.GetInstalledApplications> {
             launch {
