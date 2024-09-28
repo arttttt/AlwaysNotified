@@ -25,7 +25,6 @@ import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.slotComponentEvents
 import com.arttttt.core.arch.slotDismissEvents
-import com.arttttt.simplemvi.store.state
 import com.arttttt.topbar.api.TopBarComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
