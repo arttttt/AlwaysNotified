@@ -138,7 +138,7 @@ private fun DslActorScope<AppsStore.Intent, AppsStore.State, AppsStore.SideEffec
     appsRepository: AppsRepository,
 ) {
     launch {
-        val selectedActivities =withContext(Dispatchers.IO) {
+        val selectedActivities = withContext(Dispatchers.IO) {
             state
                 .selectedActivities
                 .let { activities ->
