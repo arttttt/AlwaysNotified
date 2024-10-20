@@ -5,10 +5,10 @@ import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 import com.arttttt.permissions.impl.utils.PermissionsRequester
 import com.arttttt.simplemvi.actor.dsl.DslActorScope
 import com.arttttt.simplemvi.actor.dsl.actorDsl
+import com.arttttt.simplemvi.logging.loggingActor
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
 import com.arttttt.utils.exceptCancellationException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
@@ -21,27 +21,30 @@ internal class PermissionsStore(
         permissions = emptyMap(),
     ),
     initialIntents = listOf(Intent.GetRequestedPermissions),
-    actor = actorDsl {
-        onIntent<Intent.GetRequestedPermissions> {
-            getAndCheckPermissions(
-                repository = repository,
-            )
-        }
+    actor = loggingActor(
+        name = PermissionsStore::class.simpleName,
+        delegate = actorDsl {
+            onIntent<Intent.GetRequestedPermissions> {
+                getAndCheckPermissions(
+                    repository = repository,
+                )
+            }
 
-        onIntent<Intent.RequestPermission> { intent ->
-            requestPermission(
-                permission = intent.permission,
-                permissionsRequester = permissionsRequester,
-                repository = repository,
-            )
-        }
+            onIntent<Intent.RequestPermission> { intent ->
+                requestPermission(
+                    permission = intent.permission,
+                    permissionsRequester = permissionsRequester,
+                    repository = repository,
+                )
+            }
 
-        onIntent<Intent.CheckPermissions> {
-            getAndCheckPermissions(
-                repository = repository,
-            )
-        }
-    }
+            onIntent<Intent.CheckPermissions> {
+                getAndCheckPermissions(
+                    repository = repository,
+                )
+            }
+        },
+    )
 ) {
 
     sealed interface Intent {

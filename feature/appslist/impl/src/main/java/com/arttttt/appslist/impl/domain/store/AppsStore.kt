@@ -7,6 +7,7 @@ import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.simplemvi.actor.ActorScope
 import com.arttttt.simplemvi.actor.dsl.DslActorScope
 import com.arttttt.simplemvi.actor.dsl.actorDsl
+import com.arttttt.simplemvi.logging.loggingActor
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
 import kotlinx.coroutines.Dispatchers
@@ -25,38 +26,40 @@ internal class AppsStore(
     initialIntents = listOf(
         Intent.GetInstalledApplications,
     ),
-    actor = actorDsl {
-
-        onIntent<Intent.GetInstalledApplications> {
-            launch {
-                reduce {
-                    copy(
-                        isInProgress = true,
-                    )
-                }
-
-                joinAll(
-                    launch { getInstalledApplications(appsRepository) },
-                    launch { getSelectedActivities(appsRepository) },
-                )
-            }
-                .invokeOnCompletion {
+    actor = loggingActor(
+        name = AppsStore::class.simpleName,
+        delegate = actorDsl {
+            onIntent<Intent.GetInstalledApplications> {
+                launch {
                     reduce {
                         copy(
-                            isInProgress = false,
+                            isInProgress = true,
                         )
                     }
-                }
-        }
 
-        onIntent<Intent.SetSelectedActivity> { intent ->
-            setSelectedActivity(
-                pkg = intent.pkg,
-                selectedActivity = intent.selectedActivity,
-                appsRepository = appsRepository,
-            )
-        }
-    }
+                    joinAll(
+                        launch { getInstalledApplications(appsRepository) },
+                        launch { getSelectedActivities(appsRepository) },
+                    )
+                }
+                    .invokeOnCompletion {
+                        reduce {
+                            copy(
+                                isInProgress = false,
+                            )
+                        }
+                    }
+            }
+
+            onIntent<Intent.SetSelectedActivity> { intent ->
+                setSelectedActivity(
+                    pkg = intent.pkg,
+                    selectedActivity = intent.selectedActivity,
+                    appsRepository = appsRepository,
+                )
+            }
+        },
+    )
 ) {
 
     sealed interface Intent {
