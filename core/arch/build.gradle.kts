@@ -44,7 +44,6 @@ dependencies {
     api(libs.essenty.stateKeeper)
 
     api(libs.arttttt.simplemvi.lib)
-    api(libs.arttttt.simplemvi.logging)
 
     api(libs.kotlinx.coroutines.core)
 

@@ -5,9 +5,9 @@ import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 import com.arttttt.permissions.impl.utils.PermissionsRequester
 import com.arttttt.simplemvi.actor.dsl.DslActorScope
 import com.arttttt.simplemvi.actor.dsl.actorDsl
-import com.arttttt.simplemvi.logging.loggingActor
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
+import com.arttttt.simplemvi.store.storeName
 import com.arttttt.utils.exceptCancellationException
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
@@ -16,14 +16,13 @@ internal class PermissionsStore(
     repository: PermissionsRepository,
     permissionsRequester: PermissionsRequester,
 ) : Store<PermissionsStore.Intent, PermissionsStore.State, PermissionsStore.SideEffect> by createStore(
+    name = storeName<PermissionsStore>(),
     initialState = State(
         isInProgress = false,
         permissions = emptyMap(),
     ),
     initialIntents = listOf(Intent.GetRequestedPermissions),
-    actor = loggingActor(
-        name = PermissionsStore::class.simpleName,
-        delegate = actorDsl {
+    actor = actorDsl {
             onIntent<Intent.GetRequestedPermissions> {
                 getAndCheckPermissions(
                     repository = repository,
@@ -44,7 +43,6 @@ internal class PermissionsStore(
                 )
             }
         },
-    )
 ) {
 
     sealed interface Intent {

@@ -7,9 +7,9 @@ import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.simplemvi.actor.ActorScope
 import com.arttttt.simplemvi.actor.dsl.DslActorScope
 import com.arttttt.simplemvi.actor.dsl.actorDsl
-import com.arttttt.simplemvi.logging.loggingActor
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
+import com.arttttt.simplemvi.store.storeName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 internal class AppsStore(
     private val appsRepository: AppsRepository,
 ) : Store<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect> by createStore(
+    name = storeName<AppsStore>(),
     initialState = State(
         applications = null,
         selectedActivities = null,
@@ -26,9 +27,7 @@ internal class AppsStore(
     initialIntents = listOf(
         Intent.GetInstalledApplications,
     ),
-    actor = loggingActor(
-        name = AppsStore::class.simpleName,
-        delegate = actorDsl {
+    actor = actorDsl {
             onIntent<Intent.GetInstalledApplications> {
                 launch {
                     reduce {
@@ -59,7 +58,6 @@ internal class AppsStore(
                 )
             }
         },
-    )
 ) {
 
     sealed interface Intent {
