@@ -6,6 +6,7 @@ import com.arttttt.alwaysnotified.utils.timber.CrashReportingTree
 import com.arttttt.appslist.impl.di.appsListFeatureModule
 import com.arttttt.appssearch.impl.di.appsSearchFeatureModule
 import com.arttttt.permissions.impl.di.permissionsFeatureModule
+import com.arttttt.simplemvi.logging.setDefaultLogger
 import com.arttttt.topbar.impl.di.topBarFeatureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -17,6 +18,10 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (!BuildConfig.DEBUG) {
+            setDefaultLogger(null)
+        }
 
         Timber.plant(
             CrashReportingTree(
