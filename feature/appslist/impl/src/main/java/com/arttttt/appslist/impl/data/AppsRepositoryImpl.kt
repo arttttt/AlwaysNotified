@@ -47,7 +47,6 @@ internal class AppsRepositoryImpl(
                     AppInfo(
                         title = title.toString(),
                         pkg = info.packageName,
-                        isExpanded = false,
                         activities = activities
                             .filter { activityInfo -> activityInfo.exported && activityInfo.enabled }
                             .map { activityInfo ->

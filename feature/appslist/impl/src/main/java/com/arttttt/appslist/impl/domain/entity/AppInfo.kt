@@ -7,5 +7,4 @@ internal data class AppInfo(
     val title: String,
     val pkg: String,
     val activities: Set<ActivityInfo>,
-    val isExpanded: Boolean,
 )
