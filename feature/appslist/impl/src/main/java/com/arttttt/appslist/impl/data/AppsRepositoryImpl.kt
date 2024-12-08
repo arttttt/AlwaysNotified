@@ -77,6 +77,7 @@ internal class AppsRepositoryImpl(
                 .services
                 ?.mapTo(this) { serviceInfo ->
                     AppInfo.Component.Service(
+                        title = serviceInfo.name.substringAfterLast("."),
                         name = serviceInfo.name,
                         pkg = serviceInfo.packageName,
                     )
@@ -86,6 +87,7 @@ internal class AppsRepositoryImpl(
                 .receivers
                 ?.mapTo(this) { receiverInfo ->
                     AppInfo.Component.BroadcastReceiver(
+                        title = receiverInfo.name.substringAfterLast("."),
                         name = receiverInfo.name,
                         pkg = receiverInfo.packageName,
                     )
@@ -95,6 +97,7 @@ internal class AppsRepositoryImpl(
                 .providers
                 ?.mapTo(this) { providerInfo ->
                     AppInfo.Component.ContentProvider(
+                        title = providerInfo.name.substringAfterLast("."),
                         name = providerInfo.name,
                         pkg = providerInfo.packageName,
                     )

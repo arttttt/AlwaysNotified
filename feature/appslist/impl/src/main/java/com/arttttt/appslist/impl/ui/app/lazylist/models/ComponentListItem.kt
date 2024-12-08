@@ -2,10 +2,10 @@ package com.arttttt.appslist.impl.ui.app.lazylist.models
 
 import com.arttttt.lazylist.ListItem
 
-internal data class ActivityListItem(
+internal data class ComponentListItem(
     val pkg: String,
     val title: String,
     val name: String,
-    val isSelected: Boolean,
-    override val key: Any
-) : ListItem
+) : ListItem {
+    override val key: Any = "${pkg}_$name"
+}

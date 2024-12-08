@@ -29,14 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.HapticFeedbackConstantsCompat
 import com.arttttt.appslist.impl.components.app.AppComponent
-import com.arttttt.appslist.impl.ui.app.lazylist.delegates.ActivityItemContent
-import com.arttttt.appslist.impl.ui.app.lazylist.models.ActivityListItem
+import com.arttttt.appslist.impl.ui.app.lazylist.delegates.ComponentItemContent
+import com.arttttt.appslist.impl.ui.app.lazylist.delegates.SectionTitleContent
+import com.arttttt.appslist.impl.ui.app.lazylist.models.ComponentListItem
+import com.arttttt.appslist.impl.ui.app.lazylist.models.SectionTitleListItem
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.dialog.DismissEvent
 import com.arttttt.lazylist.ListItem
-import com.arttttt.uikit.LocalCorrectHapticFeedback
 import com.arttttt.uikit.theme.AppTheme
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
@@ -77,7 +77,6 @@ internal class AppContent(
                         fill = false,
                     ),
                     items = uiState.items,
-                    onActivityClicked = component::onActivityClicked,
                 )
             }
         }
@@ -121,10 +120,7 @@ internal class AppContent(
     private fun ActivitiesList(
         modifier: Modifier,
         items: List<ListItem>,
-        onActivityClicked: (String) -> Unit,
     ) {
-        val hapticFeedback = LocalCorrectHapticFeedback.current
-
         LazyColumn(
             modifier = modifier
                 .navigationBarsPadding()
@@ -141,13 +137,13 @@ internal class AppContent(
                 contentType = { item -> item::class }
             ) { item ->
                 when (item) {
-                    is ActivityListItem -> ActivityItemContent(
+                    is ComponentListItem -> ComponentItemContent(
                         modifier = Modifier.fillParentMaxWidth(),
-                        item = item,
-                        onClick = { name ->
-                            hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
-                            onActivityClicked(name)
-                        },
+                        title = item.title,
+                    )
+                    is SectionTitleListItem -> SectionTitleContent(
+                        modifier = Modifier.fillParentMaxWidth(),
+                        text = item.title,
                     )
                 }
             }
