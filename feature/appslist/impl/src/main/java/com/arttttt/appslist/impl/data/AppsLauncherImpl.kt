@@ -6,13 +6,10 @@ import android.content.Intent
 import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.api.AppsLauncherIntentHelper
 import com.arttttt.appslist.impl.domain.AppsLauncher
-import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
 
 internal class AppsLauncherImpl(
     private val context: Context,
@@ -75,7 +72,9 @@ internal class AppsLauncherImpl(
         selectedActivities: Map<String, SelectedActivity>,
         isAppSelected: (String) -> Boolean,
     ): ArrayList<Intent> {
-        return withContext(Dispatchers.IO) {
+        return ArrayList()
+
+        /*return withContext(Dispatchers.IO) {
             val activities = applications.fold(mutableListOf<ActivityInfo>()) { acc, appInfo ->
                 appInfo
                     .takeIf { isAppSelected.invoke(appInfo.pkg) }
@@ -115,7 +114,7 @@ internal class AppsLauncherImpl(
                     }
                 }
             )
-        }
+        }*/
     }
 
     private fun Context.getHolderIntent(payload: ArrayList<Intent>): Intent {

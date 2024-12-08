@@ -6,10 +6,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import com.arttttt.database.dao.ProfilesDao
-import com.arttttt.appslist.impl.domain.entity.ActivityInfo
-import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.SelectedActivity
-import com.arttttt.appslist.impl.domain.entity.AppInfo2
+import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.database.model.ActivityDbModel
 
@@ -17,50 +15,6 @@ internal class AppsRepositoryImpl(
     private val context: Context,
     private val profilesDao: ProfilesDao,
 ) : AppsRepository {
-
-    @SuppressLint("QueryPermissionsNeeded")
-    override suspend fun getInstalledApplications(): List<AppInfo> {
-        val pm = context.packageManager
-
-        return pm
-            .getInstalledPackages(PackageManager.PackageInfoFlags.of(0))
-            .mapNotNull { info ->
-                val title = pm.getApplicationLabel(info.applicationInfo)
-                val activities = kotlin
-                    .runCatching {
-                        pm
-                            .getPackageInfo(
-                                info.packageName,
-                                PackageManager.PackageInfoFlags.of(
-                                    PackageManager.GET_ACTIVITIES.toLong(),
-                                )
-                            )
-                            .activities
-                    }
-                    .getOrNull()
-                    ?.takeIf { activities -> activities.isNotEmpty() }
-                    ?: return@mapNotNull null
-
-                if (title.isEmpty() || info.isSystemPackage || !info.applicationInfo.enabled || info.packageName == context.packageName) {
-                    null
-                } else {
-                    AppInfo(
-                        title = title.toString(),
-                        pkg = info.packageName,
-                        activities = activities
-                            .filter { activityInfo -> activityInfo.exported && activityInfo.enabled }
-                            .map { activityInfo ->
-                                ActivityInfo(
-                                    title = activityInfo.name.substringAfterLast('.'),
-                                    name = activityInfo.name,
-                                    pkg = info.packageName,
-                                )
-                            }
-                            .toSet(),
-                    )
-                }
-            }
-    }
 
     override suspend fun getSelectedApps(): List<SelectedActivity> {
         return profilesDao
@@ -91,7 +45,7 @@ internal class AppsRepositoryImpl(
     }
 
     @SuppressLint("QueryPermissionsNeeded")
-    override suspend fun getInstalledApplications2(): List<AppInfo2> {
+    override suspend fun getInstalledApplications(): List<AppInfo> {
         val pm = context.packageManager
 
         return pm
@@ -108,7 +62,7 @@ internal class AppsRepositoryImpl(
                 if (title.isEmpty() || info.isSystemPackage || !info.applicationInfo.enabled || info.packageName == context.packageName) {
                     null
                 } else {
-                    AppInfo2(
+                    AppInfo(
                         title = title.toString(),
                         pkg = info.packageName,
                         components = info.getComponents(),
@@ -117,12 +71,12 @@ internal class AppsRepositoryImpl(
             }
     }
 
-    private fun PackageInfo.getComponents(): List<AppInfo2.Component> {
+    private fun PackageInfo.getComponents(): List<AppInfo.Component> {
         return buildList {
             this@getComponents
                 .services
                 ?.mapTo(this) { serviceInfo ->
-                    AppInfo2.Component.Service(
+                    AppInfo.Component.Service(
                         name = serviceInfo.name,
                         pkg = serviceInfo.packageName,
                     )
@@ -131,7 +85,7 @@ internal class AppsRepositoryImpl(
             this@getComponents
                 .receivers
                 ?.mapTo(this) { receiverInfo ->
-                    AppInfo2.Component.BroadcastReceiver(
+                    AppInfo.Component.BroadcastReceiver(
                         name = receiverInfo.name,
                         pkg = receiverInfo.packageName,
                     )
@@ -140,7 +94,7 @@ internal class AppsRepositoryImpl(
             this@getComponents
                 .providers
                 ?.mapTo(this) { providerInfo ->
-                    AppInfo2.Component.ContentProvider(
+                    AppInfo.Component.ContentProvider(
                         name = providerInfo.name,
                         pkg = providerInfo.packageName,
                     )

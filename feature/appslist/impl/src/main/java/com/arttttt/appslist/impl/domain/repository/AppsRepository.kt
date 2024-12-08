@@ -1,12 +1,9 @@
 package com.arttttt.appslist.impl.domain.repository
 
-import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.SelectedActivity
-import com.arttttt.appslist.impl.domain.entity.AppInfo2
+import com.arttttt.appslist.impl.domain.entity.AppInfo
 
 internal interface AppsRepository {
-
-    suspend fun getInstalledApplications(): List<AppInfo>
 
     suspend fun getSelectedApps(): List<SelectedActivity>
 
@@ -14,5 +11,5 @@ internal interface AppsRepository {
 
     suspend fun removeActivity(activity: SelectedActivity)
 
-    suspend fun getInstalledApplications2(): List<AppInfo2>
+    suspend fun getInstalledApplications(): List<AppInfo>
 }

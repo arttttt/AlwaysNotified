@@ -1,7 +1,6 @@
 package com.arttttt.appslist.impl.domain.store
 
 import com.arttttt.appslist.SelectedActivity
-import com.arttttt.appslist.impl.domain.entity.ActivityInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.simplemvi.actor.DefaultActor
 import kotlinx.coroutines.Dispatchers
@@ -48,14 +47,6 @@ internal class AppsStoreActor(
         val applications = withContext(Dispatchers.IO) {
             appsRepository
                 .getInstalledApplications()
-                .map { info ->
-                    info.copy(
-                        activities = info
-                            .activities
-                            .sortedBy(ActivityInfo::title)
-                            .toSet()
-                    )
-                }
                 .sortedBy { info -> info.title }
                 .associateBy { info -> info.pkg }
         }

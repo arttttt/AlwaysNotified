@@ -71,13 +71,15 @@ internal class AppsListTransformer(
     private fun AppsStore.State.getSelectedActivityTitle(pkg: String): String? {
         val selectedActivity = selectedActivities?.get(pkg) ?: return null
 
-        return applications
+        return null
+
+/*        return applications
             ?.get(pkg)
             ?.activities
             ?.find { activity ->
                 activity.name == selectedActivity.name
             }
-            ?.title
+            ?.title*/
     }
 
     private fun clipBottom(
