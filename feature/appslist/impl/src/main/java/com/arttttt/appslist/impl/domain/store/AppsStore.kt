@@ -1,6 +1,5 @@
 package com.arttttt.appslist.impl.domain.store
 
-import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.simplemvi.store.Store
@@ -13,7 +12,6 @@ internal class AppsStore(
     name = storeName<AppsStore>(),
     initialState = State(
         applications = null,
-        selectedActivities = null,
         isInProgress = false
     ),
     actor = AppsStoreActor(
@@ -21,18 +19,11 @@ internal class AppsStore(
     )
 ) {
 
-    sealed interface Intent {
-
-        data class SetSelectedActivity(
-            val pkg: String,
-            val selectedActivity: SelectedActivity?,
-        ) : Intent
-    }
+    sealed interface Intent
 
     data class State(
         val isInProgress: Boolean,
         val applications: Map<String, AppInfo>?,
-        val selectedActivities: Map<String, SelectedActivity>?,
     )
 
     sealed interface SideEffect {

@@ -5,44 +5,14 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import com.arttttt.database.dao.ProfilesDao
-import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
-import com.arttttt.database.model.ActivityDbModel
+import com.arttttt.database.dao.ProfilesDao
 
 internal class AppsRepositoryImpl(
     private val context: Context,
     private val profilesDao: ProfilesDao,
 ) : AppsRepository {
-
-    override suspend fun getSelectedApps(): List<SelectedActivity> {
-        return profilesDao
-            .getSelectedActivities()
-            .map { activity ->
-                SelectedActivity(
-                    pkg = activity.pkg,
-                    name = activity.activity,
-                    manualMode = activity.manualMode,
-                )
-            }
-    }
-
-    override suspend fun saveActivity(activity: SelectedActivity) {
-        profilesDao.insertActivities(
-            ActivityDbModel(
-                pkg = activity.pkg,
-                activity = activity.name,
-                manualMode = activity.manualMode,
-            )
-        )
-    }
-
-    override suspend fun removeActivity(activity: SelectedActivity) {
-        profilesDao.removeActivity(
-            pkg = activity.pkg,
-        )
-    }
 
     @SuppressLint("QueryPermissionsNeeded")
     override suspend fun getInstalledApplications(): List<AppInfo> {

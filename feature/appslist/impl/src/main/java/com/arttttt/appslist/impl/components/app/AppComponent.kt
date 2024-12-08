@@ -1,7 +1,6 @@
 package com.arttttt.appslist.impl.components.app
 
 import android.graphics.drawable.Drawable
-import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.content.ComponentContentOwner
@@ -23,7 +22,6 @@ internal interface AppComponent : DecomposeComponent,
         fun create(
             context: AppComponentContext,
             app: AppInfo,
-            selectedActivity: SelectedActivity?,
         ): AppComponent
     }
 
@@ -31,13 +29,11 @@ internal interface AppComponent : DecomposeComponent,
 
         data class EditingFinished(
             val pkg: String,
-            val selectedActivity: SelectedActivity?
         ) : Event
     }
 
     data class State(
         val app: AppInfo,
-        val selectedActivity: SelectedActivity?,
         val isDirty: Boolean,
     )
 

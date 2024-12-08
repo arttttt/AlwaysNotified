@@ -37,7 +37,7 @@ internal class AppsListTransformer(
             .filter { (_, app) ->
                 appsSearchState.needShowApp(
                     app = app,
-                    selectedApps = appsStoreState.selectedActivities?.keys ?: emptySet(),
+                    selectedApps = emptySet(),
                 )
             }
 
@@ -47,8 +47,6 @@ internal class AppsListTransformer(
                 initial = mutableListOf()
             ) { index, acc, (_, app) ->
                 acc += app.toListItem(
-                    isManualModeEnabled = appsStoreState.isManualModeEnabledForApp(app),
-                    selectedActivityTitle = appsStoreState.getSelectedActivityTitle(app.pkg),
                     clipTop = index == 0,
                     clipBottom = clipBottom(
                         index = index,
@@ -62,24 +60,6 @@ internal class AppsListTransformer(
 
                 acc
             }
-    }
-
-    private fun AppsStore.State.isManualModeEnabledForApp(app: AppInfo): Boolean {
-        return selectedActivities?.get(app.pkg)?.manualMode ?: false
-    }
-
-    private fun AppsStore.State.getSelectedActivityTitle(pkg: String): String? {
-        val selectedActivity = selectedActivities?.get(pkg) ?: return null
-
-        return null
-
-/*        return applications
-            ?.get(pkg)
-            ?.activities
-            ?.find { activity ->
-                activity.name == selectedActivity.name
-            }
-            ?.title*/
     }
 
     private fun clipBottom(
@@ -103,16 +83,12 @@ internal class AppsListTransformer(
     }
 
     private fun AppInfo.toListItem(
-        isManualModeEnabled: Boolean,
-        selectedActivityTitle: String?,
         clipTop: Boolean,
         clipBottom: Boolean,
     ): ListItem {
         return AppListItem(
             pkg = this.pkg,
             title = this.title,
-            isManualModeEnabled = isManualModeEnabled,
-            selectedActivityTitle = selectedActivityTitle,
             clipTop = clipTop,
             clipBottom = clipBottom,
             icon = resourcesProvider.getDrawable(this.pkg),
@@ -131,6 +107,6 @@ internal class AppsListTransformer(
 
     private val AppsStore.State.isStartButtonVisible: Boolean
         get() {
-            return !isInProgress && !applications.isNullOrEmpty() && !selectedActivities.isNullOrEmpty()
+            return !isInProgress && !applications.isNullOrEmpty()
         }
 }

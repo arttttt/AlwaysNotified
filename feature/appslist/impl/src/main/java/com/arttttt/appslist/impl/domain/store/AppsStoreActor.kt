@@ -1,6 +1,5 @@
 package com.arttttt.appslist.impl.domain.store
 
-import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.simplemvi.actor.DefaultActor
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +21,6 @@ internal class AppsStoreActor(
 
             joinAll(
                 launch { getInstalledApplications() },
-                launch { getSelectedActivities() },
             )
         }
             .invokeOnCompletion {
@@ -36,10 +34,7 @@ internal class AppsStoreActor(
 
     override fun handleIntent(intent: AppsStore.Intent) {
         when (intent) {
-            is AppsStore.Intent.SetSelectedActivity -> setSelectedActivity(
-                pkg = intent.pkg,
-                selectedActivity = intent.selectedActivity,
-            )
+            else -> {}
         }
     }
 
@@ -55,62 +50,6 @@ internal class AppsStoreActor(
             copy(
                 applications = applications,
             )
-        }
-    }
-
-    private suspend fun getSelectedActivities() {
-        val selectedActivities = appsRepository
-            .getSelectedApps()
-            .associateBy { activity ->
-                activity.pkg
-            }
-            .mapValues { (pkg, value) ->
-                SelectedActivity(
-                    pkg = pkg,
-                    name = value.name,
-                    manualMode = value.manualMode,
-                )
-            }
-
-        reduce {
-            copy(
-                selectedActivities = selectedActivities,
-            )
-        }
-    }
-
-    private fun setSelectedActivity(
-        pkg: String,
-        selectedActivity: SelectedActivity?,
-    ) {
-        scope.launch {
-            val selectedActivities = withContext(Dispatchers.IO) {
-                state
-                    .selectedActivities
-                    .let { activities ->
-                        val mutableActivities = activities?.toMutableMap() ?: mutableMapOf()
-
-                        if (selectedActivity == null) {
-                            if (mutableActivities.contains(pkg)) {
-                                appsRepository.removeActivity(mutableActivities.getValue(pkg))
-                            }
-                            mutableActivities.remove(pkg)
-                        } else {
-                            mutableActivities[pkg] = selectedActivity
-                            appsRepository.saveActivity(selectedActivity)
-                        }
-
-                        mutableActivities.toMap()
-                    }
-            }
-
-            reduce {
-                copy(
-                    selectedActivities = selectedActivities,
-                )
-            }
-
-            sideEffect(AppsStore.SideEffect.ActivitiesChanged)
         }
     }
 }

@@ -8,11 +8,9 @@ import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.api.AppsListComponent
 import com.arttttt.appslist.impl.components.app.AppComponent
 import com.arttttt.appslist.impl.components.appslist.di.appsListModule
-import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.appslist.impl.ui.appslist.AppsListContent
@@ -53,7 +51,6 @@ internal class AppsListComponentImpl(
         @Serializable
         data class App(
             val app: AppInfo,
-            val selectedActivity: SelectedActivity?,
         ) : DialogConfig
     }
 
@@ -64,7 +61,6 @@ internal class AppsListComponentImpl(
     )
 
     private val appsStore: AppsStore by koinScope.inject()
-    private val appsLauncher: AppsLauncher by koinScope.inject()
     private val transformer: AppsListTransformer by koinScope.inject()
 
     private val appComponentFactory: AppComponent.Factory by koinScope.inject()
@@ -120,44 +116,24 @@ internal class AppsListComponentImpl(
         slot
             .slotComponentEvents<AppComponent.Event>()
             .filterIsInstance<AppComponent.Event.EditingFinished>()
-            .onEach { event ->
-                handeAppEditingFinished(
-                    pkg = event.pkg,
-                    selectedActivity = event.selectedActivity,
-                )
-            }
+            .onEach { event -> }
             .launchIn(coroutineScope)
     }
 
     override fun startApps() {
-        coroutineScope.launch {
-            appsLauncher.launchApps()
-        }
+
     }
 
     override fun onAppClicked(pkg: String) {
         slotNavigation.activate(
             DialogConfig.App(
                 app = appsStore.state.applications!!.getValue(pkg),
-                selectedActivity = appsStore.state.selectedActivities?.get(pkg),
             )
         )
     }
 
     override fun openSettings() {
         dispatch(AppsListComponent.Event.OpenSettings)
-    }
-
-    private fun handeAppEditingFinished(
-        pkg: String,
-        selectedActivity: SelectedActivity?,
-    ) {
-        appsStore.accept(
-            AppsStore.Intent.SetSelectedActivity(
-                pkg = pkg,
-                selectedActivity = selectedActivity,
-            )
-        )
     }
 
     private fun createDialog(
@@ -173,7 +149,6 @@ internal class AppsListComponentImpl(
             is DialogConfig.App -> appComponentFactory.create(
                 context = wrappedContext,
                 app = config.app,
-                selectedActivity = config.selectedActivity,
             )
         }
     }

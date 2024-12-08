@@ -1,9 +1,7 @@
 package com.arttttt.appslist.impl.components.app
 
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arttttt.appslist.SelectedActivity
 import com.arttttt.appslist.impl.components.app.di.appModule
-import com.arttttt.appslist.impl.domain.AppsLauncher
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.ui.app.AppContent
 import com.arttttt.core.arch.content.ComponentContent
@@ -29,7 +27,6 @@ import org.koin.core.qualifier.qualifier
 internal class AppComponentImpl(
     context: AppComponentContext,
     app: AppInfo,
-    selectedActivity: SelectedActivity?,
     private val dismissEventDelegate: DismissEventDelegate = DismissEventDelegate(),
 ) : AppComponent,
     AppComponentContext by context,
@@ -46,14 +43,12 @@ internal class AppComponentImpl(
     private val coroutineScope = coroutineScope()
 
     private val transformer: AppTransformer = koinScope.get()
-    private val appsLauncher: AppsLauncher by koinScope.inject()
 
     override val content: ComponentContent = AppContent(this)
 
     private val states = MutableStateFlow(
         AppComponent.State(
             app = app,
-            selectedActivity = selectedActivity,
             isDirty = false,
         )
     )
@@ -70,15 +65,6 @@ internal class AppComponentImpl(
     override fun onActivityClicked(name: String) {
         states.update { state ->
             state.copy(
-                selectedActivity = name
-                    .takeIf { state.selectedActivity?.name != name }
-                    ?.let { name ->
-                        SelectedActivity(
-                            pkg = state.app.pkg,
-                            name = name,
-                            manualMode = state.selectedActivity?.manualMode ?: false,
-                        )
-                    },
                 isDirty = true,
             )
         }
@@ -87,9 +73,6 @@ internal class AppComponentImpl(
     override fun onManualModeChanged() {
         states.update { state ->
             state.copy(
-                selectedActivity = state.selectedActivity?.copy(
-                    manualMode = !state.selectedActivity.manualMode,
-                ),
                 isDirty = true,
             )
         }
@@ -100,7 +83,6 @@ internal class AppComponentImpl(
             dispatch(
                 AppComponent.Event.EditingFinished(
                     pkg = states.value.app.pkg,
-                    selectedActivity = states.value.selectedActivity,
                 )
             )
         }
@@ -109,8 +91,5 @@ internal class AppComponentImpl(
     }
 
     override fun onLaunchClicked() {
-        appsLauncher.launchApp(
-            activity = states.value.selectedActivity ?: return
-        )
     }
 }
