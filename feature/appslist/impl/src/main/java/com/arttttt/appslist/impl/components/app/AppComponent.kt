@@ -44,10 +44,7 @@ internal interface AppComponent : DecomposeComponent,
     data class UIState(
         val title: String,
         val icon: Drawable?,
-        val isManualModeAvailable: Boolean,
-        val manualModeEnabled: Boolean,
         val items: List<ListItem>,
-        val isLaunchButtonEnabled: Boolean,
     )
 
     val uiStates: StateFlow<UIState>

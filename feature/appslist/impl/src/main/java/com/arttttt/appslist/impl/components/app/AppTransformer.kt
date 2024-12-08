@@ -16,23 +16,12 @@ internal class AppTransformer(
         return AppComponent.UIState(
             title = state.app.title,
             icon = resourcesProvider.getDrawable(state.app.pkg),
-            isManualModeAvailable = state.isManualModeForAppAvailable(),
-            manualModeEnabled = state.isManualModeEnabled(),
-            isLaunchButtonEnabled = state.selectedActivity != null,
             items = emptyList()/*state.app.activities.map { activityInfo ->
                 activityInfo.toListItem(
                     isSelected = state.selectedActivity?.name == activityInfo.name,
                 )
             }*/,
         )
-    }
-
-    private fun AppComponent.State.isManualModeForAppAvailable(): Boolean {
-        return selectedActivity !=null
-    }
-
-    private fun AppComponent.State.isManualModeEnabled(): Boolean {
-        return selectedActivity?.manualMode == true
     }
 
     private fun ActivityInfo.toListItem(

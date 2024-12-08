@@ -2,7 +2,6 @@ package com.arttttt.appslist.impl.ui.app
 
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,11 +16,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -75,12 +71,6 @@ internal class AppContent(
                     icon = uiState.icon,
                 )
 
-                ManualMode(
-                    manualModeAvailable = uiState.isManualModeAvailable,
-                    manualModeEnabled = uiState.manualModeEnabled,
-                    onManualModeChanged = component::onManualModeChanged,
-                )
-
                 ActivitiesList(
                     modifier = Modifier.weight(
                         weight = 1f,
@@ -89,20 +79,6 @@ internal class AppContent(
                     items = uiState.items,
                     onActivityClicked = component::onActivityClicked,
                 )
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 8.dp,
-                        ),
-                    colors = AppTheme.widgets.buttonColors,
-                    enabled = uiState.isLaunchButtonEnabled,
-                    onClick = component::onLaunchClicked,
-                ) {
-                    Text("Launch Activity")
-                }
             }
         }
     }
@@ -137,53 +113,6 @@ internal class AppContent(
             Text(
                 text = title,
                 fontSize = 18.sp,
-            )
-        }
-    }
-
-    @Composable
-    private fun ManualMode(
-        manualModeAvailable: Boolean,
-        manualModeEnabled: Boolean,
-        onManualModeChanged: () -> Unit,
-    ) {
-        val hapticFeedback = LocalCorrectHapticFeedback.current
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(
-                    enabled = manualModeAvailable,
-                ) {
-                    hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
-                    onManualModeChanged()
-                }
-                .padding(
-                    horizontal = 16.dp,
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.weight(1f),
-                text = "Manual mode",
-                fontSize = 18.sp,
-                color = if (manualModeAvailable) {
-                    LocalContentColor.current
-                } else {
-                    LocalContentColor.current.copy(
-                        alpha = 0.38f,
-                    )
-                }
-            )
-
-            Switch(
-                enabled = manualModeAvailable,
-                checked = manualModeEnabled,
-                onCheckedChange = {
-                    hapticFeedback.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
-                    onManualModeChanged()
-                },
-                colors = AppTheme.widgets.switchColors,
             )
         }
     }
