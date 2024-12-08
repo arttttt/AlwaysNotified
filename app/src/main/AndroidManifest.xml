@@ -34,24 +34,6 @@
 
         </activity>
 
-        <activity
-            android:name=".ProtectorActivity"
-            android:exported="false"
-            android:taskAffinity=":holder"
-            android:theme="@style/Theme.AlwaysNotified.Protector"/>
-
-        <activity
-            android:name=".HolderActivity"
-            android:exported="false"
-            android:relinquishTaskIdentity="true"
-            android:taskAffinity=":holder"
-            android:theme="@style/Theme.AlwaysNotified" />
-
-        <service
-            android:name=".AppStartupService"
-            android:foregroundServiceType="specialUse"
-            android:exported="false" />
-
     </application>
 
 </manifest>
