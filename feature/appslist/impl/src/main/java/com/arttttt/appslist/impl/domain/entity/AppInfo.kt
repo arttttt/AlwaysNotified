@@ -34,6 +34,7 @@ data class AppInfo(
             override val title: String,
             override val name: String,
             override val pkg: String,
+            val authority: String?,
         ) : Component
     }
 }

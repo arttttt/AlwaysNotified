@@ -45,32 +45,45 @@ internal class AppsRepositoryImpl(
         return buildList {
             this@getComponents
                 .services
-                ?.mapTo(this) { serviceInfo ->
-                    AppInfo.Component.Service(
-                        title = serviceInfo.name.substringAfterLast("."),
-                        name = serviceInfo.name,
-                        pkg = serviceInfo.packageName,
-                    )
+                ?.mapNotNullTo(this) { serviceInfo ->
+                    if (serviceInfo.exported) {
+                        AppInfo.Component.Service(
+                            title = serviceInfo.name.substringAfterLast("."),
+                            name = serviceInfo.name,
+                            pkg = serviceInfo.packageName,
+                        )
+                    } else {
+                        null
+                    }
                 }
 
             this@getComponents
                 .receivers
-                ?.mapTo(this) { receiverInfo ->
-                    AppInfo.Component.BroadcastReceiver(
-                        title = receiverInfo.name.substringAfterLast("."),
-                        name = receiverInfo.name,
-                        pkg = receiverInfo.packageName,
-                    )
+                ?.mapNotNullTo(this) { receiverInfo ->
+                    if (receiverInfo.exported) {
+                        AppInfo.Component.BroadcastReceiver(
+                            title = receiverInfo.name.substringAfterLast("."),
+                            name = receiverInfo.name,
+                            pkg = receiverInfo.packageName,
+                        )
+                    } else {
+                        null
+                    }
                 }
 
             this@getComponents
                 .providers
-                ?.mapTo(this) { providerInfo ->
-                    AppInfo.Component.ContentProvider(
-                        title = providerInfo.name.substringAfterLast("."),
-                        name = providerInfo.name,
-                        pkg = providerInfo.packageName,
-                    )
+                ?.mapNotNullTo(this) { providerInfo ->
+                    if (providerInfo.exported) {
+                        AppInfo.Component.ContentProvider(
+                            title = providerInfo.name.substringAfterLast("."),
+                            name = providerInfo.name,
+                            pkg = providerInfo.packageName,
+                            authority = providerInfo.authority,
+                        )
+                    } else {
+                        null
+                    }
                 }
         }
     }
