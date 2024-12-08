@@ -23,13 +23,6 @@ data class AppInfo(
         ) : Component
 
         @Serializable
-        data class BroadcastReceiver(
-            override val title: String,
-            override val name: String,
-            override val pkg: String,
-        ) : Component
-
-        @Serializable
         data class ContentProvider(
             override val title: String,
             override val name: String,

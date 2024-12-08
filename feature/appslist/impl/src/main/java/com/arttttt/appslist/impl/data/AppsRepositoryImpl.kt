@@ -58,20 +58,6 @@ internal class AppsRepositoryImpl(
                 }
 
             this@getComponents
-                .receivers
-                ?.mapNotNullTo(this) { receiverInfo ->
-                    if (receiverInfo.exported) {
-                        AppInfo.Component.BroadcastReceiver(
-                            title = receiverInfo.name.substringAfterLast("."),
-                            name = receiverInfo.name,
-                            pkg = receiverInfo.packageName,
-                        )
-                    } else {
-                        null
-                    }
-                }
-
-            this@getComponents
                 .providers
                 ?.mapNotNullTo(this) { providerInfo ->
                     if (providerInfo.exported) {

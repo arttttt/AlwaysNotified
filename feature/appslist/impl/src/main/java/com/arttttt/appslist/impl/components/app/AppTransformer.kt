@@ -41,7 +41,6 @@ internal class AppTransformer(
     private fun AppInfo.Component.toSectionTitleItem(): ListItem {
         return SectionTitleListItem(
             title = when (this) {
-                is AppInfo.Component.BroadcastReceiver -> "Receivers"
                 is AppInfo.Component.Service -> "Services"
                 is AppInfo.Component.ContentProvider -> "Providers"
             },
