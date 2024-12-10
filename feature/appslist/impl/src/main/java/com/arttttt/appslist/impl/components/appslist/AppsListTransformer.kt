@@ -97,10 +97,10 @@ internal class AppsListTransformer(
 
     private val AppsStore.State.needShowProgress: Boolean
         get() {
-            return isInProgress || isAppsEmpty
+            return isInProgress && areAppsEmpty
         }
 
-    private val AppsStore.State.isAppsEmpty: Boolean
+    private val AppsStore.State.areAppsEmpty: Boolean
         get() {
             return applications?.isEmpty() ?: true
         }
