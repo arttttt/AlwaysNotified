@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,6 +66,11 @@ internal fun AppListDelegate(
             )
 
             Spacer(modifier = Modifier.width(16.dp))
+
+            Switch(
+                checked = item.isSelected,
+                onCheckedChange = {},
+            )
         }
     }
 }

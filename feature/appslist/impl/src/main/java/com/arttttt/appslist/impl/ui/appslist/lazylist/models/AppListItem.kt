@@ -7,7 +7,10 @@ internal data class AppListItem(
     val pkg: String,
     val title: String,
     val icon: Drawable?,
+    val isSelected: Boolean,
     override val clipTop: Boolean,
     override val clipBottom: Boolean,
-    override val key: Any = pkg
-) : ListItem, ClippableItem
+) : ListItem, ClippableItem {
+
+    override val key: Any by this::pkg
+}

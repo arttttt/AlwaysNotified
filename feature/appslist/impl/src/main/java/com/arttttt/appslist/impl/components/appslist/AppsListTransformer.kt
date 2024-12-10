@@ -1,5 +1,6 @@
 package com.arttttt.appslist.impl.components.appslist
 
+import android.graphics.drawable.Drawable
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
@@ -14,6 +15,8 @@ import kotlinx.collections.immutable.toPersistentList
 internal class AppsListTransformer(
     private val resourcesProvider: ResourcesProvider,
 ) : Transformer<Pair<AppsStore.State, AppsSearchComponent.State>, InternalAppsListComponent.UiState> {
+
+    private val iconsCache = mutableMapOf<String, Drawable?>()
 
     override fun invoke(
         states: Pair<AppsStore.State, AppsSearchComponent.State>,
@@ -69,6 +72,13 @@ internal class AppsListTransformer(
         return index == filteredApps.entries.size - 1
     }
 
+    private val AppInfo.icon: Drawable?
+        get() {
+            return iconsCache.getOrPut(pkg) {
+                resourcesProvider.getDrawable(pkg)
+            }
+        }
+
     private fun AppsSearchComponent.State.needShowApp(
         app: AppInfo,
         selectedApps: Set<String>,
@@ -89,9 +99,10 @@ internal class AppsListTransformer(
         return AppListItem(
             pkg = this.pkg,
             title = this.title,
+            isSelected = false,
             clipTop = clipTop,
             clipBottom = clipBottom,
-            icon = resourcesProvider.getDrawable(this.pkg),
+            icon = this.icon,
         )
     }
 
