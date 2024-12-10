@@ -26,4 +26,6 @@ internal interface InternalAppsListComponent {
     fun startApps()
 
     fun openSettings()
+
+    fun onAppCheckedChange(pkg: String)
 }

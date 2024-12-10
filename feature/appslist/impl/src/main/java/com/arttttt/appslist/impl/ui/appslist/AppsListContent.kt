@@ -76,6 +76,7 @@ internal class AppsListContent(
                 isStartButtonVisible = state.isStartButtonVisible,
                 onAppClicked = component::onAppClicked,
                 onStartAppsClicked = component::startApps,
+                onAppCheckedChange = component::onAppCheckedChange,
             )
         }
 
@@ -91,6 +92,7 @@ internal class AppsListContent(
         apps: ImmutableList<ListItem>,
         isStartButtonVisible: Boolean,
         onAppClicked: (String) -> Unit,
+        onAppCheckedChange: (String) -> Unit,
         onStartAppsClicked: () -> Unit,
     ) {
         var parentCoordinates: LayoutCoordinates? by remember {
@@ -133,6 +135,7 @@ internal class AppsListContent(
                         horizontal = 16.dp
                     ),
                 apps = apps,
+                onAppCheckedChange = onAppCheckedChange,
                 onAppClicked = onAppClicked,
             )
 
@@ -160,6 +163,7 @@ internal class AppsListContent(
         modifier: Modifier,
         apps: ImmutableList<ListItem>,
         onAppClicked: (String) -> Unit,
+        onAppCheckedChange: (String) -> Unit,
     ) {
         LazyColumn(
             modifier = modifier,
@@ -177,6 +181,9 @@ internal class AppsListContent(
                         modifier = Modifier.fillParentMaxWidth(),
                         item = item,
                         onClick = onAppClicked,
+                        onCheckedChange = {
+                            onAppCheckedChange(item.pkg)
+                        },
                     )
                     is DividerListItem -> DividerItemContent(
                         modifier = Modifier.fillParentMaxWidth(),

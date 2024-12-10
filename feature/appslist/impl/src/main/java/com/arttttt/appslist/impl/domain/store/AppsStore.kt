@@ -11,23 +11,25 @@ internal class AppsStore(
 ) : Store<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect> by createStore(
     name = storeName<AppsStore>(),
     initialState = State(
-        applications = null,
-        isInProgress = false
+        isInProgress = false,
+        applications = emptyMap(),
+        selectedApps = emptySet(),
     ),
     actor = AppsStoreActor(
         appsRepository = appsRepository,
     )
 ) {
 
-    sealed interface Intent
+    sealed interface Intent {
+
+        data class SelectApp(val pkg: String) : Intent
+    }
 
     data class State(
         val isInProgress: Boolean,
-        val applications: Map<String, AppInfo>?,
+        val applications: Map<String, AppInfo>,
+        val selectedApps: Set<String>,
     )
 
-    sealed interface SideEffect {
-
-        data object ActivitiesChanged : SideEffect
-    }
+    sealed interface SideEffect
 }

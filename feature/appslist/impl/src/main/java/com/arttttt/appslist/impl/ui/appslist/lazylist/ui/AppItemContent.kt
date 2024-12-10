@@ -4,9 +4,11 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,6 +32,7 @@ internal fun AppItemContent(
     modifier: Modifier,
     item: AppListItem,
     onClick: (String) -> Unit,
+    onCheckedChange: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -68,10 +71,22 @@ internal fun AppItemContent(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Switch(
-                checked = item.isSelected,
-                onCheckedChange = {},
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .clickable(
+                        interactionSource = null,
+                        indication = null,
+                        onClick = onCheckedChange,
+                    ),
+            ) {
+                Switch(
+                    checked = item.isSelected,
+                    onCheckedChange = {
+                        onCheckedChange.invoke()
+                    },
+                )
+            }
         }
     }
 }

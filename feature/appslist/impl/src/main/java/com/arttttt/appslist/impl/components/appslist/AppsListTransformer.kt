@@ -50,6 +50,7 @@ internal class AppsListTransformer(
                 initial = mutableListOf()
             ) { index, acc, (_, app) ->
                 acc += app.toListItem(
+                    selectedApps = appsStoreState.selectedApps,
                     clipTop = index == 0,
                     clipBottom = clipBottom(
                         index = index,
@@ -95,11 +96,12 @@ internal class AppsListTransformer(
     private fun AppInfo.toListItem(
         clipTop: Boolean,
         clipBottom: Boolean,
+        selectedApps: Set<String>,
     ): ListItem {
         return AppListItem(
             pkg = this.pkg,
             title = this.title,
-            isSelected = false,
+            isSelected = pkg in selectedApps,
             clipTop = clipTop,
             clipBottom = clipBottom,
             icon = this.icon,

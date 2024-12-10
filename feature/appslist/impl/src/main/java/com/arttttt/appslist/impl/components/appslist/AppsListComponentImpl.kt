@@ -118,13 +118,17 @@ internal class AppsListComponentImpl(
     override fun onAppClicked(pkg: String) {
         slotNavigation.activate(
             DialogConfig.App(
-                app = appsStore.state.applications!!.getValue(pkg),
+                app = appsStore.state.applications.getValue(pkg),
             )
         )
     }
 
     override fun openSettings() {
         dispatch(AppsListComponent.Event.OpenSettings)
+    }
+
+    override fun onAppCheckedChange(pkg: String) {
+        appsStore.accept(AppsStore.Intent.SelectApp(pkg))
     }
 
     private fun createDialog(

@@ -34,7 +34,19 @@ internal class AppsStoreActor(
 
     override fun handleIntent(intent: AppsStore.Intent) {
         when (intent) {
-            else -> {}
+            is AppsStore.Intent.SelectApp -> selectApp(intent.pkg)
+        }
+    }
+
+    private fun selectApp(pkg: String) {
+        reduce {
+            copy(
+                selectedApps = if (pkg in selectedApps) {
+                    selectedApps - pkg
+                } else {
+                    selectedApps + pkg
+                },
+            )
         }
     }
 
