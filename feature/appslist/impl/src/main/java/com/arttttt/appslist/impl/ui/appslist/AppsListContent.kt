@@ -39,16 +39,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arttttt.appslist.impl.components.appslist.InternalAppsListComponent
-import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.AppListDelegate
-import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.DividerListDelegate
-import com.arttttt.appslist.impl.ui.appslist.lazylist.delegates.ProgressListDelegate
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.DividerListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ProgressListItem
+import com.arttttt.appslist.impl.ui.appslist.lazylist.ui.AppItemContent
+import com.arttttt.appslist.impl.ui.appslist.lazylist.ui.DividerItemContent
+import com.arttttt.appslist.impl.ui.appslist.lazylist.ui.ProgressItemContent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.lazylist.ListItem
-import com.arttttt.lazylist.dsl.rememberLazyListDelegateManager
 import com.arttttt.uikit.theme.AppTheme
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * todo: reorganize layout
@@ -160,16 +161,6 @@ internal class AppsListContent(
         apps: ImmutableList<ListItem>,
         onAppClicked: (String) -> Unit,
     ) {
-        val lazyListDelegateManager = rememberLazyListDelegateManager(
-            delegates = persistentListOf(
-                AppListDelegate(
-                    onClick = onAppClicked,
-                ),
-                DividerListDelegate(),
-                ProgressListDelegate(),
-            ),
-        )
-
         LazyColumn(
             modifier = modifier,
             contentPadding = remember {
@@ -178,13 +169,23 @@ internal class AppsListContent(
         ) {
             items(
                 items = apps,
-                key = lazyListDelegateManager::getKey,
-                contentType = lazyListDelegateManager::getContentType
+                key = ListItem::key,
+                contentType = { item -> item::class },
             ) { item ->
-                lazyListDelegateManager.Content(
-                    item = item,
-                    modifier = Modifier,
-                )
+                when (item) {
+                    is AppListItem -> AppItemContent(
+                        modifier = Modifier.fillParentMaxWidth(),
+                        item = item,
+                        onClick = onAppClicked,
+                    )
+                    is DividerListItem -> DividerItemContent(
+                        modifier = Modifier.fillParentMaxWidth(),
+                    )
+                    is ProgressListItem -> ProgressItemContent(
+                        modifier = Modifier.fillParentMaxSize(),
+                    )
+                    else -> throw IllegalStateException("unsupported item type: $item")
+                }
             }
         }
     }

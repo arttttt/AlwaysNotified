@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.ui.appslist.lazylist.delegates
+package com.arttttt.appslist.impl.ui.appslist.lazylist.ui
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,17 +22,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
 import com.arttttt.appslist.impl.ui.appslist.lazylist.models.fromClippableItem
-import com.arttttt.lazylist.dsl.lazyListDelegate
 import com.arttttt.uikit.theme.AppTheme
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
-internal fun AppListDelegate(
+@Composable
+internal fun AppItemContent(
+    modifier: Modifier,
+    item: AppListItem,
     onClick: (String) -> Unit,
-) = lazyListDelegate<AppListItem> {
-
+) {
     Column(
-        modifier = Modifier
-            .fillParentMaxWidth()
+        modifier = modifier
             .fromClippableItem(item)
             .background(AppTheme.colors.tertiary)
             .clickable {

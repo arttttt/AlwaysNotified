@@ -1,16 +1,18 @@
-package com.arttttt.appslist.impl.ui.appslist.lazylist.delegates
+package com.arttttt.appslist.impl.ui.appslist.lazylist.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ProgressListItem
-import com.arttttt.lazylist.dsl.lazyListDelegate
 import com.arttttt.uikit.theme.AppTheme
 
-internal fun ProgressListDelegate() = lazyListDelegate<ProgressListItem> {
+@Composable
+fun ProgressItemContent(
+    modifier: Modifier,
+) {
     Box(
-        modifier = Modifier.fillParentMaxSize(),
+        modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator(
