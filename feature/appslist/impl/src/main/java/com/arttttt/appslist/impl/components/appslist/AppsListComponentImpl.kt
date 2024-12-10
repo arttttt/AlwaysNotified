@@ -21,19 +21,16 @@ import com.arttttt.core.arch.context.wrapComponentContext
 import com.arttttt.core.arch.events.producer.EventsProducerDelegate
 import com.arttttt.core.arch.events.producer.EventsProducerDelegateImpl
 import com.arttttt.core.arch.koinScope
-import com.arttttt.core.arch.slotComponentEvents
 import com.arttttt.core.arch.slotDismissEvents
 import com.arttttt.topbar.api.TopBarComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.koin.core.component.getScopeId
 import org.koin.core.qualifier.qualifier
@@ -111,12 +108,6 @@ internal class AppsListComponentImpl(
         slot
             .slotDismissEvents()
             .onEach { slotNavigation.dismiss() }
-            .launchIn(coroutineScope)
-
-        slot
-            .slotComponentEvents<AppComponent.Event>()
-            .filterIsInstance<AppComponent.Event.EditingFinished>()
-            .onEach { event -> }
             .launchIn(coroutineScope)
     }
 
