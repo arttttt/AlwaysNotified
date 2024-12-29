@@ -34,11 +34,11 @@ internal class AppsStoreActor(
 
     override fun handleIntent(intent: AppsStore.Intent) {
         when (intent) {
-            is AppsStore.Intent.ToggleAppSelection -> selectApp(intent.pkg)
+            is AppsStore.Intent.ToggleAppSelection -> toggleAppSelection(intent.pkg)
         }
     }
 
-    private fun selectApp(pkg: String) {
+    private fun toggleAppSelection(pkg: String) {
         reduce {
             copy(
                 selectedApps = if (pkg in selectedApps) {

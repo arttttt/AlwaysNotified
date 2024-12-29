@@ -24,7 +24,7 @@ internal val appsListModule = module {
         scoped<AppsRepository> {
             AppsRepositoryImpl(
                 context = get(),
-                profilesDao = get(),
+                appsDao = get(),
             )
         }
     }

@@ -7,11 +7,11 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
-import com.arttttt.database.dao.ProfilesDao
+import com.arttttt.database.dao.AppsDao
 
 internal class AppsRepositoryImpl(
     private val context: Context,
-    private val profilesDao: ProfilesDao,
+    private val appsDao: AppsDao,
 ) : AppsRepository {
 
     @SuppressLint("QueryPermissionsNeeded")

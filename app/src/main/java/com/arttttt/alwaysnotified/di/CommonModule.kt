@@ -13,7 +13,7 @@ val commonModule = module {
     }
 
     single {
-        get<AppDatabase>().profilesDao()
+        get<AppDatabase>().appsDao()
     }
 
     single<ResourcesProvider> {

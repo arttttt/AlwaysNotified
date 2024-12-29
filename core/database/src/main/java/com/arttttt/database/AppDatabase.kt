@@ -4,15 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.arttttt.database.dao.ProfilesDao
-import com.arttttt.database.migrations.Migration_1_2
-import com.arttttt.database.migrations.Migration_2_3
-import com.arttttt.database.model.ActivityDbModel
+import com.arttttt.database.dao.AppsDao
+import com.arttttt.database.model.AppDbModel
 
 @Database(
-    version = 3,
+    version = 4,
     entities = [
-        ActivityDbModel::class,
+        AppDbModel::class,
     ],
     exportSchema = false,
 )
@@ -29,15 +27,10 @@ abstract class AppDatabase : RoomDatabase() {
                     klass = AppDatabase::class.java,
                     name = DB_NAME
                 )
-                .addMigrations(
-                    Migration_1_2,
-                    Migration_2_3,
-                )
                 .fallbackToDestructiveMigration(true)
-                .fallbackToDestructiveMigrationOnDowngrade(true)
                 .build()
         }
     }
 
-    abstract fun profilesDao(): ProfilesDao
+    abstract fun appsDao(): AppsDao
 }
