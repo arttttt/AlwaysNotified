@@ -107,8 +107,8 @@ internal class AppsListContent(
                     parentCoordinates = coordinates
                 }
         ) {
-            var transitionState by remember {
-                mutableStateOf(isStartButtonVisible)
+            var transitionState by remember(currentIsStartButtonVisible) {
+                mutableStateOf(currentIsStartButtonVisible)
             }
 
             val nestedScrollConnection = remember {
