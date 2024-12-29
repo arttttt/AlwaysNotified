@@ -1,11 +1,11 @@
-package com.arttttt.appslist.impl.components.appslist
+package com.arttttt.appslist.impl.components
 
 import android.graphics.drawable.Drawable
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.DividerListItem
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ProgressListItem
+import com.arttttt.appslist.impl.ui.lazylist.models.AppListItem
+import com.arttttt.appslist.impl.ui.lazylist.models.DividerListItem
+import com.arttttt.appslist.impl.ui.lazylist.models.ProgressListItem
 import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.core.arch.Transformer
 import com.arttttt.lazylist.ListItem
@@ -36,7 +36,7 @@ internal class AppsListTransformer(
         if (appsStoreState.needShowProgress) return listOf(ProgressListItem)
 
         val filteredApps = appsStoreState
-            .applications!!
+            .applications
             .filter { (_, app) ->
                 appsSearchState.needShowApp(
                     app = app,
@@ -115,11 +115,11 @@ internal class AppsListTransformer(
 
     private val AppsStore.State.areAppsEmpty: Boolean
         get() {
-            return applications?.isEmpty() ?: true
+            return applications.isEmpty()
         }
 
     private val AppsStore.State.isStartButtonVisible: Boolean
         get() {
-            return !isInProgress && !applications.isNullOrEmpty()
+            return !isInProgress && selectedApps.isNotEmpty()
         }
 }

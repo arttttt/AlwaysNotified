@@ -22,7 +22,7 @@ internal class AppsStore(
 
     sealed interface Intent {
 
-        data class SelectApp(val pkg: String) : Intent
+        data class ToggleAppSelection(val pkg: String) : Intent
     }
 
     data class State(

@@ -1,9 +1,7 @@
-package com.arttttt.appslist.impl.components.appslist.di
+package com.arttttt.appslist.impl.components.di
 
 import com.arttttt.appslist.api.AppsListComponent
-import com.arttttt.appslist.impl.components.app.AppComponent
-import com.arttttt.appslist.impl.components.app.AppComponentImpl
-import com.arttttt.appslist.impl.components.appslist.AppsListTransformer
+import com.arttttt.appslist.impl.components.AppsListTransformer
 import com.arttttt.appslist.impl.data.AppsRepositoryImpl
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.appslist.impl.domain.store.AppsStore
@@ -28,10 +26,6 @@ internal val appsListModule = module {
                 context = get(),
                 profilesDao = get(),
             )
-        }
-
-        scoped {
-            AppComponent.Factory(::AppComponentImpl)
         }
     }
 }

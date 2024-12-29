@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.components.appslist
+package com.arttttt.appslist.impl.components
 
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
@@ -26,6 +26,4 @@ internal interface InternalAppsListComponent {
     fun startApps()
 
     fun openSettings()
-
-    fun onAppCheckedChange(pkg: String)
 }

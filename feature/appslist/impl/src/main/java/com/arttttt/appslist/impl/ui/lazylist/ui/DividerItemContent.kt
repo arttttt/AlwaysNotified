@@ -1,4 +1,4 @@
-package com.arttttt.appslist.impl.ui.appslist.lazylist.ui
+package com.arttttt.appslist.impl.ui.lazylist.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

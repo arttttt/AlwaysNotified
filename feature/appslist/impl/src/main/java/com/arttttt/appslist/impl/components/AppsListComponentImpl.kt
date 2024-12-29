@@ -1,19 +1,16 @@
-package com.arttttt.appslist.impl.components.appslist
+package com.arttttt.appslist.impl.components
 
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.slot.SlotNavigation
-import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arttttt.appslist.api.AppsListComponent
-import com.arttttt.appslist.impl.components.app.AppComponent
-import com.arttttt.appslist.impl.components.appslist.di.appsListModule
-import com.arttttt.appslist.impl.domain.entity.AppInfo
+import com.arttttt.appslist.impl.components.di.appsListModule
 import com.arttttt.appslist.impl.domain.store.AppsStore
-import com.arttttt.appslist.impl.ui.appslist.AppsListContent
+import com.arttttt.appslist.impl.ui.AppsListContent
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.context.AppComponentContext
@@ -43,13 +40,7 @@ internal class AppsListComponentImpl(
     EventsProducerDelegate<AppsListComponent.Event> by EventsProducerDelegateImpl() {
 
     @Serializable
-    sealed interface DialogConfig {
-
-        @Serializable
-        data class App(
-            val app: AppInfo,
-        ) : DialogConfig
-    }
+    sealed interface DialogConfig
 
     private val koinScope = koinScope(
         appsListModule,
@@ -59,8 +50,6 @@ internal class AppsListComponentImpl(
 
     private val appsStore: AppsStore by koinScope.inject()
     private val transformer: AppsListTransformer by koinScope.inject()
-
-    private val appComponentFactory: AppComponent.Factory by koinScope.inject()
 
     private val coroutineScope = coroutineScope()
 
@@ -116,19 +105,11 @@ internal class AppsListComponentImpl(
     }
 
     override fun onAppClicked(pkg: String) {
-        slotNavigation.activate(
-            DialogConfig.App(
-                app = appsStore.state.applications.getValue(pkg),
-            )
-        )
+        appsStore.accept(AppsStore.Intent.ToggleAppSelection(pkg))
     }
 
     override fun openSettings() {
         dispatch(AppsListComponent.Event.OpenSettings)
-    }
-
-    override fun onAppCheckedChange(pkg: String) {
-        appsStore.accept(AppsStore.Intent.SelectApp(pkg))
     }
 
     private fun createDialog(
@@ -140,11 +121,8 @@ internal class AppsListComponentImpl(
             parentScopeID = koinScope.id,
         )
 
-        return when (config) {
-            is DialogConfig.App -> appComponentFactory.create(
-                context = wrappedContext,
-                app = config.app,
-            )
+        return when {
+            else -> object : DecomposeComponent {}
         }
     }
 }

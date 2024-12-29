@@ -1,7 +1,6 @@
-package com.arttttt.appslist.impl.ui.appslist
+package com.arttttt.appslist.impl.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -19,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,16 +36,17 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arttttt.appslist.impl.components.appslist.InternalAppsListComponent
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.AppListItem
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.DividerListItem
-import com.arttttt.appslist.impl.ui.appslist.lazylist.models.ProgressListItem
-import com.arttttt.appslist.impl.ui.appslist.lazylist.ui.AppItemContent
-import com.arttttt.appslist.impl.ui.appslist.lazylist.ui.DividerItemContent
-import com.arttttt.appslist.impl.ui.appslist.lazylist.ui.ProgressItemContent
+import com.arttttt.appslist.impl.components.InternalAppsListComponent
+import com.arttttt.appslist.impl.ui.lazylist.models.AppListItem
+import com.arttttt.appslist.impl.ui.lazylist.models.DividerListItem
+import com.arttttt.appslist.impl.ui.lazylist.models.ProgressListItem
+import com.arttttt.appslist.impl.ui.lazylist.ui.AppItemContent
+import com.arttttt.appslist.impl.ui.lazylist.ui.DividerItemContent
+import com.arttttt.appslist.impl.ui.lazylist.ui.ProgressItemContent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.lazylist.ListItem
+import com.arttttt.localization.R
 import com.arttttt.uikit.theme.AppTheme
 import kotlinx.collections.immutable.ImmutableList
 
@@ -76,7 +75,7 @@ internal class AppsListContent(
                 isStartButtonVisible = state.isStartButtonVisible,
                 onAppClicked = component::onAppClicked,
                 onStartAppsClicked = component::startApps,
-                onAppCheckedChange = component::onAppCheckedChange,
+                onAppCheckedChange = component::onAppClicked,
             )
         }
 
@@ -108,8 +107,8 @@ internal class AppsListContent(
                     parentCoordinates = coordinates
                 }
         ) {
-            val transitionState = remember {
-                MutableTransitionState(isStartButtonVisible)
+            var transitionState by remember {
+                mutableStateOf(isStartButtonVisible)
             }
 
             val nestedScrollConnection = remember {
@@ -119,7 +118,7 @@ internal class AppsListContent(
                         source: NestedScrollSource,
                     ): Offset {
                         if (currentIsStartButtonVisible && available.y != 0f) {
-                            transitionState.targetState = available.y > 0
+                            transitionState = available.y > 0
                         }
 
                         return Offset.Zero
@@ -140,20 +139,16 @@ internal class AppsListContent(
             )
 
             AnimatedVisibility(
+                visible = transitionState,
                 modifier = Modifier.align(Alignment.BottomStart),
                 enter = slideInVertically { it } + fadeIn(),
                 exit = slideOutVertically { it } + fadeOut(),
-                visibleState = transitionState,
             ) {
                 ActionsRow(
                     modifier = Modifier,
                     isStartAppsButtonVisible = isStartButtonVisible,
                     onStartAppsClicked = onStartAppsClicked,
                 )
-            }
-
-            LaunchedEffect(isStartButtonVisible) {
-                transitionState.targetState = isStartButtonVisible
             }
         }
     }
@@ -224,7 +219,7 @@ internal class AppsListContent(
                     onClick = onStartAppsClicked,
                     colors = AppTheme.widgets.buttonColors,
                 ) {
-                    Text(text = stringResource(com.arttttt.localization.R.string.start_apps))
+                    Text(text = stringResource(R.string.start_apps))
                 }
             }
         }

@@ -34,7 +34,7 @@ internal class AppsStoreActor(
 
     override fun handleIntent(intent: AppsStore.Intent) {
         when (intent) {
-            is AppsStore.Intent.SelectApp -> selectApp(intent.pkg)
+            is AppsStore.Intent.ToggleAppSelection -> selectApp(intent.pkg)
         }
     }
 
