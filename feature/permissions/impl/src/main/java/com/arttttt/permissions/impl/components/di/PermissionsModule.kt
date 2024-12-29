@@ -8,7 +8,6 @@ import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 import com.arttttt.permissions.impl.domain.store.PermissionsStore
 import com.arttttt.permissions.impl.utils.PermissionsRequester
 import com.arttttt.permissions.impl.utils.PermissionsRequesterImpl
-import com.arttttt.permissions.impl.utils.handlers.IgnoreBatteryOptimizationsPermissionHandler
 import com.arttttt.permissions.impl.utils.handlers.StandardPermissionHandler
 import org.koin.dsl.module
 
@@ -18,10 +17,7 @@ internal val permissionsModule = module {
         scoped<PermissionsRequester> {
             PermissionsRequesterImpl(
                 activity = get(),
-                handlers = mapOf(
-                    StandardPermission::class to StandardPermissionHandler(),
-                    IgnoreBatteryOptimizationsPermission::class to IgnoreBatteryOptimizationsPermissionHandler()
-                )
+                customHandlers = mapOf(),
             )
         }
 

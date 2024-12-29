@@ -1,20 +1,15 @@
 package com.arttttt.permissions.impl.utils.handlers
 
-import android.content.Context
-import android.os.PowerManager
 import androidx.activity.ComponentActivity
-import androidx.core.content.getSystemService
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.arttttt.permissions.impl.domain.entity.IntentPermission
 import com.arttttt.permissions.impl.domain.entity.Permission2
-import com.arttttt.permissions.impl.data.model.IgnoreBatteryOptimizationsPermission
-import com.arttttt.permissions.impl.utils.PermissionHandler
-import com.arttttt.permissions.impl.utils.of
+import com.arttttt.permissions.impl.utils.IntentPermissionHandler
 import kotlinx.coroutines.channels.Channel
 
-internal class IgnoreBatteryOptimizationsPermissionHandler :
-    PermissionHandler<IgnoreBatteryOptimizationsPermission> {
+internal object CommonIntentPermissionHandler : IntentPermissionHandler {
 
     private val lifecycleObserver = object : DefaultLifecycleObserver {
         private var skipNextResume = false
@@ -48,7 +43,7 @@ internal class IgnoreBatteryOptimizationsPermissionHandler :
 
     override suspend fun requestPermission(
         activity: ComponentActivity,
-        permission: IgnoreBatteryOptimizationsPermission
+        permission: IntentPermission,
     ): Permission2.Status {
         lifecycleObserver.init(activity.lifecycle)
         activity.lifecycle.addObserver(lifecycleObserver)
@@ -61,15 +56,10 @@ internal class IgnoreBatteryOptimizationsPermissionHandler :
                 lifecycleObserver.awaitResume()
             }
 
-            activity.applicationContext.checkPermissionStatus()
+            permission.checkStatus(activity.applicationContext)
         } finally {
             lifecycleObserver.clear()
             activity.lifecycle.removeObserver(lifecycleObserver)
         }
-    }
-
-    private fun Context.checkPermissionStatus(): Permission2.Status {
-        val powerManager = getSystemService<PowerManager>()!!
-        return Permission2.Status.of(powerManager.isIgnoringBatteryOptimizations(packageName))
     }
 }

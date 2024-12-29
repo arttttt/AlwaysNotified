@@ -3,6 +3,7 @@ package com.arttttt.permissions.impl.data.repository
 import android.content.Context
 import com.arttttt.permissions.impl.domain.entity.Permission2
 import com.arttttt.permissions.impl.data.model.PostNotificationsPermission
+import com.arttttt.permissions.impl.data.model.ScheduleExactAlarmPermission
 import com.arttttt.permissions.impl.domain.repository.PermissionsRepository
 
 internal class PermissionsRepositoryImpl(
@@ -11,6 +12,7 @@ internal class PermissionsRepositoryImpl(
 
     private val permissions: List<Permission2> = listOf(
         PostNotificationsPermission,
+        ScheduleExactAlarmPermission,
         //QueryAllPackagesPermission,
         //IgnoreBatteryOptimizationsPermission,
     )

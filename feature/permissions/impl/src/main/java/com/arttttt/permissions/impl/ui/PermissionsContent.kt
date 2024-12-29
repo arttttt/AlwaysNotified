@@ -108,10 +108,8 @@ internal class PermissionsContent(
                                         )
                                         .then(permissionModifier),
                                     title = item.title,
-                                    onClick = remember {
-                                        {
-                                            component.grantPermissionClicked(item.permission)
-                                        }
+                                    onClick = {
+                                        component.grantPermissionClicked(item.permission)
                                     },
                                 )
                             }
