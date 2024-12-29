@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import com.arttttt.appslist.impl.domain.entity.AppInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.database.dao.AppsDao
+import com.arttttt.database.model.AppDbModel
 
 internal class AppsRepositoryImpl(
     private val context: Context,
@@ -39,6 +40,28 @@ internal class AppsRepositoryImpl(
                     )
                 }
             }
+    }
+
+    override suspend fun getAllApps(): List<String> {
+        return appsDao
+            .getAllApps()
+            .map(AppDbModel::pkg::get)
+    }
+
+    override suspend fun saveApp(app: String) {
+        appsDao.saveApp(
+            app = AppDbModel(
+                pkg = app,
+            )
+        )
+    }
+
+    override suspend fun removeApp(app: String) {
+        appsDao.removeApp(
+            app = AppDbModel(
+                pkg = app,
+            )
+        )
     }
 
     private fun PackageInfo.getComponents(): List<AppInfo.Component> {
