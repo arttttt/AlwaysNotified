@@ -69,7 +69,7 @@ internal class AppsRepositoryImpl(
             this@getComponents
                 .services
                 ?.mapNotNullTo(this) { serviceInfo ->
-                    if (serviceInfo.exported) {
+                    if (serviceInfo.exported && serviceInfo.permission.isNullOrEmpty()) {
                         AppInfo.Component.Service(
                             title = serviceInfo.name.substringAfterLast("."),
                             name = serviceInfo.name,
