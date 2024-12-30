@@ -40,7 +40,7 @@ internal class AppsListTransformer(
             .filter { (_, app) ->
                 appsSearchState.needShowApp(
                     app = app,
-                    selectedApps = emptySet(),
+                    selectedApps = appsStoreState.selectedApps,
                 )
             }
 
