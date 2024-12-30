@@ -5,15 +5,14 @@ import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.Service
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
+import com.arttttt.alwaysnotified.utils.extensions.isPermissionGranted
 
 class AppsLaunchService : Service() {
 
@@ -41,7 +40,7 @@ class AppsLaunchService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+        if (!isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
             stopSelf()
         } else {
             createNotificationChannel()
