@@ -11,7 +11,10 @@ interface AppsListComponent : DecomposeComponent,
 
     fun interface Factory {
 
-        fun create(context: AppComponentContext): AppsListComponent
+        fun create(
+            context: AppComponentContext,
+            startApps: () -> Unit,
+        ): AppsListComponent
     }
 
     sealed class Event {

@@ -74,7 +74,7 @@ internal class AppsListContent(
                 apps = state.apps,
                 isStartButtonVisible = state.isStartButtonVisible,
                 onAppClicked = component::onAppClicked,
-                onStartAppsClicked = component::startApps,
+                onStartAppsClicked = component.startApps,
                 onAppCheckedChange = component::onAppClicked,
             )
         }

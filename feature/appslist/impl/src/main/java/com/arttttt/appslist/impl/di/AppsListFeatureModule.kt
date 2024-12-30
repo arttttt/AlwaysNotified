@@ -6,9 +6,10 @@ import org.koin.dsl.module
 
 val appsListFeatureModule = module {
     single {
-        AppsListComponent.Factory { context ->
+        AppsListComponent.Factory { context, startApps: () -> Unit ->
             AppsListComponentImpl(
                 context = context,
+                startApps = startApps,
             )
         }
     }

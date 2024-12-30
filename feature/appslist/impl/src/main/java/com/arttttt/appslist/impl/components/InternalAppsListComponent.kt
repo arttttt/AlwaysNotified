@@ -21,9 +21,9 @@ internal interface InternalAppsListComponent {
 
     val topBarComponent: TopBarComponent
 
-    fun onAppClicked(pkg: String)
+    val startApps: () -> Unit
 
-    fun startApps()
+    fun onAppClicked(pkg: String)
 
     fun openSettings()
 }

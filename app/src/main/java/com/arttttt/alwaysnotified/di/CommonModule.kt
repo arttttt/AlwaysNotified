@@ -1,5 +1,6 @@
 package com.arttttt.alwaysnotified.di
 
+import com.arttttt.alwaysnotified.utils.AppsServiceManager
 import com.arttttt.alwaysnotified.utils.resources.ResourcesProviderImpl
 import com.arttttt.database.AppDatabase
 import com.arttttt.localization.ResourcesProvider
@@ -18,6 +19,12 @@ val commonModule = module {
 
     single<ResourcesProvider> {
         ResourcesProviderImpl(
+            context = get(),
+        )
+    }
+
+    single {
+        AppsServiceManager(
             context = get(),
         )
     }

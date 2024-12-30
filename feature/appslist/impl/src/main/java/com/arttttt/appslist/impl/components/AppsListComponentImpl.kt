@@ -34,6 +34,7 @@ import org.koin.core.qualifier.qualifier
 
 internal class AppsListComponentImpl(
     context: AppComponentContext,
+    override val startApps: () -> Unit,
 ) : AppsListComponent,
     InternalAppsListComponent,
     AppComponentContext by context,
@@ -98,10 +99,6 @@ internal class AppsListComponentImpl(
             .slotDismissEvents()
             .onEach { slotNavigation.dismiss() }
             .launchIn(coroutineScope)
-    }
-
-    override fun startApps() {
-
     }
 
     override fun onAppClicked(pkg: String) {

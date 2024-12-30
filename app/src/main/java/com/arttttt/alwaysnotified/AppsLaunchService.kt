@@ -40,13 +40,13 @@ class AppsLaunchService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        if (!isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
-            stopSelf()
-        } else {
+        if (isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
             createNotificationChannel()
 
             showNotification()
         }
+
+        stopService()
     }
 
     override fun onBind(intent: Intent?): IBinder? {

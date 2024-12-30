@@ -12,6 +12,7 @@ import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.appslist.api.AppsListComponent
 import com.arttttt.permissions.api.PermissionsComponent
 import com.arttttt.alwaysnotified.components.settings.SettingsComponentImpl
+import com.arttttt.alwaysnotified.utils.AppsServiceManager
 import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.DecomposeComponent
 import com.arttttt.core.arch.context.wrapComponentContext
@@ -71,6 +72,8 @@ class RootComponentImpl(
         childFactory = ::createComponent
     )
 
+    private val appServiceManager by koinScope.inject<AppsServiceManager>()
+
     init {
         stack
             .stackComponentEvents<PermissionsComponent.Event>()
@@ -102,6 +105,9 @@ class RootComponentImpl(
         return when (config) {
             is Config.AppsList -> appsListComponentFactory.create(
                 context = wrappedContext,
+                startApps = {
+                    appServiceManager.launchAppsService()
+                },
             )
             is Config.Permissions -> permissionsComponent
             is Config.Settings -> SettingsComponentImpl(
