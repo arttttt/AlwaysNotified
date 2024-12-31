@@ -153,6 +153,7 @@ class AppsLaunchService : Service(), LifecycleOwner {
                                 }
                             }
 
+                            delay(300)
                             error = null
                         } catch (e: Exception) {
                             Timber.tag(TAG).d(e)
