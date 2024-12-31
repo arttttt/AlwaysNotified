@@ -83,7 +83,7 @@ internal class AppsRepositoryImpl(
             this@getComponents
                 .providers
                 ?.mapNotNullTo(this) { providerInfo ->
-                    if (providerInfo.exported) {
+                    if (providerInfo.exported && providerInfo.authority != null) {
                         AppInfo.Component.ContentProvider(
                             title = providerInfo.name.substringAfterLast("."),
                             name = providerInfo.name,

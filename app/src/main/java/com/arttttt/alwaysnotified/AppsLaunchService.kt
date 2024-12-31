@@ -30,6 +30,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.timeout
@@ -138,13 +139,7 @@ class AppsLaunchService : Service(), LifecycleOwner {
                                     )
                                 }
                                 is AppInfo.Component.ContentProvider -> {
-                                    /**
-                                     * throws an exception if authority is null
-                                     * we don't care about "incorrect" providers
-                                     *
-                                     * todo: find out whether [AppInfo.Component.ContentProvider.authority] can be non-nullable
-                                     */
-                                    val authority = component.authority!!
+                                    val authority = component.authority
                                     val uri = Uri.parse("content://$authority")
 
                                     contentResolver
