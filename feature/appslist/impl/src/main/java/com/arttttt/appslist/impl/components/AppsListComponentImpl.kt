@@ -22,6 +22,7 @@ import com.arttttt.core.arch.slotDismissEvents
 import com.arttttt.topbar.api.TopBarComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -67,6 +68,15 @@ internal class AppsListComponentImpl(
                 ),
                 parentScopeID = koinScope.id,
             ),
+        )
+
+    override val states: StateFlow<AppsListComponent.State> = appsStore
+        .states
+        .map { state -> state.toComponentState() }
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.Eagerly,
+            initialValue = appsStore.state.toComponentState(),
         )
 
     override val uiState = combine(
@@ -121,5 +131,12 @@ internal class AppsListComponentImpl(
         return when {
             else -> object : DecomposeComponent {}
         }
+    }
+
+    private fun AppsStore.State.toComponentState(): AppsListComponent.State {
+        return AppsListComponent.State(
+            selectedApps = selectedApps,
+            isLoading = isInProgress,
+        )
     }
 }

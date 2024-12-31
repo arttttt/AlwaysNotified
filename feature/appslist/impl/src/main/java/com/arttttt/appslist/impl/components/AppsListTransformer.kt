@@ -1,11 +1,12 @@
 package com.arttttt.appslist.impl.components
 
 import android.graphics.drawable.Drawable
-import com.arttttt.appslist.impl.domain.entity.AppInfo
+import com.arttttt.appslist.api.AppInfo
 import com.arttttt.appslist.impl.domain.store.AppsStore
 import com.arttttt.appslist.impl.ui.lazylist.models.AppListItem
 import com.arttttt.appslist.impl.ui.lazylist.models.DividerListItem
 import com.arttttt.appslist.impl.ui.lazylist.models.ProgressListItem
+import com.arttttt.appslist.impl.ui.lazylist.models.UnsupportedAppListItem
 import com.arttttt.appssearch.api.AppsSearchComponent
 import com.arttttt.core.arch.Transformer
 import com.arttttt.lazylist.ListItem
@@ -82,10 +83,10 @@ internal class AppsListTransformer(
 
     private fun AppsSearchComponent.State.needShowApp(
         app: AppInfo,
-        selectedApps: Set<String>,
+        selectedApps: Set<AppInfo>,
     ) : Boolean {
         val isAppSelected = if (selectedAppsOnly) {
-            selectedApps.contains(app.pkg)
+            selectedApps.contains(app)
         } else {
             true
         }
@@ -96,16 +97,26 @@ internal class AppsListTransformer(
     private fun AppInfo.toListItem(
         clipTop: Boolean,
         clipBottom: Boolean,
-        selectedApps: Set<String>,
+        selectedApps: Set<AppInfo>,
     ): ListItem {
-        return AppListItem(
-            pkg = this.pkg,
-            title = this.title,
-            isSelected = pkg in selectedApps,
-            clipTop = clipTop,
-            clipBottom = clipBottom,
-            icon = this.icon,
-        )
+        return if (components.isNotEmpty()) {
+            AppListItem(
+                pkg = this.pkg,
+                title = this.title,
+                isSelected = this in selectedApps,
+                clipTop = clipTop,
+                clipBottom = clipBottom,
+                icon = this.icon,
+            )
+        } else {
+            UnsupportedAppListItem(
+                pkg = this.pkg,
+                title = this.title,
+                icon = this.icon,
+                clipTop = clipTop,
+                clipBottom = clipBottom,
+            )
+        }
     }
 
     private val AppsStore.State.needShowProgress: Boolean

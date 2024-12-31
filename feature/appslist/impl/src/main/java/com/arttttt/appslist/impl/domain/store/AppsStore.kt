@@ -1,6 +1,6 @@
 package com.arttttt.appslist.impl.domain.store
 
-import com.arttttt.appslist.impl.domain.entity.AppInfo
+import com.arttttt.appslist.api.AppInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
@@ -28,7 +28,7 @@ internal class AppsStore(
     data class State(
         val isInProgress: Boolean,
         val applications: Map<String, AppInfo>,
-        val selectedApps: Set<String>,
+        val selectedApps: Set<AppInfo>,
     )
 
     sealed interface SideEffect

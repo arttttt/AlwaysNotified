@@ -40,9 +40,11 @@ import com.arttttt.appslist.impl.components.InternalAppsListComponent
 import com.arttttt.appslist.impl.ui.lazylist.models.AppListItem
 import com.arttttt.appslist.impl.ui.lazylist.models.DividerListItem
 import com.arttttt.appslist.impl.ui.lazylist.models.ProgressListItem
+import com.arttttt.appslist.impl.ui.lazylist.models.UnsupportedAppListItem
 import com.arttttt.appslist.impl.ui.lazylist.ui.AppItemContent
 import com.arttttt.appslist.impl.ui.lazylist.ui.DividerItemContent
 import com.arttttt.appslist.impl.ui.lazylist.ui.ProgressItemContent
+import com.arttttt.appslist.impl.ui.lazylist.ui.UnsupportedAppItemContent
 import com.arttttt.core.arch.content.ComponentContent
 import com.arttttt.core.arch.content.ComponentContentOwner
 import com.arttttt.lazylist.ListItem
@@ -185,6 +187,10 @@ internal class AppsListContent(
                     )
                     is ProgressListItem -> ProgressItemContent(
                         modifier = Modifier.fillParentMaxSize(),
+                    )
+                    is UnsupportedAppListItem -> UnsupportedAppItemContent(
+                        modifier = Modifier.fillParentMaxWidth(),
+                        item = item,
                     )
                     else -> throw IllegalStateException("unsupported item type: $item")
                 }

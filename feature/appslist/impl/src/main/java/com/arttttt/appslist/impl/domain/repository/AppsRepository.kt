@@ -1,6 +1,6 @@
 package com.arttttt.appslist.impl.domain.repository
 
-import com.arttttt.appslist.impl.domain.entity.AppInfo
+import com.arttttt.appslist.api.AppInfo
 
 internal interface AppsRepository {
 

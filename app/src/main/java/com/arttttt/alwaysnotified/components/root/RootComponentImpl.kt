@@ -3,20 +3,20 @@ package com.arttttt.alwaysnotified.components.root
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arttttt.core.arch.context.AppComponentContext
-import com.arttttt.appslist.api.AppsListComponent
-import com.arttttt.permissions.api.PermissionsComponent
 import com.arttttt.alwaysnotified.components.settings.SettingsComponentImpl
 import com.arttttt.alwaysnotified.utils.AppsServiceManager
-import com.arttttt.core.arch.koinScope
+import com.arttttt.appslist.api.AppsListComponent
 import com.arttttt.core.arch.DecomposeComponent
+import com.arttttt.core.arch.context.AppComponentContext
 import com.arttttt.core.arch.context.wrapComponentContext
+import com.arttttt.core.arch.koinScope
 import com.arttttt.core.arch.stackComponentEvents
+import com.arttttt.permissions.api.PermissionsComponent
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -88,7 +88,7 @@ class RootComponentImpl(
             .stackComponentEvents<AppsListComponent.Event>()
             .filterIsInstance<AppsListComponent.Event.OpenSettings>()
             .onEach {
-                navigation.push(Config.Settings)
+                navigation.bringToFront(Config.Settings)
             }
             .launchIn(coroutineScope)
     }

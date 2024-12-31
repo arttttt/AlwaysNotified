@@ -11,11 +11,12 @@ internal class AppsStoreActor(
 ) : DefaultActor<AppsStore.Intent, AppsStore.State, AppsStore.SideEffect>() {
 
     override fun onInit() {
-        scope.launch {
-            reduce { copy(isInProgress = true) }
+        scope
+            .launch {
+                reduce { copy(isInProgress = true) }
 
-            getInstalledApplications()
-        }
+                getInstalledApplications()
+            }
             .invokeOnCompletion {
                 reduce { copy(isInProgress = false) }
             }
@@ -29,14 +30,16 @@ internal class AppsStoreActor(
 
     private fun toggleAppSelection(pkg: String) {
         scope.launch {
-            val selectedApps = if (pkg in state.selectedApps) {
+            val appInfo = state.applications.getValue(pkg)
+
+            val selectedApps = if (appInfo in state.selectedApps) {
                 appsRepository.removeApp(pkg)
 
-                state.selectedApps - pkg
+                state.selectedApps - appInfo
             } else {
                 appsRepository.saveApp(pkg)
 
-                state.selectedApps + pkg
+                state.selectedApps + appInfo
             }
 
             reduce { copy(selectedApps = selectedApps) }
@@ -52,7 +55,12 @@ internal class AppsStoreActor(
         }
 
         val selectedApps = withContext(Dispatchers.IO) {
-            appsRepository.getAllApps().toSet()
+            val allApps = appsRepository.getAllApps().toSet()
+
+            applications
+                .values
+                .filter { appInfo -> appInfo.pkg in allApps }
+                .toSet()
         }
 
         reduce {

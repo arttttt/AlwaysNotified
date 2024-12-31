@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import com.arttttt.appslist.impl.domain.entity.AppInfo
+import com.arttttt.appslist.api.AppInfo
 import com.arttttt.appslist.impl.domain.repository.AppsRepository
 import com.arttttt.database.dao.AppsDao
 import com.arttttt.database.model.AppDbModel
