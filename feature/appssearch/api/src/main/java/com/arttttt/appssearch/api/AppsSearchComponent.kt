@@ -15,6 +15,7 @@ interface AppsSearchComponent : DecomposeComponent, ComponentContentOwner {
     data class State(
         val filter: String?,
         val selectedAppsOnly: Boolean,
+        val showUnsupportedApps: Boolean,
     )
 
     val states: StateFlow<State>

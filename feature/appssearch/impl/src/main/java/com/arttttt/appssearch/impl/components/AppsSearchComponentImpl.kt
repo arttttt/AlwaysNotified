@@ -24,6 +24,7 @@ internal class AppsSearchComponentImpl(
         AppsSearchComponent.State(
             filter = null,
             selectedAppsOnly = false,
+            showUnsupportedApps = false,
         )
     )
 
@@ -36,6 +37,7 @@ internal class AppsSearchComponentImpl(
             InternalAppsSearchComponent.UiState(
                 text = state.filter ?: "",
                 selectedAppsOnly = state.selectedAppsOnly,
+                showUnsupportedApps = state.showUnsupportedApps,
             )
         }
         .stateIn(
@@ -44,6 +46,7 @@ internal class AppsSearchComponentImpl(
             InternalAppsSearchComponent.UiState(
                 text = "",
                 selectedAppsOnly = false,
+                showUnsupportedApps = false,
             ),
         )
 
@@ -59,6 +62,14 @@ internal class AppsSearchComponentImpl(
         _states.update { state ->
             state.copy(
                 selectedAppsOnly = !state.selectedAppsOnly,
+            )
+        }
+    }
+
+    override fun onShowUnsupportedAppsToggled() {
+        _states.update { state ->
+            state.copy(
+                showUnsupportedApps = !state.showUnsupportedApps,
             )
         }
     }

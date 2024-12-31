@@ -85,10 +85,10 @@ internal class AppsListTransformer(
         app: AppInfo,
         selectedApps: Set<AppInfo>,
     ) : Boolean {
-        val isAppSelected = if (selectedAppsOnly) {
-            selectedApps.contains(app)
-        } else {
-            true
+        val isAppSelected = when {
+            selectedAppsOnly -> selectedApps.contains(app)
+            app.components.isNotEmpty() -> true
+            else -> showUnsupportedApps
         }
 
         return isAppSelected && (filter?.let { filter -> app.title.startsWith(filter, true) } ?: true)

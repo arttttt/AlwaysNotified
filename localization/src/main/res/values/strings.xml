@@ -17,5 +17,6 @@
 
     <string name="search_hint">search</string>
     <string name="selected_apps">selected apps</string>
+    <string name="unsupported_apps">unsupported apps</string>
 
 </resources>

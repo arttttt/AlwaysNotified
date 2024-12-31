@@ -7,10 +7,12 @@ internal interface InternalAppsSearchComponent {
     data class UiState(
         val text: String,
         val selectedAppsOnly: Boolean,
+        val showUnsupportedApps: Boolean,
     )
 
     val uiState: StateFlow<UiState>
 
     fun onTextChanged(text: String)
     fun onSelectedAppsOnlyToggled()
+    fun onShowUnsupportedAppsToggled()
 }
